@@ -1,0 +1,29 @@
+{
+  "AppSettings": {
+    "DataSource": "ٍCMS (Countact Manegmanet System)"
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=.;Database=ContactsDB;User Id=sa;Password=mortazanm12345;"
+  }
+  //"Runtime": {
+  //  "AssemblyBinding": {
+  //    "DependentAssembly": [
+  //      {
+  //        "AssemblyIdentity": {
+  //          "Name": "System.Runtime.CompilerServices.Unsafe",
+  //          "PublicKeyToken": "b03f5f7f11d50a3a",
+  //          "Culture": "neutral"
+  //        },
+  //        "BindingRedirect": {
+  //          "OldVersion": "0.0.0.0-6.0.0.0",
+  //          "NewVersion": "6.0.0.0"
+  //        }
+  //      }
+  //    ]
+  //  }
+  //},
+  //"SupportedRuntime": {
+  //  "Version": "v4.0",
+  //  "Sku": ".NETFramework,Version=v4.8"
+  //}
+}
