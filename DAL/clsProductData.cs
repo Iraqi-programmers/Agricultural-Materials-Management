@@ -7,12 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using MyLib;
 
+
+
 namespace DAL
 {
     public static class clsProductData
     {
 
-        public static async Task<DataTable> GetAll()
+        public static async Task<DataTable?> GetAll()
         {
             return await CRUD.GetAllAsDataTableAsync("SP_GetAllProducts", type: CommandType.StoredProcedure);
         }
@@ -20,7 +22,8 @@ namespace DAL
         public static async Task< bool> Delete(int productID)
         {
 
-            return CRUD.Delete("SP_DeleteProduct", productID, type: CommandType.StoredProcedure);
+            return await CRUD.DeleteAsync("SP_DeleteProduct", "ProductID", productID, CommandType.StoredProcedure);
+
         }
 
         public static bool Update(int productID)
