@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\DAL.csproj": {}
+    "C:\\Users\\Yousif\\Desktop\\Main\\DAL\\DAL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\DAL.csproj": {
+    "C:\\Users\\Yousif\\Desktop\\Main\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\DAL.csproj",
+        "projectUniqueName": "C:\\Users\\Yousif\\Desktop\\Main\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\Abu_Sanad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\obj\\",
+        "projectPath": "C:\\Users\\Yousif\\Desktop\\Main\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\Yousif\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Yousif\\Desktop\\Main\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Abu_Sanad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Yousif\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -47,7 +47,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -78,7 +78,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
