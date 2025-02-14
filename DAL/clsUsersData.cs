@@ -1,11 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
-using MyLib;
-using System;
-using System.Collections.Generic;
+using MyLib_DotNet.DatabaseExecutor;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL
 {
@@ -24,7 +19,6 @@ namespace DAL
            return await CRUD.AddAsync("SP_AddUser",prameter, CommandType.StoredProcedure);
 
         }
-
 
         public static async Task<bool>UpdateUsers(int UserID,string UserName,string Password,bool IsActive)
         {
@@ -45,17 +39,33 @@ namespace DAL
           return await  CRUD.DeleteAsync("SP_DeleteUser","UserID",UserID,CommandType.StoredProcedure);
         }
 
-        //public static async Task<object>GetUserByID()
-        //{
+        public static async Task<object?> GetUserByID(int UserID)
+        {
+            return await CRUD.GetByColumnValueAsync("SP_GetUsersByID", "UserID", UserID, CommandType.StoredProcedure);
+        }
 
-        //}
+        public static async Task<object?> GetUserByUserName(string UserName)
+        {
+            return await CRUD.GetByColumnValueAsync("SP_GetUsersByUserName", "UserName", UserName, CommandType.StoredProcedure);
+        }
 
         public static async Task<DataTable?>GetAllUsers()
         {
             return await CRUD.GetAllAsDataTableAsync("",null, CommandType.StoredProcedure);
         }
 
-       
+        public static  object? CheckIfUserNameAndPasswordExisst(string UserName, string Password)
+        {
+            SqlParameter[] pr =
+            {
+                new SqlParameter("@UserName",UserName),
+                new SqlParameter("@Password",Password)
+            };
+
+            return  CRUD.Get("SP_AuthenticateUser", pr, CommandType.StoredProcedure);
+        }
+
+
 
 
     }
