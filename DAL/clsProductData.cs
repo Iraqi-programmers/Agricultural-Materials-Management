@@ -40,27 +40,6 @@ namespace DAL
             return await CRUD.GetByColumnValueAsync("SP_GetProductByTypeID", "TypeID", TypeID, CommandType.StoredProcedure);
         }
 
-        public static async Task<int?> AddProductWithDetails(int productID, float Size, float Thickness)
-        {
-            SqlParameter[] parameters =
-            {
-                new SqlParameter("@Size", Size),
-                new SqlParameter("@Thickness", Thickness)
-            };
-            return await CRUD.AddAsync("SP_AddProductWithDetails", parameters, CommandType.StoredProcedure);
-        }
-
-        public static async Task<int?> AddProduct(int ProductID, int TypeID, int CompanyID, int DetailsID)
-        {
-            SqlParameter[] parameters =
-{
-                new SqlParameter("@Type", TypeID),
-                new SqlParameter("@CompanyID", CompanyID)
-            };
-            return await CRUD.AddAsync("SP_AddProductWithDetails", parameters, CommandType.StoredProcedure);
-
-        }
-
         public static async Task<int?> AddProductWithAllDetails(string TypeName, string CompanyName, float Size, float Thickness)
         {
             SqlParameter[] parameters =
