@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using MyLib;
+using MyLib_DotNet.DatabaseExecutor;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,7 +24,6 @@ namespace DAL
            return await CRUD.AddAsync("SP_AddUser",prameter, CommandType.StoredProcedure);
 
         }
-
 
         public static async Task<bool>UpdateUsers(int UserID,string UserName,string Password,bool IsActive)
         {
