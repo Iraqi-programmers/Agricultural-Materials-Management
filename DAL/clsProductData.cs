@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MyLib_DotNet.DatabaseExecutor;
 using System.Data;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MyLib_DotNet;
 
 namespace DAL
 {
