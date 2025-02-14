@@ -1,8 +1,9 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
+﻿using System.Collections;
 using System.Data;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 namespace MyLibrary
 {
@@ -23,13 +24,11 @@ namespace MyLibrary
         {
             try
             {
-              
                 var configuration = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory()) 
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .Build();
 
-               
                 _sourceName = configuration["DataSource"] ?? string.Empty;
                 if (string.IsNullOrWhiteSpace(_sourceName))
                     throw new Exception("The 'DataSource' setting is missing or empty in the configuration file.");
@@ -42,23 +41,6 @@ namespace MyLibrary
             {
                 throw new Exception($"An error occurred while loading configuration settings: {ex.Message}");
             }
-
-
-
-            //try
-            //{
-            //    _sourceName = ConfigurationManager.AppSettings["DataSource"] ?? string.Empty;
-            //    if (string.IsNullOrWhiteSpace(_sourceName))
-            //        throw new("The 'DataSource' setting is missing or empty in the configuration file.");
-
-            //    _connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"]?.ConnectionString ?? string.Empty;
-            //    if (string.IsNullOrWhiteSpace(_connectionString))
-            //        throw new ConfigurationErrorsException("The 'DefaultConnection' setting is missing or empty in the configuration file.");
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new Exception($"An error occurred while loading configuration settings: {ex.Message}");
-            //}
         }
 
         protected static T? _ExecuteWithRetry<T>(Func<T> operation, byte retryAttempts, ushort retryDelayMilliseconds, string operationName)
@@ -158,19 +140,17 @@ namespace MyLibrary
         private static void __LogErrorInConsole(string message) => Console.WriteLine(message);
 
         protected static SqlParameter[] _CreateSqlParameterArray(string columnName, object columnValue)
-            => new SqlParameter[] { new SqlParameter($"@{columnName}", columnValue) };
-
-        protected static int? _ConvertToIntOrDBNull(object result)
-            => result != null ? Convert.ToInt32(result) : (int?)null;
-
-        protected static bool _IsSuccessfulOperation(int? result)
-            => result != null && result > 0;
-
-        protected static List<string> _ExtractColumnNames(List<Dictionary<string, object>> records)
         {
-            _ValidateRecordsInput(records);
-            return records.First().Keys.ToList();
+            __ValidateColumnName(columnName);
+            __ValidateColumnValue(columnValue);
+            return new SqlParameter[] { new SqlParameter($"@{columnName}", columnValue) };
         }
+
+        protected static int? _ConvertToIntOrDBNull(object result) => result != null ? Convert.ToInt32(result) : (int?)null;
+
+        protected static bool _IsSuccessfulOperation(int? result) => result != null && result > 0;
+
+        protected static List<string> _ExtractColumnNames(List<Dictionary<string, object>> records) => records.First().Keys.ToList();
 
         protected static DataTable _ConvertRecordsToDataTable(List<Dictionary<string, object>> records)
         {
@@ -191,6 +171,8 @@ namespace MyLibrary
 
         protected static SqlParameter _CreateStructuredSqlParameterFromDictionary(string tableName, List<Dictionary<string, object>> records)
         {
+            __ValidateTableName(tableName);
+            __ValidateListDictionares(records);
             DataTable dataTable = _ConvertRecordsToDataTable(records);
             return new SqlParameter("@Records", SqlDbType.Structured)
             {
@@ -199,11 +181,13 @@ namespace MyLibrary
             };
         }
 
-        protected static SqlParameter _CreateStructuredSqlParameter(string columnName, List<int> values)
+        protected static SqlParameter _CreateStructuredSqlParameter(string columnName, List<int> ids)
         {
+            __ValidateColumnName(columnName);
+            __ValidateListIds(ids);
             DataTable valuesTable = new DataTable();
             valuesTable.Columns.Add(columnName, typeof(int));
-            foreach (var value in values)
+            foreach (var value in ids)
                 valuesTable.Rows.Add(value);
 
             return new SqlParameter("@Ids", SqlDbType.Structured)
@@ -213,8 +197,13 @@ namespace MyLibrary
             };
         }
 
-        protected static string _GenerateDeleteQuery(string tableName, string columnName, List<int> values)
-            => $"DELETE FROM {tableName} WHERE {columnName} IN ({string.Join(",", values)})";
+        protected static string _GenerateDeleteQuery(string tableName, string columnName, List<int> ids)
+        {
+            __ValidateTableName(tableName);
+            __ValidateColumnName(columnName);
+            __ValidateListIds(ids);
+            return $"DELETE FROM {tableName} WHERE {columnName} IN ({string.Join(",", ids)})";
+        }
 
         protected static string _GenerateBulkInsertQuery(string tableName, List<Dictionary<string, object>> records)
         {
@@ -232,7 +221,6 @@ namespace MyLibrary
 
         protected static List<SqlParameter> _GenerateSqlParametersForMultipleRecords(List<Dictionary<string, object>> records)
         {
-            _ValidateRecordsInput(records);
             var columnNames = _ExtractColumnNames(records);
             List<SqlParameter> parameters = new List<SqlParameter>();
 
@@ -243,53 +231,57 @@ namespace MyLibrary
             }
             return parameters;
         }
+
         protected static List<SqlParameter> _GenerateSqlParametersFromDictionary(Dictionary<string, object> updateValues)
-        {
-            _ValidateUpdateValuesInput(updateValues);
-            return updateValues.Select(kv => new SqlParameter($"@{kv.Key}", kv.Value ?? DBNull.Value)).ToList();
-        }
+            => updateValues.Select(kv => new SqlParameter($"@{kv.Key}", kv.Value ?? DBNull.Value)).ToList();
 
         [Conditional("DEBUG")]
-        protected static void _ValidateColumnInput(string query, string columnName, object columnValue)
-        {
-            _ValidateInput(query, "Query cannot be null or empty.");
-            _ValidateInput(columnName, "Column name cannot be null or empty.");
-
-            if (columnValue == null)
-                throw new ArgumentException($"Value for column '{columnName}' cannot be null.");
-        }
-
-        [Conditional("DEBUG")]
-        protected static void _ValidateRecordsInput(List<Dictionary<string, object>> records)
+        private static void __ValidateListDictionares(List<Dictionary<string, object>> records)
         {
             if (records == null || records.Count == 0)
                 throw new ArgumentException("Records list cannot be null or empty.");
         }
 
         [Conditional("DEBUG")]
-        protected static void _ValidateUpdateValuesInput(Dictionary<string, object> updateValues)
+        protected static void _ValidateDictionary(Dictionary<string, object> updateValues)
         {
             if (updateValues == null || updateValues.Count == 0)
                 throw new ArgumentException("Update values cannot be null or empty.");
         }
 
         [Conditional("DEBUG")]
-        protected static void _ValidateTableAndColumnWithIds(string tableName, string columnName, List<int> ids)
+        private static void __ValidateListIds(List<int> ids)
         {
-            _ValidateInput(tableName, "Table name cannot be null or empty.");
-            _ValidateInput(columnName, "Column name cannot be null or empty.");
-
             if (ids == null || ids.Count == 0)
                 throw new ArgumentException("ID list cannot be null or empty.");
         }
 
         [Conditional("DEBUG")]
-        protected static void _ValidateInput(string s, string messag)
+        protected static void _ValidateQuery(string query) => __ValidateInput(query, "Query cannot be null or empty.");
+
+
+        [Conditional("DEBUG")]
+        private static void __ValidateTableName(string tableName) => __ValidateInput(tableName, "Table name cannot be null or empty.");
+
+        [Conditional("DEBUG")]
+        private static void __ValidateColumnName(string columnName) => __ValidateInput(columnName, "Column name cannot be null or empty.");
+
+        [Conditional("DEBUG")]
+        private static void __ValidateColumnValue(object columnValue)
+        {
+            if (columnValue == null ||
+                (columnValue is string str && string.IsNullOrWhiteSpace(str)) ||
+                (columnValue is ICollection collection && collection.Count == 0))
+            {
+                throw new ArgumentException($"The value for column is invalid or empty.");
+            }
+        }
+
+        [Conditional("DEBUG")]
+        private static void __ValidateInput(string s, string messag)
         {
             if (!string.IsNullOrWhiteSpace(s) && string.IsNullOrWhiteSpace(s))
                 throw new ArgumentException(messag);
         }
-
     }
-
 }
