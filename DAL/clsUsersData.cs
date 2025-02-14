@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
-using MyLib_DotNet.DatabaseExecutor;
+using MyLib;
+using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace DAL
