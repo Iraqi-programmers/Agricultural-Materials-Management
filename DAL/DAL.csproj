@@ -18,4 +18,10 @@
     <ProjectReference Include="..\MyLib\MyLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="MyLib_DotNet">
+      <HintPath>..\..\MyLibraries\MyLib_DotNet\MyLib_DotNet\bin\Debug\net8.0\MyLib_DotNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
