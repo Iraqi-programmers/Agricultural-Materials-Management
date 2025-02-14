@@ -1,23 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\TraderMaster\\BLL\\BLL.csproj": {}
+    "C:\\Users\\Yousif\\Desktop\\OurMainProject\\BLL\\BLL.csproj": {}
   },
   "projects": {
-    "D:\\TraderMaster\\BLL\\BLL.csproj": {
+    "C:\\Users\\Yousif\\Desktop\\OurMainProject\\BLL\\BLL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TraderMaster\\BLL\\BLL.csproj",
+        "projectUniqueName": "C:\\Users\\Yousif\\Desktop\\OurMainProject\\BLL\\BLL.csproj",
         "projectName": "BLL",
-        "projectPath": "D:\\TraderMaster\\BLL\\BLL.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "D:\\TraderMaster\\BLL\\obj\\",
+        "projectPath": "C:\\Users\\Yousif\\Desktop\\OurMainProject\\BLL\\BLL.csproj",
+        "packagesPath": "C:\\Users\\Yousif\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Yousif\\Desktop\\OurMainProject\\BLL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Yousif\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,14 +28,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\DevExpress 24.1\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\TraderMaster\\DAL\\DAL.csproj": {
-                "projectPath": "D:\\TraderMaster\\DAL\\DAL.csproj"
+              "C:\\Users\\Yousif\\Desktop\\OurMainProject\\DAL\\DAL.csproj": {
+                "projectPath": "C:\\Users\\Yousif\\Desktop\\OurMainProject\\DAL\\DAL.csproj"
               }
             }
           }
@@ -69,24 +72,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\TraderMaster\\DAL\\DAL.csproj": {
+    "C:\\Users\\Yousif\\Desktop\\OurMainProject\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TraderMaster\\DAL\\DAL.csproj",
+        "projectUniqueName": "C:\\Users\\Yousif\\Desktop\\OurMainProject\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "D:\\TraderMaster\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "D:\\TraderMaster\\DAL\\obj\\",
+        "projectPath": "C:\\Users\\Yousif\\Desktop\\OurMainProject\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\Yousif\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Yousif\\Desktop\\OurMainProject\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Yousif\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -95,16 +100,13 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\DevExpress 24.1\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {
-              "D:\\TraderMaster\\MyLib\\MyLib.csproj": {
-                "projectPath": "D:\\TraderMaster\\MyLib\\MyLib.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {
@@ -127,19 +129,7 @@
               "target": "Package",
               "version": "[6.0.1, )"
             },
-            "Microsoft.Extensions.Configuration": {
-              "target": "Package",
-              "version": "[9.0.2, )"
-            },
             "Microsoft.Extensions.Configuration.Json": {
-              "target": "Package",
-              "version": "[9.0.2, )"
-            },
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.3, )"
-            },
-            "System.Configuration.ConfigurationManager": {
               "target": "Package",
               "version": "[9.0.2, )"
             }
@@ -160,7 +150,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

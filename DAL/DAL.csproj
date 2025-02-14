@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="MyLib">
-      <HintPath>..\net8.0\MyLib.dll</HintPath>
+    <Reference Include="MyLib_DotNet">
+      <HintPath>..\net8.0\MyLib_DotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
 
