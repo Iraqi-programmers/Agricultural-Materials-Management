@@ -16,8 +16,8 @@ C:\Users\Abu_Sanad\Desktop\RealProject\GitHub\DAL\obj\Debug\net8.0\DAL.csproj.Up
 C:\Users\Yousif\Desktop\OurMainProject\DAL\bin\Debug\net8.0\DAL.deps.json
 C:\Users\Yousif\Desktop\OurMainProject\DAL\bin\Debug\net8.0\DAL.dll
 C:\Users\Yousif\Desktop\OurMainProject\DAL\bin\Debug\net8.0\DAL.pdb
-C:\Users\Yousif\Desktop\OurMainProject\DAL\bin\Debug\net8.0\MyLib.dll
-C:\Users\Yousif\Desktop\OurMainProject\DAL\bin\Debug\net8.0\MyLib.pdb
+C:\Users\Yousif\Desktop\OurMainProject\DAL\bin\Debug\net8.0\MyLib_DotNet.dll
+C:\Users\Yousif\Desktop\OurMainProject\DAL\bin\Debug\net8.0\MyLib_DotNet.pdb
 C:\Users\Yousif\Desktop\OurMainProject\DAL\obj\Debug\net8.0\DAL.csproj.AssemblyReference.cache
 C:\Users\Yousif\Desktop\OurMainProject\DAL\obj\Debug\net8.0\DAL.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Yousif\Desktop\OurMainProject\DAL\obj\Debug\net8.0\DAL.AssemblyInfoInputs.cache
