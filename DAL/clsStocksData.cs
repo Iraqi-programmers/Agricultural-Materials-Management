@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-   public class Class1
+   public class clsStocksData
     {
 
         public static void a()
