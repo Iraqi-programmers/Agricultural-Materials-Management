@@ -24,7 +24,7 @@ namespace DAL
             return await CRUD.AddAsync("SP_AddStock", parameters, CommandType.StoredProcedure);
         }
 
-        public static async Task<bool> UpdateStock(int StockID, int ProductID, int Quantity, string Status)
+        public static async Task<bool> UpdateStock(int? StockID, int ProductID, int Quantity, string Status)
         {
             SqlParameter[] parameters =
             {

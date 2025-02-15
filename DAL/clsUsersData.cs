@@ -22,7 +22,7 @@ namespace DAL
 
         }
 
-        public static async Task<bool>UpdateUsers(int UserID,string UserName,string Password,bool IsActive)
+        public static async Task<bool>UpdateUsers(int? UserID,string UserName,string Password,bool IsActive)
         {
             SqlParameter[] Prameter =
             {
