@@ -41,12 +41,12 @@ namespace DAL
           return await  CRUD.DeleteAsync("SP_DeleteUser","UserID",UserID,CommandType.StoredProcedure);
         }
 
-        public static async Task<object?> GetUserByID(int UserID)
+        public static async Task<object[]?> GetUserByID(int UserID)
         {
             return await CRUD.GetByColumnValueAsync("SP_GetUsersByID", "UserID", UserID, CommandType.StoredProcedure);
         }
 
-        public static async Task<object?> GetUserByUserName(string UserName)
+        public static async Task<object[]?> GetUserByUserName(string UserName)
         {
             return await CRUD.GetByColumnValueAsync("SP_GetUsersByUserName", "UserName", UserName, CommandType.StoredProcedure);
         }
@@ -56,7 +56,7 @@ namespace DAL
             return await CRUD.GetAllAsDataTableAsync("",null, CommandType.StoredProcedure);
         }
 
-        public static  object? CheckIfUserNameAndPasswordExisst(string UserName, string Password)
+        public static object? CheckIfUserNameAndPasswordExisst(string UserName, string Password)
         {
             SqlParameter[] pr =
             {
@@ -66,9 +66,6 @@ namespace DAL
 
             return  CRUD.Get("SP_AuthenticateUser", pr, CommandType.StoredProcedure);
         }
-
-
-
 
     }
 }

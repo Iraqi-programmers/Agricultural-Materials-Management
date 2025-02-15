@@ -1,7 +1,9 @@
 ﻿using DAL;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,12 +20,14 @@ namespace BLL
         public int Quantity { get; set; }
         public string Status { get; set; }
 
+        //clsProductInfo ProductInfo
         private clsStocks(int stockID, int productID, int quantity, string status)
         {
             StockID = stockID;
             ProductID = productID;
             Quantity = quantity;
             Status = status;
+            //ProductInfo=clsProductInfo.GetProductByID(ProductID);
             mod = Mod.Update ;
 
         }
@@ -37,6 +41,36 @@ namespace BLL
             mod = Mod.AddNew;
         }
 
+        public static async Task<clsStocks> GetStockByID(int StockID)
+        {
+            var obj = await clsStocksData.GetStockByID(StockID);
+
+            if (obj != null)
+            {
+                return new clsStocks(
+             Convert.ToInt32(obj[0]),
+             Convert.ToInt32(obj[1]),
+             Convert.ToInt32(obj[2]),
+              obj[3].ToString()??""
+               );
+            }
+            throw new Exception("Stock not Found.!");
+        }
+
+        public static async Task<bool> DeleteStock(int StockID)
+        {
+            return await clsStocksData.DeleteStock(StockID);
+        }
+
+        public static async Task<bool> UpdateStockQuantity(int stockId, int quantity)
+        {
+            return await clsStocksData.UpdateStockQuantity(stockId, quantity);
+        }
+
+        public static async Task<DataTable?> GetAllStocks()
+        {
+            return await clsStocksData.GetAllStocks();
+        }
 
         private async Task<bool>AddNew()
         {

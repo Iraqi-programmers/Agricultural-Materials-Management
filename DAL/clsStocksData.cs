@@ -12,8 +12,6 @@ namespace DAL
 {
     public class clsStocksData
     {
-
-
         public static async Task<int?> AddNewStock(int ProductID, int Quantity, string Status)
         {
             SqlParameter[] parameters =
@@ -39,12 +37,24 @@ namespace DAL
             return await CRUD.UpdateAsync("SP_UpdateStock", parameters, CommandType.StoredProcedure);
         }
 
+        public static async Task<bool> UpdateStockQuantity(int stockId, int quantity)
+        {
+            SqlParameter[] parameters =
+           {
+            new SqlParameter("@StockID", stockId),
+            new SqlParameter("@Quantity", quantity)
+
+           };
+
+            return await CRUD.UpdateAsync("SP_UpdateStockQuantity", parameters, CommandType.StoredProcedure);
+        }
+
         public static async Task<bool> DeleteStock(int StockID)
         {
             return await CRUD.DeleteAsync("SP_DeleteStock", "StockID", StockID, CommandType.StoredProcedure);
         }
 
-        public static async Task<object?> GetStockByID(int StockID)
+        public static async Task<object[]?> GetStockByID(int StockID)
         {
             return await CRUD.GetByColumnValueAsync("SP_GetStockByID", "StockID", StockID, CommandType.StoredProcedure);
         }
@@ -59,6 +69,16 @@ namespace DAL
             return await CRUD.GetByColumnValueAsync("SP_GetStockByProductID", "ProductID", ProductID, CommandType.StoredProcedure);
         }
 
+        public static async Task<DataTable?> GetAllStockByProductID(int ProductID)
+        {
+            SqlParameter[] pr =
+            {
+                new SqlParameter("@ProductID",ProductID)
+            };
+
+            return await CRUD.GetAllAsDataTableAsync("SP_GetStockByProductID",pr , CommandType.StoredProcedure);
+        }
+
         public static async Task<DataTable?> GetProductByStatus(string Status)
         {
             SqlParameter[] pr =
@@ -68,9 +88,6 @@ namespace DAL
 
             return await CRUD.GetAllAsDataTableAsync("SP_GetStockByStatus", pr, CommandType.StoredProcedure);
         }
-
-
-
 
     }
 }
