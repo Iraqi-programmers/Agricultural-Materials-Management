@@ -47,11 +47,16 @@ namespace DAL
             return await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchases",null, CommandType.StoredProcedure);
         }
 
+       
+
         public static async Task<bool> DeletePurchase(int PurchaseID)
         {
             return await CRUD.DeleteAsync("SP_DeletePurchase", "@PurchaseID", PurchaseID, CommandType.StoredProcedure);
         }
 
-
+      
+        //البحث عن مشتريات خلال فتره معيننة
+        //التحقق من المشتريات غير المسدددة والعكس
+        //حساب اجمالي المدفوهات للموردين 
     }
 }
