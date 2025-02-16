@@ -15,7 +15,8 @@ namespace DAL
                 new SqlParameter("@WarrntyDate", warrantyDate),
                 new SqlParameter("@Price", price),
                 new SqlParameter("@TotaCost", totaCost),
-                new SqlParameter("@Quantity", quantity)
+                new SqlParameter("@Quantity", quantity),
+                new SqlParameter("@UserID", clsUsersData.CurrentUserAuditInfo.UserId)
             };
             return await CRUD.AddAsync("SP_", parameters, CommandType.StoredProcedure);
         }

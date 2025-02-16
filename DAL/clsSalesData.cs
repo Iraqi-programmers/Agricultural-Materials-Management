@@ -2,8 +2,6 @@
 using Microsoft.Data.SqlClient;
 using MyLib_DotNet.DatabaseExecutor;
 using Newtonsoft.Json;
-//using Newtonsoft.Json.Linq;
-
 
 namespace DAL
 {
@@ -168,7 +166,6 @@ namespace DAL
             };
             return await CRUD.AddAsync("SP_AddSaleWithDetailsAndAddNewPerson", parameters);
         }
-
 
         public static async Task<object[]?> GetSaleInfoByIDAsync(int saleID)
             => await CRUD.GetByColumnValueAsync("SP_", "SaleID", saleID, CommandType.StoredProcedure);
@@ -421,5 +418,4 @@ namespace DAL
         public static async Task<bool> DeleteMultipleSalesAsync(List<int> saleIDs)
             => await CRUD.DeleteRecordsByIdsAsync("SP_", "Sales", "SaleID", 0, saleIDs, clsUsersData.CurrentUserAuditInfo, CommandType.StoredProcedure);
     }
-
 }
