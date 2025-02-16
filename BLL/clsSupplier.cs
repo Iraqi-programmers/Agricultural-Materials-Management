@@ -50,28 +50,39 @@ namespace BLL
 
         public async Task<bool> Save()
         {
-            switch(_Mode)
+           
+            return _Mode switch
             {
-                    case enMode.AddNew:
-                    {
-                        if (await _AddNewSupplier())
-                        {
-                            _Mode = enMode.Update;
-                            return true;
-                        }
-                        else
-                        { return false; }
-
-                    }
-                    case enMode.Update:
-                    {
-                        return await _UpdateSupplier();
-                    }
-
-            }
-            return false;
-
+                enMode.AddNew => await _AddNewSupplier(),
+                enMode.Update => await _UpdateSupplier(),
+                _ => false
+            };
         }
+
+        //public async Task<bool> Save()
+        //{
+        //    switch(_Mode)
+        //    {
+        //            case enMode.AddNew:
+        //            {
+        //                if (await _AddNewSupplier())
+        //                {
+        //                    _Mode = enMode.Update;
+        //                    return true;
+        //                }
+        //                else
+        //                { return false; }
+
+        //            }
+        //            case enMode.Update:
+        //            {
+        //                return await _UpdateSupplier();
+        //            }
+
+        //    }
+        //    return false;
+
+        //}
 
         public static async Task<DataTable?> GetAllSuppliers()
         {
@@ -83,7 +94,7 @@ namespace BLL
             return await clsSupplierData.DeleteSupplier(id);
         }
 
-        public async Task<object[]?> Find(int id)
+        public static async Task<object[]?> Find(int id)
         {
             return await clsSupplierData.GetSupplierByID(id);
         }

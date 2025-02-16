@@ -9,8 +9,12 @@ using MyLib_DotNet.DatabaseExecutor;
 
 namespace DAL
 {
+   
     public class clsSupplierPymentsData
     {
+        /// <summary>
+        /// ميثود اضافة المدفوعات للموردين
+        /// </summary>
         public static async Task<int?> AddSupplierPyment( decimal Amount,int SupplierID,DateTime PymentDate,int PurchaseID,int UserID)
         {
             SqlParameter[] Parameters =
