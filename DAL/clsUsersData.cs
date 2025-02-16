@@ -6,9 +6,11 @@ using MyLib_DotNet.DatabaseExecutor;
 
 namespace DAL
 {
-   public class clsUsersData
+    public class clsUsersData
     {
-        public static async Task<int?> AddNewUsers(int PersonID,string UserName,string Password,bool IsActive)
+        public static stUserAuditInfo CurrentUserAuditInfo { get; set; } 
+
+        public static async Task<int?> AddNewUsers(int PersonID, string UserName, string Password, bool IsActive)
         {
             SqlParameter[] prameter =
             {
@@ -17,12 +19,11 @@ namespace DAL
                 new SqlParameter("@Password",Password),
                 new SqlParameter("@IsActive",IsActive)
             };
-           
-           return await CRUD.AddAsync("SP_AddUser",prameter, CommandType.StoredProcedure);
+            return await CRUD.AddAsync("SP_AddUser", prameter, CommandType.StoredProcedure);
 
         }
 
-        public static async Task<bool>UpdateUsers(int? UserID,string UserName,string Password,bool IsActive)
+        public static async Task<bool> UpdateUsers(int? UserID, string UserName, string Password, bool IsActive)
         {
             SqlParameter[] Prameter =
             {
@@ -30,15 +31,14 @@ namespace DAL
                 new SqlParameter("@UserName",UserName),
                 new SqlParameter("@Password",Password),
                 new SqlParameter("@IsActive",IsActive)
-               
-            };
 
+            };
             return await CRUD.UpdateAsync("SP_UpdateUser", Prameter, CommandType.StoredProcedure);
         }
 
-        public static async Task<bool>DeleteUsers(int UserID)
+        public static async Task<bool> DeleteUsers(int UserID)
         {
-          return await  CRUD.DeleteAsync("SP_DeleteUser","UserID",UserID,CommandType.StoredProcedure);
+            return await CRUD.DeleteAsync("SP_DeleteUser", "UserID", UserID, CurrentUserAuditInfo, CommandType.StoredProcedure);
         }
 
         public static async Task<object[]?> GetUserByID(int UserID)
@@ -51,12 +51,12 @@ namespace DAL
             return await CRUD.GetByColumnValueAsync("SP_GetUsersByUserName", "UserName", UserName, CommandType.StoredProcedure);
         }
 
-        public static async Task<DataTable?>GetAllUsers()
+        public static async Task<DataTable?> GetAllUsers()
         {
-            return await CRUD.GetAllAsDataTableAsync("",null, CommandType.StoredProcedure);
+            return await CRUD.GetAllAsDataTableAsync("SP_", type: CommandType.StoredProcedure);
         }
 
-        public static object? CheckIfUserNameAndPasswordExisst(string UserName, string Password)
+        public static async Task<object?> CheckIfUserNameAndPasswordExisst(string UserName, string Password)
         {
             SqlParameter[] pr =
             {
@@ -64,8 +64,76 @@ namespace DAL
                 new SqlParameter("@Password",Password)
             };
 
-            return  CRUD.Get("SP_AuthenticateUser", pr, CommandType.StoredProcedure);
+            var data = await CRUD.GetAsync("SP_AuthenticateUser", pr, CommandType.StoredProcedure);
+
+            if (data != null)
+                CurrentUserAuditInfo = new stUserAuditInfo(Convert.ToInt32(data[0]), "UserID");
+
+            return data ?? null;
         }
 
     }
+
+    //public class clsUsersData
+    // {
+    //     public static async Task<int?> AddNewUsers(int PersonID,string UserName,string Password,bool IsActive)
+    //     {
+    //         SqlParameter[] prameter =
+    //         {
+    //             new SqlParameter("@PersonID",PersonID),
+    //             new SqlParameter("@UserName",UserName),
+    //             new SqlParameter("@Password",Password),
+    //             new SqlParameter("@IsActive",IsActive)
+    //         };
+
+    //        return await CRUD.AddAsync("SP_AddUser",prameter, CommandType.StoredProcedure);
+
+    //     }
+
+    //     public static async Task<bool>UpdateUsers(int? UserID,string UserName,string Password,bool IsActive)
+    //     {
+    //         SqlParameter[] Prameter =
+    //         {
+    //             new SqlParameter("@UserID",UserID),
+    //             new SqlParameter("@UserName",UserName),
+    //             new SqlParameter("@Password",Password),
+    //             new SqlParameter("@IsActive",IsActive)
+
+    //         };
+
+    //         return await CRUD.UpdateAsync("SP_UpdateUser", Prameter, CommandType.StoredProcedure);
+    //     }
+
+    //     public static async Task<bool>DeleteUsers(int UserID)
+    //     {
+    //       return await  CRUD.DeleteAsync("SP_DeleteUser","UserID",UserID,CommandType.StoredProcedure);
+    //     }
+
+    //     public static async Task<object[]?> GetUserByID(int UserID)
+    //     {
+    //         return await CRUD.GetByColumnValueAsync("SP_GetUsersByID", "UserID", UserID, CommandType.StoredProcedure);
+    //     }
+
+    //     public static async Task<object[]?> GetUserByUserName(string UserName)
+    //     {
+    //         return await CRUD.GetByColumnValueAsync("SP_GetUsersByUserName", "UserName", UserName, CommandType.StoredProcedure);
+    //     }
+
+    //     public static async Task<DataTable?>GetAllUsers()
+    //     {
+    //         return await CRUD.GetAllAsDataTableAsync("",null, CommandType.StoredProcedure);
+    //     }
+
+    //     public static object? CheckIfUserNameAndPasswordExisst(string UserName, string Password)
+    //     {
+    //         SqlParameter[] pr =
+    //         {
+    //             new SqlParameter("@UserName",UserName),
+    //             new SqlParameter("@Password",Password)
+    //         };
+
+    //         return  CRUD.Get("SP_AuthenticateUser", pr, CommandType.StoredProcedure);
+    //     }
+
+    // }
 }
