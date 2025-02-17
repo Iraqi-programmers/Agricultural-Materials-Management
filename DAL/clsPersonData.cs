@@ -6,7 +6,7 @@ namespace DAL
 {
     public class clsPersonData
     {
-        public static async Task<int?> AddNewPersonAsync(string fullName, string nationalNum, string phoneNum, string address)
+        public static async Task<int?> AddNewPersonAsync(string fullName, string nationalNum, string phoneNum, string address, int userId)
         {
             SqlParameter[] parameters =
             {
@@ -14,17 +14,17 @@ namespace DAL
                 new SqlParameter("@NationalNum", nationalNum),
                 new SqlParameter("@PhoneNumber", phoneNum),
                 new SqlParameter("@Address", address),
-                new SqlParameter("@UserID", clsUsersData.CurrentUserAuditInfo.UserId)
+                new SqlParameter("@UserID", userId)
             };
-            return await CRUD.AddAsync("SP_", parameters, CommandType.StoredProcedure);
+            return await CRUD.AddAsync("SP_", parameters);
         }
 
         public static async Task<object[]?> GetPersonInfoByIDAsync(int personId)
-            => await CRUD.GetByColumnValueAsync("SP_", "PersonID", personId, CommandType.StoredProcedure);
+            => await CRUD.GetByColumnValueAsync("SP_", "PersonID", personId);
         public static async Task<object[]?> GetPersonInfoByFullNameAsync(string fullName)
-            => await CRUD.GetByColumnValueAsync("SP_", "FullName", fullName, CommandType.StoredProcedure);
+            => await CRUD.GetByColumnValueAsync("SP_", "FullName", fullName);
         public static async Task<object[]?> GetPersonInfoByNationalNumAsync(string nationalNum)
-            => await CRUD.GetByColumnValueAsync("SP_", "NationalNum", nationalNum, CommandType.StoredProcedure);
+            => await CRUD.GetByColumnValueAsync("SP_", "NationalNum", nationalNum);
 
         /*
         CREATE OR ALTER VIEW vw_PersonDetails AS
@@ -76,15 +76,15 @@ namespace DAL
         END;
          */
         public static async Task<object[]?> GetPersonFullDataByIDAsync(int personId)
-            => await CRUD.GetByColumnValueAsync("SP_", "PersonID", personId, CommandType.StoredProcedure);
+            => await CRUD.GetByColumnValueAsync("SP_", "PersonID", personId);
 
         public static async Task<object[]?> GetPersonFullDataByFullNameAsync(string fullName)
-            => await CRUD.GetByColumnValueAsync("SP_", "FullName", fullName, CommandType.StoredProcedure);
+            => await CRUD.GetByColumnValueAsync("SP_", "FullName", fullName);
 
         public static async Task<DataTable?> GetAllPersonsAsDataTableAsync()
-            => await CRUD.GetAllAsDataTableAsync("SP_", type: CommandType.StoredProcedure);
+            => await CRUD.GetAllAsDataTableAsync("SP_");
         public static async Task<List<object[]>?> GetAllPersonsAsListAsync()
-            => await CRUD.GetAllAsListAsync("SP_", type: CommandType.StoredProcedure);
+            => await CRUD.GetAllAsListAsync("SP_");
 
         /*
         CREATE PROCEDURE SP_GetAllPersonsFullDetails
@@ -94,23 +94,17 @@ namespace DAL
         END;
          */
         public static async Task<DataTable?> GetPersonFullDetailsByIDAsync(int personId)
-        {
-            SqlParameter[] parameters =
-            {
-                new SqlParameter("@PersonID", personId)
-            };
-            return await CRUD.GetAllAsDataTableAsync("SP_GetAllPersonsFullDetails", parameters, CommandType.StoredProcedure);
-        }
-
+            => await CRUD.GetAllAsDataTableAsync("SP_GetAllPersonsFullDetails", new SqlParameter[] { new SqlParameter("@PersonID", personId) });
+        
         public static async Task<List<object[]>?> GetAllPersonsFullDetailsAsync()
-            => await CRUD.GetAllAsListAsync("SP_GetAllPersonsFullDetails", type: CommandType.StoredProcedure);
+            => await CRUD.GetAllAsListAsync("SP_GetAllPersonsFullDetails");
 
         public static async Task<bool> IsPersonExistAsync(int personId)
-            => await CRUD.IsExistAsync("SP_", "PersonID", personId, CommandType.StoredProcedure);
+            => await CRUD.IsExistAsync("SP_", "PersonID", personId);
         public static async Task<bool> IsPersonExistAsync(string fullName)
-            => await CRUD.IsExistAsync("SP_", "FullName", fullName, CommandType.StoredProcedure);
+            => await CRUD.IsExistAsync("SP_", "FullName", fullName);
 
-        public static async Task<bool> UpdatePersonDataAsync(int? personId, string fullName, string nationalNum, string phoneNum, string address)
+        public static async Task<bool> UpdatePersonDataAsync(int? personId, string fullName, string nationalNum, string phoneNum, string address, int userId)
         {
             SqlParameter[] parameters =
             {
@@ -119,19 +113,19 @@ namespace DAL
                 new SqlParameter("@NationalNum", nationalNum),
                 new SqlParameter("@PhoneNumber", phoneNum),
                 new SqlParameter("@Address", address),
-                new SqlParameter("@UserID", clsUsersData.CurrentUserAuditInfo.UserId)
+                new SqlParameter("@UserID", userId)
             };
-            return await CRUD.UpdateAsync("SP_", parameters, CommandType.StoredProcedure);
+            return await CRUD.UpdateAsync("SP_", parameters);
         }
 
-        public static async Task<bool> DeletePersonByIDAsync(int personId)
-            => await CRUD.DeleteAsync("SP_", "PersonID", personId, clsUsersData.CurrentUserAuditInfo, CommandType.StoredProcedure);
-        public static async Task<bool> DeletePersonByFullNameAsync(string fullName)
-            => await CRUD.DeleteAsync("SP_", "FullName", fullName, clsUsersData.CurrentUserAuditInfo, CommandType.StoredProcedure);
-        public static async Task<bool> DeletePersonByNationalNumAsync(string nationalNum)
-            => await CRUD.DeleteAsync("SP_", "NationalNum", nationalNum, clsUsersData.CurrentUserAuditInfo, CommandType.StoredProcedure);
+        public static async Task<bool> DeletePersonByIDAsync(int personId, int userId)
+            => await CRUD.DeleteAsync("SP_", "PersonID", personId, "UserID", userId);
+        public static async Task<bool> DeletePersonByFullNameAsync(string fullName, int userId)
+            => await CRUD.DeleteAsync("SP_", "FullName", fullName, "UserID", userId);
+        public static async Task<bool> DeletePersonByNationalNumAsync(string nationalNum, int userId)
+            => await CRUD.DeleteAsync("SP_", "NationalNum", nationalNum, "UserID", userId);
 
-        public static async Task<bool> DeleteMultiplePersonsAsync(List<int> personIDs)
-            => await CRUD.DeleteRecordsByIdsAsync("SP_", "People", "PersonID", 0, personIDs, clsUsersData.CurrentUserAuditInfo, CommandType.StoredProcedure);
+        public static async Task<bool> DeleteMultiplePersonsAsync(List<int> personIDs, int userId)
+            => await CRUD.DeleteRecordsByIdsAsync("SP_", "People", "PersonID", 0, personIDs, "UserID", userId);
     }
 }

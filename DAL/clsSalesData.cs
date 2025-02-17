@@ -72,14 +72,14 @@ namespace DAL
             END CATCH
         END;
          */
-        public static async Task<int?> AddNewSaleWithDetailsAsync(DateTime date, List<Dictionary<string, object>> details, int? personId = null)
+        public static async Task<int?> AddNewSaleWithDetailsAsync(DateTime date, List<Dictionary<string, object>> details, int userId, int? personId = null)
         {
             var parameters = new SqlParameter[]
             {
                 new SqlParameter("@Date", date),
                 new SqlParameter("@Details", JsonConvert.SerializeObject(details)),
                 new SqlParameter("@PersonID", personId ?? (object)DBNull.Value),
-                new SqlParameter("@UserID", clsUsersData.CurrentUserAuditInfo.UserId)
+                new SqlParameter("@UserID", userId)
             };
             return await CRUD.AddAsync("SP_AddSaleWithDetails", parameters);
         }
@@ -152,7 +152,7 @@ namespace DAL
         END;
 
          */
-        public static async Task<int?> AddNewSaleWithDetailsAsync(DateTime date, List<Dictionary<string, object>> details, string fullName, string nationalNum, string phoneNum, string address)
+        public static async Task<int?> AddNewSaleWithDetailsAsync(DateTime date, List<Dictionary<string, object>> details, string fullName, string nationalNum, string phoneNum, string address, int userId)
         {
             var parameters = new SqlParameter[]
             {
@@ -162,32 +162,32 @@ namespace DAL
                 new SqlParameter("@NationalNum", nationalNum),
                 new SqlParameter("@PhoneNum", phoneNum),
                 new SqlParameter("@Address", address),
-                new SqlParameter("@UserID", clsUsersData.CurrentUserAuditInfo.UserId)
+                new SqlParameter("@UserID", userId)
             };
             return await CRUD.AddAsync("SP_AddSaleWithDetailsAndAddNewPerson", parameters);
         }
 
-        public static async Task<object[]?> GetSaleInfoByIDAsync(int saleID)
-            => await CRUD.GetByColumnValueAsync("SP_", "SaleID", saleID, CommandType.StoredProcedure);
+        public static async Task<object[]?> GetSaleInfoByIDAsync(int saleId)
+            => await CRUD.GetByColumnValueAsync("SP_", "SaleID", saleId);
 
         public static async Task<List<object[]>?> GetAllSalesAsListAsync()
-            => await CRUD.GetAllAsListAsync("SP_", type: CommandType.StoredProcedure);
+            => await CRUD.GetAllAsListAsync("SP_");
 
         public static async Task<DataTable?> GetAllSalesAsDataTableAsync()
-            => await CRUD.GetAllAsDataTableAsync("SP_", type: CommandType.StoredProcedure);
+            => await CRUD.GetAllAsDataTableAsync("SP_");
 
-        public static async Task<bool> IsSaleExistAsync(int saleID)
-            => await CRUD.IsExistAsync("SP_", "SaleID", saleID, CommandType.StoredProcedure);
+        public static async Task<bool> IsSaleExistAsync(int saleId)
+            => await CRUD.IsExistAsync("SP_", "SaleID", saleId);
 
-        public static async Task<bool> UpdateSaleDataAsync(int? saleID, DateTime date, int userID)
+        public static async Task<bool> UpdateSaleDataAsync(int? saleId, DateTime date, int userId)
         {
             SqlParameter[] parameters =
             {
-                new SqlParameter("@SaleID", saleID),
+                new SqlParameter("@SaleID", saleId),
                 new SqlParameter("@Date", date),
-                new SqlParameter("@UserID", clsUsersData.CurrentUserAuditInfo.UserId)
+                new SqlParameter("@UserID", userId)
             };
-            return await CRUD.UpdateAsync("SP_", parameters, CommandType.StoredProcedure);
+            return await CRUD.UpdateAsync("SP_", parameters);
         }
 
         /*
@@ -340,20 +340,19 @@ namespace DAL
         END;
 
          */
-        public static async Task<bool> UpdateSaleDetailsAsync(int saleID, List<Dictionary<string, object>> details)
+        public static async Task<bool> UpdateSaleDetailsAsync(int saleId, List<Dictionary<string, object>> details, int userId)
         {
             var parameters = new SqlParameter[]
             {
-                new SqlParameter("@SaleID", saleID),
+                new SqlParameter("@SaleID", saleId),
                 new SqlParameter("@Details", JsonConvert.SerializeObject(details)),
-                new SqlParameter("@UserID", clsUsersData.CurrentUserAuditInfo.UserId)
+                new SqlParameter("@UserID", userId)
             };
-
-            return await CRUD.UpdateAsync("SP_UpdateSaleDetails", parameters, CommandType.StoredProcedure);
+            return await CRUD.UpdateAsync("SP_UpdateSaleDetails", parameters);
         }
 
-        public static async Task<bool> DeleteSaleByIDAsync(int saleID)
-            => await CRUD.DeleteAsync("SP_", "SaleID", saleID, clsUsersData.CurrentUserAuditInfo, CommandType.StoredProcedure);
+        public static async Task<bool> DeleteSaleByIDAsync(int saleId, int userId)
+            => await CRUD.DeleteAsync("SP_", "SaleID", saleId, "UserID", userId);
 
         /*
         CREATE PROCEDURE SP_DeleteSaleDetail
@@ -404,18 +403,18 @@ namespace DAL
         END;
 
          */
-        public static async Task<bool> DeleteSaleDetailByIDAsync(int saleDetailID, bool returnToStock = false)
+        public static async Task<bool> DeleteSaleDetailByIDAsync(int saleDetailId, int userId, bool returnToStock = false)
         {
             var parameters = new SqlParameter[]
             {
-                new SqlParameter("@SaleDetailID", saleDetailID),
-                new SqlParameter("@ReturnToStock", returnToStock)
+                new SqlParameter("@SaleDetailID", saleDetailId),
+                new SqlParameter("@ReturnToStock", returnToStock),
+                new SqlParameter("@UserID", userId)
             };
-
-            return await CRUD.DeleteAsync("SP_DeleteSaleDetail", parameters, clsUsersData.CurrentUserAuditInfo, CommandType.StoredProcedure);
+            return await CRUD.DeleteAsync("SP_DeleteSaleDetail", parameters);
         }
 
-        public static async Task<bool> DeleteMultipleSalesAsync(List<int> saleIDs)
-            => await CRUD.DeleteRecordsByIdsAsync("SP_", "Sales", "SaleID", 0, saleIDs, clsUsersData.CurrentUserAuditInfo, CommandType.StoredProcedure);
+        public static async Task<bool> DeleteMultipleSalesAsync(List<int> saleIDs, int userId)
+            => await CRUD.DeleteRecordsByIdsAsync("SP_", "Sales", "SaleID", 0, saleIDs, "UserID", userId);
     }
 }

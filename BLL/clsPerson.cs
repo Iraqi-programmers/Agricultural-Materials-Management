@@ -44,7 +44,7 @@ namespace BLL
         public static async Task<bool> IsPersonExistAsync(int personId) => await clsPersonData.IsPersonExistAsync(personId);
         public static async Task<bool> IsPersonExistAsync(string fullName) => await clsPersonData.IsPersonExistAsync(fullName);
 
-        public async Task<bool> SaveAsync()
+        public async Task<bool> SaveAsync(int userId)
         {
             if (_mode == enMode.AddNew)
             {
@@ -55,7 +55,7 @@ namespace BLL
                     _mode = enMode.Update;
                     return true;
                 }
-                var newId = await clsPersonData.AddNewPersonAsync(FullName, NationalNum, PhoneNumber, Address);
+                var newId = await clsPersonData.AddNewPersonAsync(FullName, NationalNum, PhoneNumber, Address, userId);
                 if (newId.HasValue)
                 {
                     _id = newId;
@@ -64,7 +64,7 @@ namespace BLL
                 }
             }
             else
-                return await clsPersonData.UpdatePersonDataAsync(_id, FullName, NationalNum, PhoneNumber, Address);
+                return await clsPersonData.UpdatePersonDataAsync(_id, FullName, NationalNum, PhoneNumber, Address, userId);
             return false;
         }
 
