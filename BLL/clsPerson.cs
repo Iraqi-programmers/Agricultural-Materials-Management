@@ -29,21 +29,17 @@ namespace BLL
             _mode = enMode.Update;
         }
 
-        public static async Task<clsPerson> FindAsync(int personId)
+        public static async Task<clsPerson?> FindAsync(int personId)
         {
             var data = await clsPersonData.GetPersonInfoByIDAsync(personId);
-            if (data == null) 
-            {
-
-            }
-            return data != null ? (new clsPerson(personId, data[1]?.ToString(), data[2]?.ToString(), data[3]?.ToString(), data[4]?.ToString())) ?? null;
+            return data != null ? new clsPerson(personId, (string)data[1], (string)data[2], (string)data[3], (string)data[4]) : null;
         }
 
-        public static async Task<clsPerson> FindAsync(string nationalNum)
+        public static async Task<clsPerson?> FindAsync(string nationalNum)
         {
             var data = await clsPersonData.GetPersonInfoByNationalNumAsync(nationalNum);
-            return data != null ? new clsPerson(Convert.ToInt32(data[0]), data[1].ToString(), data[2].ToString(), data[3].ToString(), data[4].ToString()) : null;
-        }
+            return data != null ? new clsPerson(Convert.ToInt32(data[0]), (string)data[1], (string)data[2], (string)data[3], (string)data[4]) : null;
+        } 
 
         public static async Task<bool> IsPersonExistAsync(int personId) => await clsPersonData.IsPersonExistAsync(personId);
         public static async Task<bool> IsPersonExistAsync(string fullName) => await clsPersonData.IsPersonExistAsync(fullName);
@@ -59,7 +55,7 @@ namespace BLL
                     _mode = enMode.Update;
                     return true;
                 }
-                var newId = await clsPersonData.AddNewPersonAsync(FullName, NationalNum, PhoneNumber, Address, clsUser.UserID);
+                var newId = await clsPersonData.AddNewPersonAsync(FullName, NationalNum, PhoneNumber, Address);
                 if (newId.HasValue)
                 {
                     _id = newId;
@@ -68,18 +64,18 @@ namespace BLL
                 }
             }
             else
-                return await clsPersonData.UpdatePersonDataAsync(_id, FullName, NationalNum, PhoneNumber, Address, clsUser.UserID);
+                return await clsPersonData.UpdatePersonDataAsync(_id, FullName, NationalNum, PhoneNumber, Address);
             return false;
         }
 
-        public static async Task<bool> DeleteAsync(int personId) => await clsPersonData.DeletePersonByIDAsync(personId, clsUser.UserID);
-        public static async Task<bool> DeleteByFullNameAsync(string fullName) => await clsPersonData.DeletePersonByFullNameAsync(fullName, clsUser.UserID);
-        public static async Task<bool> DeleteByNationalNumAsync(string nationalNum) => await clsPersonData.DeletePersonByNationalNumAsync(nationalNum, clsUser.UserID);
+        public static async Task<bool> DeleteAsync(int personId) => await clsPersonData.DeletePersonByIDAsync(personId);
+        public static async Task<bool> DeleteByFullNameAsync(string fullName) => await clsPersonData.DeletePersonByFullNameAsync(fullName);
+        public static async Task<bool> DeleteByNationalNumAsync(string nationalNum) => await clsPersonData.DeletePersonByNationalNumAsync(nationalNum);
 
-        public static async Task<bool> DeleteMultipleAsync(List<int> personIDs) => await clsPersonData.DeleteMultiplePersonsAsync(personIDs, clsUser.UserID);
+        public static async Task<bool> DeleteMultipleAsync(List<int> personIDs) => await clsPersonData.DeleteMultiplePersonsAsync(personIDs);
 
-        public static async Task<DataTable> GetAllPeopleAsDataTableAsync() => await clsPersonData.GetAllPersonsAsDataTableAsync();
-        public static async Task<List<object[]>> GetAllPeopleAsListAsync() => await clsPersonData.GetAllPersonsAsListAsync();
+        public static async Task<DataTable?> GetAllPeopleAsDataTableAsync() => await clsPersonData.GetAllPersonsAsDataTableAsync();
+        public static async Task<List<object[]>?> GetAllPeopleAsListAsync() => await clsPersonData.GetAllPersonsAsListAsync();
     }
 
 }
