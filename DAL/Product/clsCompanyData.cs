@@ -11,47 +11,47 @@ namespace DAL.Product
 {
     public static class clsCompanyData
     {
-        public static async Task<DataTable?> GetAll()
+        public static async Task<DataTable?> GetAllAsDatatableAsync()
         {
-            return await CRUD.GetAllAsDataTableAsync("SP_GetAllCompanies", type: CommandType.StoredProcedure);
+            return await CRUD.GetAllAsDataTableAsync("SP_GetAllCompanies");
 
         }
-        public static async Task<bool> Delete(int CompanyID)
+        public static async Task<bool> DeleteAsync(int CompanyID)
         {
 
-            return await CRUD.DeleteAsync("SP_DeleteCompany", "CompanyID", CompanyID, CommandType.StoredProcedure);
+            return await CRUD.DeleteAsync("SP_DeleteCompany", "CompanyID", CompanyID);
 
         }
 
-        public static async Task<object?> FindByID(int CompanyID)
+        public static async Task<object?> FindByIDAsync(int CompanyID)
         {
-            return await CRUD.GetByColumnValueAsync("SP_GetCompanyByID", "TypeID", CompanyID, CommandType.StoredProcedure);
+            return await CRUD.GetByColumnValueAsync("SP_GetCompanyByID", "TypeID", CompanyID);
         }
-        public static async Task<object?> FindCompanyByName(string CompanyName)
+        public static async Task<object?> FindCompanyByNameAsync(string CompanyName)
         {
-            return await CRUD.GetByColumnValueAsync("SP_GetCompanyByName", "CompanyName", CompanyName, CommandType.StoredProcedure);
+            return await CRUD.GetByColumnValueAsync("SP_GetCompanyByName", "CompanyName", CompanyName);
         }
 
 
         //if company exists Will Return The ID of company
-        public static async Task<int?> Add(string CompanyName)
+        public static async Task<int?> AddAsync(string CompanyName)
         {
             
             SqlParameter[] sqlParameter =
             {
                 new SqlParameter("@CompanyName", CompanyName)
             };
-            return await CRUD.AddAsync("SP_AddCompany", sqlParameter, CommandType.StoredProcedure);
+            return await CRUD.AddAsync("SP_AddCompany", sqlParameter);
         }
 
-        public static async Task<bool?> Update(int CompanyID, string CompanyName)
+        public static async Task<bool?> UpdateAsync(int CompanyID, string CompanyName)
         {
             SqlParameter[] parameters =
             {
                 new SqlParameter("@CompanyID", CompanyID),
                 new SqlParameter("@CompanyName", CompanyName),
             };
-            return await CRUD.UpdateAsync("SP_UpdateCompany", parameters, CommandType.StoredProcedure);
+            return await CRUD.UpdateAsync("SP_UpdateCompany", parameters);
         }
 
     }

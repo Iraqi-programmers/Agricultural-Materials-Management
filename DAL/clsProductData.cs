@@ -11,36 +11,36 @@ namespace DAL
     public static class clsProductData
     {
 
-        public static async Task<DataTable?> GetAll()
+        public static async Task<DataTable?> GetAllAsync()
         {
-            return await CRUD.GetAllAsDataTableAsync("SP_GetAllProducts", type: CommandType.StoredProcedure);
+            return await CRUD.GetAllAsDataTableAsync("SP_GetAllProducts");
             
         }
 
-        public static async Task< bool> Delete(int productID)
+        public static async Task< bool> DeleteAsync(int productID)
         {
 
-            return await CRUD.DeleteAsync("SP_DeleteProduct", "ProductID", productID, CommandType.StoredProcedure);
+            return await CRUD.DeleteAsync("SP_DeleteProduct", "ProductID", productID);
 
         }
 
-        public static async Task <object?> FindByID(int productID)
+        public static async Task <object?> FindByIDAsync(int productID)
         {
-            return await CRUD.GetByColumnValueAsync("SP_GetProductByID", "ProductID", productID, CommandType.StoredProcedure);
+            return await CRUD.GetByColumnValueAsync("SP_GetProductByID", "ProductID", productID);
         }
 
-        public static async Task<object?> FindByCompanyID(int CompanyID)
+        public static async Task<object?> FindByCompanyIDAsync(int CompanyID)
         {
-            return await CRUD.GetByColumnValueAsync("SP_GetProductByCompanyID", "CompanyID", CompanyID, CommandType.StoredProcedure);
+            return await CRUD.GetByColumnValueAsync("SP_GetProductByCompanyID", "CompanyID", CompanyID);
 
         }
 
-        public static async Task<object?> FindByTypeID(int TypeID)
+        public static async Task<object?> FindByTypeIDAsync(int TypeID)
         {
-            return await CRUD.GetByColumnValueAsync("SP_GetProductByTypeID", "TypeID", TypeID, CommandType.StoredProcedure);
+            return await CRUD.GetByColumnValueAsync("SP_GetProductByTypeID", "TypeID", TypeID);
         }
 
-        public static async Task<int?> AddProductWithAllDetails(string TypeName, string CompanyName, float Size, float Thickness)
+        public static async Task<int?> AddProductWithAllDetailsAsync(string TypeName, string CompanyName, float Size, float Thickness)
         {
             SqlParameter[] parameters =
 {
@@ -50,11 +50,11 @@ namespace DAL
                 new SqlParameter("@Size", Size)
 
             };
-            return await CRUD.AddAsync("SP_AddProductWithAllDetails", parameters, CommandType.StoredProcedure);
+            return await CRUD.AddAsync("SP_AddProductWithAllDetails", parameters);
 
         }
 
-        public static async Task<bool?> Update(int productID, int TypeID, int CompanyID, int DetailsID)
+        public static async Task<bool?> UpdateAsync(int productID, int TypeID, int CompanyID, int DetailsID)
         {
             SqlParameter[] parameters =
             {
@@ -62,7 +62,7 @@ namespace DAL
                 new SqlParameter("@CompanyID", CompanyID),
                 new SqlParameter("@DetailsID", DetailsID)
             };
-            return await CRUD.UpdateAsync("SP_UpdateProduct", parameters, CommandType.StoredProcedure);
+            return await CRUD.UpdateAsync("SP_UpdateProduct", parameters);
         }
 
     }
