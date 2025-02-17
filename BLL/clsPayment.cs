@@ -10,7 +10,7 @@ namespace BLL
 
         public clsPayment()
         {
-            _id = null;
+            Id = null;
             Amount = 0;
             Date = DateTime.Now;
             _mode = enMode.AddNew;
@@ -18,7 +18,7 @@ namespace BLL
 
         private clsPayment(int personID, float amount, DateTime date)
         {
-            _id = personID;
+            Id = personID;
             Amount = amount;
             Date = date;
             _mode = enMode.Update;
@@ -43,16 +43,16 @@ namespace BLL
         {
             if (_mode == enMode.AddNew)
             {
-                var newId = await clsPaymentsData.AddNewPaymentAsync(_id, Amount, Date, userId);
+                var newId = await clsPaymentsData.AddNewPaymentAsync(Id, Amount, Date, userId);
                 if (newId.HasValue)
                 {
-                    _id = newId;
+                    Id = newId;
                     _mode = enMode.Update;
                     return true;
                 }
             }
             else
-                return await clsPaymentsData.UpdatePaymentDataAsync(_id, Amount, Date, userId);
+                return await clsPaymentsData.UpdatePaymentDataAsync(Id, Amount, Date, userId);
             return false;
         }
 

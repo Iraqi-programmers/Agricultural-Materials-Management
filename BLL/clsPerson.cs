@@ -10,10 +10,9 @@ namespace BLL
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
 
-        public clsPerson(string fullName, string nationalNum, string phoneNumber, string address, int userId)
+        public clsPerson(string fullName, string nationalNum, string phoneNumber, string address)
         {
-            _id = null;
-            _userId = userId;
+            Id = null;
             FullName = fullName;
             NationalNum = nationalNum;
             PhoneNumber = phoneNumber;
@@ -21,10 +20,9 @@ namespace BLL
             _mode = enMode.AddNew;
         }
 
-        private clsPerson(int personId, string fullName, string nationalNum, string phoneNumber, string address, int userId)
+        private clsPerson(int personId, string fullName, string nationalNum, string phoneNumber, string address)
         {
-            _id = personId;
-            _userId = userId;
+            Id = personId;
             FullName = fullName;
             NationalNum = nationalNum;
             PhoneNumber = phoneNumber;
@@ -35,13 +33,13 @@ namespace BLL
         public static async Task<clsPerson?> FindAsync(int personId, int userId)
         {
             var data = await clsPersonData.GetPersonInfoByIDAsync(personId);
-            return data != null ? new clsPerson(personId, (string)data[1], (string)data[2], (string)data[3], (string)data[4], userId) : null;
+            return new clsPerson(personId, (string)data[1], (string)data[2], (string)data[3], (string)data[4]) ?? null;
         }
 
         public static async Task<clsPerson?> FindAsync(string nationalNum, int userId)
         {
             var data = await clsPersonData.GetPersonInfoByNationalNumAsync(nationalNum);
-            return new clsPerson((string)data[1], (string)data[2], (string)data[3], (string)data[4], userId) ?? null;
+            return new clsPerson(Convert.ToInt32(data[0]), (string)data[1], nationalNum, (string)data[3], (string)data[4]) ?? null;
         } 
 
         public static async Task<bool> IsPersonExistAsync(int personId) => await clsPersonData.IsPersonExistAsync(personId);
@@ -55,13 +53,13 @@ namespace BLL
                 var newId = await clsPersonData.AddNewPersonAsync(FullName, NationalNum, PhoneNumber, Address, userId);
                 if (newId.HasValue)
                 {
-                    _id = newId;
+                    Id = newId;
                     _mode = enMode.Update;
                     return true;
                 }
             }
             else
-                return await clsPersonData.UpdatePersonDataAsync(_id, FullName, NationalNum, PhoneNumber, Address, userId);
+                return await clsPersonData.UpdatePersonDataAsync(Id, FullName, NationalNum, PhoneNumber, Address, userId);
             return false;
         }
 

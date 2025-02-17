@@ -11,7 +11,7 @@ namespace BLL
 
         public clsDebt(int personId, double totalAmount)
         {
-            _id = null;
+            Id = null;
             PersonID = personId;
             TotalAmount = totalAmount;
             DebtPaymentDate = DateTime.Now;
@@ -20,7 +20,7 @@ namespace BLL
 
         private clsDebt(int debtId, int personId, double totalAmount, DateTime debtPaymentDate)
         {
-            _id = debtId;
+            Id = debtId;
             PersonID = personId;
             TotalAmount = totalAmount;
             DebtPaymentDate = debtPaymentDate;
@@ -42,13 +42,13 @@ namespace BLL
                 var newId = await clsDebtData.AddNewDebtAsync(PersonID, TotalAmount, DebtPaymentDate, userId);
                 if (newId.HasValue)
                 {
-                    _id = newId;
+                    Id = newId;
                     _mode = enMode.Update;
                     return true;
                 }
             }
             else
-                return await clsDebtData.UpdateDebtDataAsync(_id, TotalAmount, DebtPaymentDate);
+                return await clsDebtData.UpdateDebtDataAsync(Id, TotalAmount, DebtPaymentDate);
             return false;
         }
 

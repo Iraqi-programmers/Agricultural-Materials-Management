@@ -12,7 +12,7 @@ namespace BLL
 
         public clsSale()
         {
-            _id = null;
+            Id = null;
             Date = DateTime.Now;
             PersonID = 0;
             Details = new List<Dictionary<string, object>>();
@@ -21,7 +21,7 @@ namespace BLL
 
         private clsSale(int saleID, DateTime date, int personID, int userID)
         {
-            _id = saleID;
+            Id = saleID;
             Date = date;
             PersonID = personID;
             Details = new List<Dictionary<string, object>>();
@@ -50,13 +50,13 @@ namespace BLL
                 var saleID = await clsSalesData.AddNewSaleWithDetailsAsync(Date, UserID, Details, PersonID);
                 if (saleID.HasValue)
                 {
-                    _id = saleID;
+                    Id = saleID;
                     _mode = enMode.Update;
                     return true;
                 }
             }
             else
-                return await clsSalesData.UpdateSaleDataAsync(_id, Date, Details);
+                return await clsSalesData.UpdateSaleDataAsync(Id, Date, Details);
             return false;
         }
 

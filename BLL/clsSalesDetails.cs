@@ -22,7 +22,7 @@ namespace BLL
 
         private clsSalesDetails(int detailID, int stockID, DateTime warrantyDate, decimal price, int quantity)
         {
-            _id = detailID;
+            Id = detailID;
             StockID = stockID;
             WarrantyDate = warrantyDate;
             Price = price;
