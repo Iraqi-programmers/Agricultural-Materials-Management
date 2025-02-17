@@ -101,8 +101,11 @@ namespace DAL
 
         public static async Task<bool> IsPersonExistAsync(int personId)
             => await CRUD.IsExistAsync("SP_", "PersonID", personId);
-        public static async Task<bool> IsPersonExistAsync(string fullName)
+        public static async Task<bool> IsPersonExistByFullNameAsync(string fullName)
             => await CRUD.IsExistAsync("SP_", "FullName", fullName);
+        
+        public static async Task<bool> IsPersonExistByNationalNumAsync(string nationalNum)
+            => await CRUD.IsExistAsync("SP_", "NationalNum", nationalNum);
 
         public static async Task<bool> UpdatePersonDataAsync(int? personId, string fullName, string nationalNum, string phoneNum, string address, int userId)
         {

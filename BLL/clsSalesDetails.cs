@@ -5,73 +5,41 @@ namespace BLL
 {
     public class clsSalesDetails : absClassesHelper
     {
+        public int SaleID { get; set; }
         public int StockID { get; set; }
         public DateTime WarrantyDate { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         public int Quantity { get; set; }
+        public double TotalCost { get; set; }
 
-        //public clsSalesDetails()
-        //{
-        //    DetailID = null;
-        //    StockID = 0;
-        //    WarrantyDate = DateTime.MinValue;
-        //    Price = 0;
-        //    Quantity = 0;
-        //    Mode = enMode.AddNew;
-        //}
-
-        private clsSalesDetails(int detailID, int stockID, DateTime warrantyDate, decimal price, int quantity)
+        private clsSalesDetails(int detailId, int saleId, int stockId, DateTime warrantyDate, double price, int quantity, double totalCost)
         {
-            Id = detailID;
-            StockID = stockID;
+            Id = detailId;
+            SaleID = saleId;
+            StockID = stockId;
             WarrantyDate = warrantyDate;
             Price = price;
             Quantity = quantity;
-            //Mode = enMode.Update;
+            TotalCost = totalCost;
+            _mode = enMode.Update;
         }
 
-        public static async Task<clsSalesDetails?> FindAsync(int detailID)
+        public static async Task<clsSalesDetails?> FindAsync(int detailId)
         {
-            var data = await clsSalesDetailsData.GetSaleDetailInfoByIDAsync(detailID);
-            return new clsSalesDetails(detailID, Convert.ToInt32(data[0]), Convert.ToDateTime(data[1]), Convert.ToDecimal(data[2]), Convert.ToInt32(data[3])) ?? null;
+            var data = await clsSalesDetailsData.GetSaleDetailInfoByIDAsync(detailId);
+            return new clsSalesDetails(detailId, Convert.ToInt32(data[1]), Convert.ToInt32(data[2]), Convert.ToDateTime(data[3]), Convert.ToDouble(data[4]), Convert.ToInt32(data[5]), Convert.ToDouble(data[6])) ?? null;
         }
 
         public static async Task<bool> IsSaleDetailExistAsync(int detailID)
             => await clsSalesDetailsData.IsSaleDetailExistAsync(detailID);
 
-        //public async Task<bool> SaveAsync()
-        //{
-        //    if (Mode == enMode.AddNew)
-        //    {
-        //        var newId = await clsSalesDetailsData.AddNewSaleDetailAsync(StockID, WarrantyDate, Price, Quantity);
-        //        if (newId.HasValue)
-        //        {
-        //            DetailID = newId.Value;
-        //            Mode = enMode.Update;
-        //            return true;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return await clsSalesDetailsData.UpdateSaleDetailDataAsync(DetailID, StockID, WarrantyDate, Price, Quantity);
-        //    }
-        //    return false;
-        //}
+        public static async Task<bool> DeleteMultipleAsync(List<int> detailIDs, int userId)
+            => await clsSalesDetailsData.DeleteMultipleSaleDetailsAsync(detailIDs, userId);
 
-        //public async Task<bool> SaveAsync()
-        //    => await clsSalesDetailsData.UpdateSaleDetailDataAsync(DetailID, StockID, WarrantyDate, Price, Quantity);
-
-        //public static async Task<bool> DeleteAsync(int detailID)
-        //    => await clsSalesDetailsData.DeleteSaleDetailByIDAsync(detailID);
-
-        public static async Task<bool> DeleteMultipleAsync(List<int> detailIDs)
-            => await clsSalesDetailsData.DeleteMultipleSaleDetailsAsync(detailIDs);
-
-        public static async Task<DataTable> GetAllSalesDetailsAsDataTableAsync()
+        public static async Task<DataTable?> GetAllSalesDetailsAsDataTableAsync()
             => await clsSalesDetailsData.GetAllSaleDetailsAsDataTableAsync();
 
-        public static async Task<List<object[]>> GetAllSalesDetailsAsListAsync()
+        public static async Task<List<object[]>?> GetAllSalesDetailsAsListAsync()
             => await clsSalesDetailsData.GetAllSaleDetailsAsListAsync();
     }
-
 }

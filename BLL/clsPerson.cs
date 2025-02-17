@@ -43,7 +43,8 @@ namespace BLL
         } 
 
         public static async Task<bool> IsPersonExistAsync(int personId) => await clsPersonData.IsPersonExistAsync(personId);
-        public static async Task<bool> IsPersonExistAsync(string fullName) => await clsPersonData.IsPersonExistAsync(fullName);
+        public static async Task<bool> IsPersonExistByFullNameAsync(string fullName) => await clsPersonData.IsPersonExistByFullNameAsync(fullName);
+        public static async Task<bool> IsPersonExistByNationalNumAsync(string nationalNum) => await clsPersonData.IsPersonExistByNationalNumAsync(nationalNum);
 
         public async Task<bool> SaveAsync(int userId)
         {
@@ -57,10 +58,10 @@ namespace BLL
                     _mode = enMode.Update;
                     return true;
                 }
+                return false;
             }
             else
                 return await clsPersonData.UpdatePersonDataAsync(Id, FullName, NationalNum, PhoneNumber, Address, userId);
-            return false;
         }
 
         public static async Task<bool> DeleteAsync(int personId, int userId) => await clsPersonData.DeletePersonByIDAsync(personId, userId);
