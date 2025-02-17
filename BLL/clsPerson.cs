@@ -10,18 +10,21 @@ namespace BLL
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
 
-        public clsPerson(string fullName, string nationalNum, string phoneNumber, string address)
+        public clsPerson(string fullName, string nationalNum, string phoneNumber, string address, int userId)
         {
             _id = null;
+            _userId = userId;
             FullName = fullName;
             NationalNum = nationalNum;
             PhoneNumber = phoneNumber;
             Address = address;
+            _mode = enMode.AddNew;
         }
 
-        private clsPerson(int personId, string fullName, string nationalNum, string phoneNumber, string address)
+        private clsPerson(int personId, string fullName, string nationalNum, string phoneNumber, string address, int userId)
         {
             _id = personId;
+            _userId = userId;
             FullName = fullName;
             NationalNum = nationalNum;
             PhoneNumber = phoneNumber;
@@ -29,10 +32,10 @@ namespace BLL
             _mode = enMode.Update;
         }
 
-        public static async Task<clsPerson?> FindAsync(int personId)
+        public static async Task<clsPerson?> FindAsync(int personId, int userId)
         {
             var data = await clsPersonData.GetPersonInfoByIDAsync(personId);
-            return data != null ? new clsPerson(personId, (string)data[1], (string)data[2], (string)data[3], (string)data[4]) : null;
+            return data != null ? new clsPerson(personId, (string)data[1], (string)data[2], (string)data[3], (string)data[4], userId) : null;
         }
 
         public static async Task<clsPerson?> FindAsync(string nationalNum)
@@ -48,13 +51,7 @@ namespace BLL
         {
             if (_mode == enMode.AddNew)
             {
-                var data = await clsPersonData.GetPersonInfoByNationalNumAsync(NationalNum);
-                if (data != null)
-                {
-                    _id = Convert.ToInt32(data[0]);
-                    _mode = enMode.Update;
-                    return true;
-                }
+                // نحتاج بداخل الستورد بروسيجر نجيك انو ماموجد حتى نضيفه
                 var newId = await clsPersonData.AddNewPersonAsync(FullName, NationalNum, PhoneNumber, Address, userId);
                 if (newId.HasValue)
                 {
@@ -68,11 +65,11 @@ namespace BLL
             return false;
         }
 
-        public static async Task<bool> DeleteAsync(int personId) => await clsPersonData.DeletePersonByIDAsync(personId);
-        public static async Task<bool> DeleteByFullNameAsync(string fullName) => await clsPersonData.DeletePersonByFullNameAsync(fullName);
-        public static async Task<bool> DeleteByNationalNumAsync(string nationalNum) => await clsPersonData.DeletePersonByNationalNumAsync(nationalNum);
+        public static async Task<bool> DeleteAsync(int personId, int userId) => await clsPersonData.DeletePersonByIDAsync(personId, userId);
+        public static async Task<bool> DeleteByFullNameAsync(string fullName, int userId) => await clsPersonData.DeletePersonByFullNameAsync(fullName, userId);
+        public static async Task<bool> DeleteByNationalNumAsync(string nationalNum, int userId) => await clsPersonData.DeletePersonByNationalNumAsync(nationalNum, userId);
 
-        public static async Task<bool> DeleteMultipleAsync(List<int> personIDs) => await clsPersonData.DeleteMultiplePersonsAsync(personIDs);
+        public static async Task<bool> DeleteMultipleAsync(List<int> personIDs, int userId) => await clsPersonData.DeleteMultiplePersonsAsync(personIDs, userId);
 
         public static async Task<DataTable?> GetAllPeopleAsDataTableAsync() => await clsPersonData.GetAllPersonsAsDataTableAsync();
         public static async Task<List<object[]>?> GetAllPeopleAsListAsync() => await clsPersonData.GetAllPersonsAsListAsync();

@@ -6,7 +6,7 @@ namespace DAL
 {
     public class clsDebtData
     {
-        public static async Task<int?> AddNewDebtAsync(int personId, decimal totalAmount, DateTime debtPaymentDate, int userId)
+        public static async Task<int?> AddNewDebtAsync(int personId, double totalAmount, DateTime debtPaymentDate, int userId)
         {
             SqlParameter[] parameters =
             {
@@ -48,7 +48,7 @@ namespace DAL
         public static async Task<bool> IsDebtExistAsync(int debtId)
             => await CRUD.IsExistAsync("SP_", "DebtID", debtId);
 
-        public static async Task<bool> UpdateDebtDataAsync(int? debtId, decimal totalAmount, DateTime debtPaymentDate)
+        public static async Task<bool> UpdateDebtDataAsync(int? debtId, double totalAmount, DateTime debtPaymentDate)
         {
             SqlParameter[] parameters =
             {

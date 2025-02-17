@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using DAL;
 
 namespace BLL
@@ -20,7 +15,6 @@ namespace BLL
             _id = null;
             Date = DateTime.Now;
             PersonID = 0;
-            UserID = 0;
             Details = new List<Dictionary<string, object>>();
             _mode = enMode.AddNew;
         }
