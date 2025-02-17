@@ -1,41 +1,51 @@
 ﻿using DAL;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace BLL
 {
-    public class clsUsers 
+    // Create By Abu Sanad
+    public class clsUsers : clsPerson 
     {
-        public enum Mod { AddNew, Update }
-        public Mod mod = Mod.AddNew;
-
-        public int? UserID { get; set; }
+       
+        public int? UserID { get; private set; }
+        public int? PersonID { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool IsActive { get; set; }
 
-        public clsPerson PersonInfo { get; set; }
 
-        private clsUsers(int userID, clsPerson person, string userName, string password, bool isActive)
+        private clsUsers(int userID,int personID,  string userName, string password, bool isActive,
+                         string FullName,string No,string PhoneNum,string Address)
+            :base(FullName, No, PhoneNum,Address)
         {
-            UserID = userID;
-            PersonInfo = person;
+            this.UserID = userID;
             UserName = userName;
             Password = password;
             IsActive = isActive;
-
-            mod = Mod.Update;
+            base.FullName = FullName;
+            base.NationalNum = No;
+            base.PhoneNumber = PhoneNum;
+            base.Address = Address;
+            _mode = enMode.Update;
         }
 
-        public clsUsers()
+        public clsUsers(string UserName,string Password,bool IsActive, string FullName, string No, string PhoneNum, string Address)
+             : base(FullName, No, PhoneNum, Address)
         {
-            this.UserID = -1;
-            this.UserName = string.Empty;
-            this.Password = string.Empty;
-            this.IsActive = true;
-            this.PersonInfo = new clsPerson();
-            mod = Mod.AddNew;
+            
+            this.UserID = null;
+            this.UserName = UserName;
+            this.Password = Password;
+            this.IsActive = IsActive;
+            base.FullName = FullName;
+            base.NationalNum = No;
+            base.PhoneNumber = PhoneNum;
+            base.Address = Address;
+
+            _mode = enMode.AddNew;
         }
 
       
@@ -43,19 +53,17 @@ namespace BLL
         {
             try
             {
-                var obj = await clsUsersData.GetUserByID(userID);
+                var obj = await clsUsersData.GetUserByIDAsync(userID);
 
                 if (obj != null)
                 {
                     int personID = Convert.ToInt32(obj[1]);
-                    var person = await clsPerson.GetPersonByID(personID);
+                    var person = await clsPerson.FindAsync(personID,userID);
 
                     return new clsUsers(
-                        Convert.ToInt32(obj[0]),
-                        person ?? new clsPerson(),
-                        obj[2]?.ToString() ?? "",
-                        obj[3]?.ToString() ?? "",
-                        Convert.ToBoolean(obj[4])
+                        Convert.ToInt32(obj[0]), personID, obj[2]?.ToString() ?? "", obj[3]?.ToString() ?? "", Convert.ToBoolean(obj[4]),
+                        person.FullName.ToString() ?? "", person.NationalNum.ToString(), person.PhoneNumber.ToString(), person.Address ?? ""
+                        
                     );
                 }
             }
@@ -72,6 +80,7 @@ namespace BLL
             return null;
         }
 
+      
         public static async Task<bool> DeleteUser(int userID)
         {
             try
@@ -79,7 +88,7 @@ namespace BLL
                 if (userID <= 0)
                     throw new ArgumentException("User ID غير صالح");
 
-                return await clsUsersData.DeleteUsers(userID);
+                return await clsUsersData.DeleteUserByIDAsync(userID,null);
             }
             catch (ArgumentException ex)
             {
@@ -95,7 +104,7 @@ namespace BLL
 
         public static async Task<DataTable?> GetAllUsers()
         {
-            return await clsUsersData.GetAllUsers();
+            return await clsUsersData.GetAllUsersAsync();
         }
 
         public static bool AuthenticateUser(string userName, string password)
@@ -119,17 +128,18 @@ namespace BLL
             }
         }
 
-        private async Task<bool> AddNew()
+        
+        [Description("This Function Adds Person First and Then User Second.")]
+        public async Task<bool> AddNew()
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password))
                     throw new ArgumentException("بيانات المستخدم غير مكتملة");
 
-                bool personAdded = await PersonInfo.AddNew();
-                if (!personAdded) return false;
+                
 
-                this.UserID = await clsUsersData.AddNewUsers(PersonInfo.PersonID, this.UserName, this.Password, this.IsActive);
+                this.UserID = await clsUsersData.AddNewUsers(this.UserName, this.Password, this.IsActive,base.FullName,base.NationalNum,base.PhoneNumber,base.Address,null);
 
                 return this.UserID.HasValue;
             }
@@ -147,17 +157,18 @@ namespace BLL
             }
         }
 
-        private async Task<bool> Update()
+       
+        [Description("This Function Update User.")]
+        public async Task<bool> Update()
         {
             try
             {
                 if (UserID <= 0 || string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password))
                     throw new ArgumentException("بيانات المستخدم غير مكتملة");
 
-                bool personUpdated = await PersonInfo.Update();
-                if (!personUpdated) return false;
+               
 
-                return await clsUsersData.UpdateUsers(this.UserID, this.UserName, this.Password, this.IsActive);
+                return await clsUsersData.UpdateUsers(this.UserID, this.UserName, this.Password, this.IsActive,null);
             }
             catch (ArgumentException ex)
             {
@@ -175,12 +186,26 @@ namespace BLL
 
         public async Task<bool> Save()
         {
-            return mod switch
+            bool result = false;
+
+            switch (_mode)
             {
-                Mod.AddNew => await AddNew(),
-                Mod.Update => await Update(),
-                _ => false
-            };
+                case enMode.AddNew:
+                    result = await AddNew();
+                    if (result)
+                        _mode = enMode.Update; 
+                    break;
+
+                case enMode.Update:
+                    result = await Update();
+                    break;
+
+                default:
+                    result = false;
+                    break;
+            }
+
+            return result;
         }
 
     }
