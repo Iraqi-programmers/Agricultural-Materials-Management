@@ -38,10 +38,10 @@ namespace BLL
             return data != null ? new clsPerson(personId, (string)data[1], (string)data[2], (string)data[3], (string)data[4], userId) : null;
         }
 
-        public static async Task<clsPerson?> FindAsync(string nationalNum)
+        public static async Task<clsPerson?> FindAsync(string nationalNum, int userId)
         {
             var data = await clsPersonData.GetPersonInfoByNationalNumAsync(nationalNum);
-            return data != null ? new clsPerson(Convert.ToInt32(data[0]), (string)data[1], (string)data[2], (string)data[3], (string)data[4]) : null;
+            return new clsPerson((string)data[1], (string)data[2], (string)data[3], (string)data[4], userId) ?? null;
         } 
 
         public static async Task<bool> IsPersonExistAsync(int personId) => await clsPersonData.IsPersonExistAsync(personId);
