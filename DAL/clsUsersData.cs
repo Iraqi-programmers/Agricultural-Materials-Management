@@ -4,23 +4,28 @@ using MyLib_DotNet.DatabaseExecutor;
 
 namespace DAL
 {
+    //Create By Abu Sanad
     public class clsUsersData
     {
         // هنا احتمال نحتاج نمرر ايدي اليوزر الي ضاف اليوزر الجديد
-        public static async Task<int?> AddNewUsers(int personId, string userName, string password, bool isActive, int currentUserId)
+        public static async Task<int?> AddNewUsers( string userName, string password, bool isActive,string FullName,string No,string PhoneNum,string Addrees, int? currentUserId)
         {
             SqlParameter[] prameter =
             {
-                new SqlParameter("@PersonID",personId),
                 new SqlParameter("@UserName",userName),
                 new SqlParameter("@Password",password),
                 new SqlParameter("@IsActive",isActive),
+                new SqlParameter("@FullName",FullName),
+                new SqlParameter("@NationNo",No),
+                new SqlParameter("@PhoneNumber",PhoneNum),
+                new SqlParameter("@Adress",Addrees),
                 new SqlParameter("@UserID",currentUserId)
             };
-            return await CRUD.AddAsync("SP_AddUser", prameter);
+
+            return await CRUD.AddAsync("SP_AddPersonThenUser", prameter);
         }
 
-        public static async Task<bool> UpdateUsers(int? userId, string userName, string password, bool isActive, int currentUserId)
+        public static async Task<bool> UpdateUsers(int? userId, string userName, string password, bool isActive, int? currentUserId)
         {
             SqlParameter[] Prameter =
             {
@@ -33,7 +38,7 @@ namespace DAL
             return await CRUD.UpdateAsync("SP_UpdateUser", Prameter);
         }
 
-        public static async Task<bool> DeleteUserByIDAsync(int userId, int currentUserId)
+        public static async Task<bool> DeleteUserByIDAsync(int userId, int? currentUserId)
         {
             return await CRUD.DeleteAsync("SP_DeleteUser", "UserID", userId, "UserID", currentUserId);
         }
@@ -65,66 +70,4 @@ namespace DAL
 
     }
 
-    //public class clsUsersData
-    // {
-    //     public static async Task<int?> AddNewUsers(int PersonID,string UserName,string Password,bool IsActive)
-    //     {
-    //         SqlParameter[] prameter =
-    //         {
-    //             new SqlParameter("@PersonID",PersonID),
-    //             new SqlParameter("@UserName",UserName),
-    //             new SqlParameter("@Password",Password),
-    //             new SqlParameter("@IsActive",IsActive)
-    //         };
-
-    //        return await CRUD.AddAsync("SP_AddUser",prameter, CommandType.StoredProcedure);
-
-    //     }
-
-    //     public static async Task<bool>UpdateUsers(int? UserID,string UserName,string Password,bool IsActive)
-    //     {
-    //         SqlParameter[] Prameter =
-    //         {
-    //             new SqlParameter("@UserID",UserID),
-    //             new SqlParameter("@UserName",UserName),
-    //             new SqlParameter("@Password",Password),
-    //             new SqlParameter("@IsActive",IsActive)
-
-    //         };
-
-    //         return await CRUD.UpdateAsync("SP_UpdateUser", Prameter, CommandType.StoredProcedure);
-    //     }
-
-    //     public static async Task<bool>DeleteUsers(int UserID)
-    //     {
-    //       return await  CRUD.DeleteAsync("SP_DeleteUser","UserID",UserID,CommandType.StoredProcedure);
-    //     }
-
-    //     public static async Task<object[]?> GetUserByID(int UserID)
-    //     {
-    //         return await CRUD.GetByColumnValueAsync("SP_GetUsersByID", "UserID", UserID, CommandType.StoredProcedure);
-    //     }
-
-    //     public static async Task<object[]?> GetUserByUserName(string UserName)
-    //     {
-    //         return await CRUD.GetByColumnValueAsync("SP_GetUsersByUserName", "UserName", UserName, CommandType.StoredProcedure);
-    //     }
-
-    //     public static async Task<DataTable?>GetAllUsers()
-    //     {
-    //         return await CRUD.GetAllAsDataTableAsync("",null, CommandType.StoredProcedure);
-    //     }
-
-    //     public static object? CheckIfUserNameAndPasswordExisst(string UserName, string Password)
-    //     {
-    //         SqlParameter[] pr =
-    //         {
-    //             new SqlParameter("@UserName",UserName),
-    //             new SqlParameter("@Password",Password)
-    //         };
-
-    //         return  CRUD.Get("SP_AuthenticateUser", pr, CommandType.StoredProcedure);
-    //     }
-
-    // }
 }

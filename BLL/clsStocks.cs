@@ -1,34 +1,38 @@
 ﻿using DAL;
-using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL
 {
+    [Description("Create By Abu Sanad")]
     class clsStocks
     {
        public enum Mod { AddNew,Update}
 
         public Mod mod = Mod.AddNew;
 
-        public int? StockID { get; set; }
+        public int? StockID { get; private set; }
         public int ProductID { get; set; }
         public int Quantity { get; set; }
+        public int WarrintyID { get; set; }
         public string Status { get; set; }
+        public bool IsReturned { get; set; }
+        public decimal Price { get; set; }
 
+
+       // clsWarrinty WarrintyInfo
         //clsProductInfo ProductInfo
-        private clsStocks(int stockID, int productID, int quantity, string status)
+        private clsStocks(int stockID, int productID, int quantity, string status,bool IsReturned,decimal Price,int Warrinty)
         {
             StockID = stockID;
             ProductID = productID;
             Quantity = quantity;
             Status = status;
+            this.WarrintyID = Warrinty;
+            this.Price = Price;
+            this.IsReturned = IsReturned;
             //ProductInfo=clsProductInfo.GetProductByID(ProductID);
+           // WarrintyInfo= clsWarrintyInfo.GetWarrintyByID(WarrintyID)
             mod = Mod.Update ;
 
         }
@@ -39,6 +43,9 @@ namespace BLL
             this.ProductID = -1;
             this.Quantity = -1;
             this.Status = string.Empty;
+            this.Price = -1;
+            this.WarrintyID = -1;
+            this.IsReturned = false;
             mod = Mod.AddNew;
         }
 
@@ -54,7 +61,10 @@ namespace BLL
                  Convert.ToInt32(obj[0]),
                  Convert.ToInt32(obj[1]),
                  Convert.ToInt32(obj[2]),
-                  obj[3].ToString() ?? ""
+                  obj[3].ToString() ?? "",
+                  Convert.ToBoolean(obj[4]),
+                  Convert.ToDecimal(obj[5]),
+                  Convert.ToInt32(obj[6])
                    );
                 }
                 throw new Exception("Stock not Found.!");
@@ -116,7 +126,7 @@ namespace BLL
         {
             try
             {
-                this.StockID = await clsStocksData.AddNewStock(this.ProductID, this.Quantity, this.Status);
+                this.StockID = await clsStocksData.AddNewStock(this.ProductID, this.Quantity, this.Status,this.IsReturned,this.Price,this.WarrintyID);
 
                 return this.StockID.HasValue;
             }
@@ -136,7 +146,7 @@ namespace BLL
         {
             try
             {
-                return await clsStocksData.UpdateStock(this.StockID, this.ProductID, this.Quantity, this.Status);
+                return await clsStocksData.UpdateStock(this.StockID, this.ProductID, this.Quantity, this.Status,this.IsReturned,this.Price,this.WarrintyID);
             }
             catch (ArgumentException ex)
             {
