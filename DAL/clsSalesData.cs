@@ -8,9 +8,10 @@ namespace DAL
     public class clsSalesData
     {
         /*
-        CREATE PROCEDURE AddSaleWithDetails
+        CREATE PROCEDURE SP_AddSaleWithDetails
             @UserID INT,
             @Details NVARCHAR(MAX),
+            @SaleTotalCost DOUBLE(10,2),
             @PersonID INT = NULL,
             @FullName NVARCHAR(255) = NULL,
             @NationalNum NVARCHAR(50) = NULL,
@@ -62,8 +63,8 @@ namespace DAL
             END;
 
             -- نسجل عملية البيع ونحدد التاريخ والوقت
-            INSERT INTO Sales (SaleDate, PersonID, UserID)
-            VALUES (GETDATE(), @NewPersonID, @UserID);
+            INSERT INTO Sales (SaleDate, PersonID, UserID, SaleTotalCost)
+            VALUES (GETDATE(), @NewPersonID, @UserID, @SaleTotalCost);
     
             SET @SaleID = SCOPE_IDENTITY();
     
@@ -111,7 +112,7 @@ namespace DAL
 
 
          */
-        public static async Task<int?> AddSaleWithDetailsAsync(List<object[]> details, int userId, int? personId, string? fullName, string? nationalNum, string? phoneNum, string? address)
+        public static async Task<int?> AddSaleWithDetailsAsync(List<object[]>? details, int userId, double saleTotalCost, int? personId, string? fullName, string? nationalNum, string? phoneNum, string? address)
         {
             var parameters = new SqlParameter[]
             {
@@ -123,7 +124,7 @@ namespace DAL
             if (!string.IsNullOrWhiteSpace(nationalNum)) parameters.Append(new SqlParameter("@NationalNum", nationalNum));
             if (!string.IsNullOrWhiteSpace(phoneNum)) parameters.Append(new SqlParameter("@PhoneNumber", phoneNum));
             if (!string.IsNullOrWhiteSpace(address)) parameters.Append(new SqlParameter("@Address", address));
-            return await CRUD.AddAsync("SP_CreateSaleWithDetails", parameters);
+            return await CRUD.AddAsync("SP_AddSaleWithDetails", parameters);
         }
 
         public static async Task<object[]?> GetSaleInfoByIDAsync(int saleId)
@@ -141,6 +142,7 @@ namespace DAL
         /*
         CREATE PROCEDURE SP_UpdateSaleDetails
             @SaleID INT,
+            @SaleTotalCost DOUBLE(10,2),
             @Details NVARCHAR(MAX)
         AS
         BEGIN
@@ -158,6 +160,10 @@ namespace DAL
         
             BEGIN TRY
                 BEGIN TRANSACTION;
+
+                -- نحدث المبلغ الكلي للقائمة ككل
+                UPDATE Sales
+                SET SaleTotalCost = SaleTotalCost
         
                 -- جدول مؤقت لتخزين البيانات الجديدة من جيسن
                 DECLARE @SaleDetails TABLE (SaleDetailID INT NULL, StockID INT, WarrintyDate DATETIME, Price DECIMAL(10,2), Quantity INT, TotaCost DECIMAL(10,2));
@@ -286,11 +292,12 @@ namespace DAL
         END;
 
          */
-        public static async Task<bool> UpdateSaleDetailsAsync(int saleId, List<object[]> details)
+        public static async Task<bool> UpdateSaleDetailsAsync(int saleId, List<object[]>? details, double SaleTotalCost)
         {
             var parameters = new SqlParameter[]
             {
                 new SqlParameter("@Details", JsonConvert.SerializeObject(details)),
+                new SqlParameter("@SaleTotalCost", SaleTotalCost),
                 new SqlParameter("@SaleID", saleId)
             };
             return await CRUD.UpdateAsync("SP_UpdateSaleDetails", parameters);
