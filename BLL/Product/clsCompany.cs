@@ -6,45 +6,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//Yousif 
 namespace BLL.Product
 {
-    public class clsProductType :absClassesHelper
+    public class clsCompany : absClassesHelper
     {
-        string TypeName { set; get; }
-        
-        public clsProductType(string TypeName)
+        string CompanyName { set; get; }
+
+        public clsCompany(string CompanyName)
         {
             _mode = enMode.AddNew;
             Id = null;
-            this.TypeName = TypeName;
+            this.CompanyName =CompanyName;
         }
 
-        private clsProductType(int TypeID,  string TypeName)
+        private clsCompany(int companyID, string CompanyName)
         {
-            this.Id = TypeID;
-            this.TypeName = TypeName;
+            Id = companyID;
+            this.CompanyName = CompanyName;
             _mode = enMode.Update;
         }
 
         public static async Task<DataTable?> GetAllAsDataTableAsync()
         {
-            return await clsProductTypeData.GetAllAsync();
+            return await clsCompanyData.GetAllAsDatatableAsync();
         }
 
-
-        public static async Task<clsProductType?> FindTypeAsync(int TypeID)
+        public static async Task<clsCompany?> FindCompanyByIDAsync(int CompanyID)
         {
-            var data = await clsProductTypeData.FindByIDAsync(TypeID);
+            var data = await clsCompanyData.FindByIDAsync(CompanyID);
 
-            return new clsProductType(TypeID, (string)data[1]) ?? null;
+            return new clsCompany(CompanyID, data?[1] as string) ?? null;
         }
 
         public async Task<bool> SaveAsync()
         {
             if (_mode == enMode.AddNew)
             {
-                var newId = await clsProductTypeData.AddAsync(TypeName);
+                var newId = await clsCompanyData.AddAsync(CompanyName);
                 if (newId.HasValue)
                 {
                     Id = newId.Value;
@@ -55,10 +53,9 @@ namespace BLL.Product
                     return false;
             }
             else
-                return await clsProductTypeData.UpdateAsync(this.Id, this.TypeName);
+                return await clsCompanyData.UpdateAsync(this.Id, this.CompanyName);
         }
 
-        
 
     }
 }

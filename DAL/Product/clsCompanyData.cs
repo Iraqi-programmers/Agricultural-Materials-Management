@@ -23,7 +23,7 @@ namespace DAL.Product
 
         }
 
-        public static async Task<object?> FindByIDAsync(int CompanyID)
+        public static async Task<object[]?> FindByIDAsync(int CompanyID)
         {
             return await CRUD.GetByColumnValueAsync("SP_GetCompanyByID", "TypeID", CompanyID);
         }
@@ -44,7 +44,7 @@ namespace DAL.Product
             return await CRUD.AddAsync("SP_AddCompany", sqlParameter);
         }
 
-        public static async Task<bool?> UpdateAsync(int CompanyID, string CompanyName)
+        public static async Task<bool> UpdateAsync(int? CompanyID, string CompanyName)
         {
             SqlParameter[] parameters =
             {

@@ -1,15 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
 using MyLib_DotNet.DatabaseExecutor;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+//yousif
 namespace DAL.Product
 {
-    public static class clsThiknessData
+    public static class clsThicknessData
     {
         public static async Task<DataTable?> GetAllAsDataTableAsync()
         {
@@ -23,12 +18,12 @@ namespace DAL.Product
 
         }
 
-        public static async Task<object?> FindByIDAsync(int ThicknessID)
+        public static async Task<object[]?> FindByIDAsync(int ThicknessID)
         {
             return await CRUD.GetByColumnValueAsync("SP_GetThicknessByID", "ThicknessID", ThicknessID);
         }
 
-        public static async Task<int?> AddAsync(float Thickness)
+        public static async Task<int?> AddAsync(double Thickness)
         {
             SqlParameter[] sqlParameter =
             {
@@ -36,7 +31,7 @@ namespace DAL.Product
             };
             return await CRUD.AddAsync("SP_AddThickness", sqlParameter);
         }
-        public static async Task<bool?> UpdateAsync(int ThicknessID, float Thickness)
+        public static async Task<bool> UpdateAsync(int? ThicknessID, double Thickness)
         {
             SqlParameter[] parameters =
             {

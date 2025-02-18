@@ -1,10 +1,11 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using MyLib_DotNet.DatabaseExecutor;
 using System.Data;
-
+using Microsoft.Data.SqlClient;
+//Yousif
 namespace DAL.Product
 {
-    public static class clsTypeData
+    public static class clsProductTypeData
     {
         public static async Task<DataTable?> GetAllAsync()
         {
@@ -35,7 +36,7 @@ namespace DAL.Product
             };
             return await CRUD.AddAsync("SP_AddProductType", sqlParameter);
         }
-        public static async Task<bool?> UpdateAsync(int TypeID, string TypeName)
+        public static async Task<bool> UpdateAsync(int? TypeID, string TypeName)
         {
             SqlParameter[] parameters =
             {
