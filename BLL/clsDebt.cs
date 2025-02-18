@@ -30,7 +30,7 @@ namespace BLL
         public static async Task<clsDebt?> FindAsync(int debtId)
         {
             var data = await clsDebtData.GetDebtInfoByIDAsync(debtId);
-            return new clsDebt(debtId, Convert.ToInt32(data[0]), Convert.ToDouble(data[1]), Convert.ToDateTime(data[2])) ?? null;
+            return new clsDebt(debtId, data?[1] as int? ?? 0, data?[2] as int? ?? 0, data?[2] as DateTime? ?? DateTime.MinValue) ?? null;
         }
 
         public static async Task<bool> IsDebtExistAsync(int debtId) => await clsDebtData.IsDebtExistAsync(debtId);

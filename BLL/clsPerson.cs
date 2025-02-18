@@ -73,5 +73,4 @@ namespace BLL
         public static async Task<DataTable?> GetAllPeopleAsDataTableAsync() => await clsPersonData.GetAllPersonsAsDataTableAsync();
         public static async Task<List<object[]>?> GetAllPeopleAsListAsync() => await clsPersonData.GetAllPersonsAsListAsync();
     }
-
 }
