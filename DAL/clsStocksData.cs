@@ -10,28 +10,36 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
+    //Create By Abu Sanad
     public class clsStocksData
     {
-        public static async Task<int?> AddNewStock(int ProductID, int Quantity, string Status)
+        public static async Task<int?> AddNewStock(int ProductID, int Quantity, string Status,bool IsReturned,decimal Price,int WarrintyID)
         {
             SqlParameter[] parameters =
             {
             new SqlParameter("@ProductID", ProductID),
             new SqlParameter("@Quantity", Quantity),
-            new SqlParameter("@Status", Status)
+            new SqlParameter("@Status", Status),
+            new SqlParameter("@IsReturned", IsReturned),
+            new SqlParameter("@Price", Price),
+            new SqlParameter("@WarrintyID", WarrintyID),
+            
         };
 
             return await CRUD.AddAsync("SP_AddStock", parameters, CommandType.StoredProcedure);
         }
 
-        public static async Task<bool> UpdateStock(int? StockID, int ProductID, int Quantity, string Status)
+        public static async Task<bool> UpdateStock(int? StockID, int ProductID, int Quantity, string Status,bool IsReturned, decimal Price, int WarrintyID)
         {
             SqlParameter[] parameters =
             {
-            new SqlParameter("@StockID", StockID),
             new SqlParameter("@ProductID", ProductID),
             new SqlParameter("@Quantity", Quantity),
-            new SqlParameter("@Status", Status)
+            new SqlParameter("@Status", Status),
+            new SqlParameter("@IsReturned", IsReturned),
+            new SqlParameter("@Price", Price),
+            new SqlParameter("@WarrintyID", WarrintyID),
+
         };
 
             return await CRUD.UpdateAsync("SP_UpdateStock", parameters, CommandType.StoredProcedure);
