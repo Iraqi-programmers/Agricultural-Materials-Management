@@ -6,65 +6,63 @@ namespace BLL
     public class clsSale : absClassesHelper
     {
         public DateTime Date { get; set; }
-        public int? PersonID { get; set; }
+        public int? PersonId { get; set; }
+        public int UserId { get; set; }
 
-        public List<Dictionary<string, object>> Details { get; private set; }
+        public List<object[]> Details { get; private set; }
 
-        public clsSale()
+        public clsSale(List<object[]> details)
         {
             Id = null;
-            Date = DateTime.Now;
-            PersonID = 0;
-            Details = new List<Dictionary<string, object>>();
-            _mode = enMode.AddNew;
+            Details = details;
         }
 
-        private clsSale(int saleID, DateTime date, int personID, int userID)
-        {
-            Id = saleID;
-            Date = date;
-            PersonID = personID;
-            Details = new List<Dictionary<string, object>>();
-            _mode = enMode.Update;
-        }
-
-        //private clsSale(DateTime date, List<Dictionary<string, object>> Details)
+        //private clsSale(int saleId, DateTime date, int? personId, int userId, List<object[]> details)
         //{
+        //    Id = saleId;
         //    Date = date;
-        //    Details = new List<Dictionary<string, object>>();
-        //    Mode = enMode.Update;
+        //    PersonId = personId;
+        //    UserId = userId;
+        //    Details = details;
+        //    _mode = enMode.Update;
         //}
 
-        public static async Task<clsSale?> FindAsync(int saleID)
-        {
-            var data = await clsSalesData.GetSaleInfoByIDAsync(saleID);
-            return new clsSale(saleID, Convert.ToDateTime(data[0]), Convert.ToInt32(data[1]), Convert.ToInt32(data[2])) ?? null;
-        }
+        ////public static async Task<clsSale?> FindAsync(int saleId)
+        ////{
+        ////    var data = await clsSalesData.GetSaleInfoByIDAsync(saleId);
+        ////    return new clsSale(saleId, Convert.ToDateTime(data[0]), Convert.ToInt32(data[1]), Convert.ToInt32(data[2])) ?? null;
+        ////}
+
+        public static async Task<DataTable?> GetAllSalesAsDataTableAsync() => await clsSalesData.GetAllSalesAsDataTableAsync();
+        public static async Task<List<object[]>?> GetAllSalesAsListAsync() => await clsSalesData.GetAllSalesAsListAsync();
 
         public static async Task<bool> IsSaleExistAsync(int saleID) => await clsSalesData.IsSaleExistAsync(saleID);
 
-        public async Task<bool> SaveAsync()
-        {
-            if (_mode == enMode.AddNew)
-            {
-                var saleID = await clsSalesData.AddNewSaleWithDetailsAsync(Date, UserID, Details, PersonID);
-                if (saleID.HasValue)
-                {
-                    Id = saleID;
-                    _mode = enMode.Update;
-                    return true;
-                }
-            }
-            else
-                return await clsSalesData.UpdateSaleDataAsync(Id, Date, Details);
-            return false;
-        }
+        public async Task<int?> AddSaleWithDetailsAsync(int userId, int? personId = null, string? fullName = null, string? nationalNum = null, string? phoneNum = null, string? address = null)
+            => await clsSalesData.AddSaleWithDetailsAsync(Details, userId, personId, fullName, nationalNum, phoneNum, address);
+          
 
-        public static async Task<bool> DeleteAsync(int saleID) => await clsSalesData.DeleteSaleByIDAsync(saleID);
-        public static async Task<bool> DeleteMultipleAsync(List<int> saleIDs) => await clsSalesData.DeleteMultipleSalesAsync(saleIDs);
+        public  async Task<bool> UpdateSaleDataAsync(int userId)
+            => await clsSalesData.UpdateSaleDetailsAsync(userId, Details);
 
-        public static async Task<DataTable> GetAllSalesAsDataTableAsync() => await clsSalesData.GetAllSalesAsDataTableAsync();
-        public static async Task<List<object[]>> GetAllSalesAsListAsync() => await clsSalesData.GetAllSalesAsListAsync();
+        //public async Task<bool> AddSaleWithDetailsAsync(int userId, string? fullName = null, string? nationalNum = null, string? phoneNum = null, string? address = null)
+        //{
+        //    if (_mode == enMode.AddNew)
+        //    {
+        //        var saleID = await clsSalesData.AddSaleWithDetailsAsync(Details, userId, fullName, nationalNum, phoneNum, address);
+        //        if (saleID.HasValue)
+        //        {
+        //            Id = saleID;
+        //            _mode = enMode.Update;
+        //            return true;
+        //        }
+        //    }
+        //    else
+        //        return await clsSalesData.UpdateSaleDataAsync(Id, Date, Details);
+        //    return false;
+        //}
+
+        public static async Task<bool> DeleteAsync(int saleId, int userId) => await clsSalesData.DeleteSaleByIDAsync(saleId, userId);
+        public static async Task<bool> DeleteMultipleAsync(List<int> saleIDs, int userId) => await clsSalesData.DeleteMultipleSalesAsync(saleIDs, userId);
     }
-
 }

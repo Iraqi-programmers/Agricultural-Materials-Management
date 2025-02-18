@@ -45,3 +45,9 @@ C:\Users\Yousif\Desktop\Main\DAL\obj\Debug\net8.0\DAL.dll
 C:\Users\Yousif\Desktop\Main\DAL\obj\Debug\net8.0\refint\DAL.dll
 C:\Users\Yousif\Desktop\Main\DAL\obj\Debug\net8.0\DAL.pdb
 C:\Users\Yousif\Desktop\Main\DAL\obj\Debug\net8.0\ref\DAL.dll
+D:\TraderMaster\DAL\obj\Debug\net8.0\DAL.csproj.AssemblyReference.cache
+D:\TraderMaster\DAL\obj\Debug\net8.0\DAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\TraderMaster\DAL\obj\Debug\net8.0\DAL.AssemblyInfoInputs.cache
+D:\TraderMaster\DAL\obj\Debug\net8.0\DAL.AssemblyInfo.cs
+D:\TraderMaster\DAL\obj\Debug\net8.0\DAL.csproj.CoreCompileInputs.cache
+D:\TraderMaster\DAL\obj\Debug\net8.0\DAL.sourcelink.json
