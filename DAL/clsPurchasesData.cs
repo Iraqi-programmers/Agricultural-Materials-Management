@@ -24,7 +24,7 @@ namespace DAL
                 new SqlParameter("@UserID", UserID)
             };
 
-            return await CRUD.AddAsync("SP_AddPurchase", Parameters, CommandType.StoredProcedure);
+            return await CRUD.AddAsync("SP_AddPurchase", Parameters);
         }
 
         public static async Task<bool> UpdatePurchase(int PurchaseID, DateTime PurchaseDate, int SupplierID, decimal TotalPrice, decimal TotalPaid, int UserID)
@@ -39,19 +39,19 @@ namespace DAL
                 new SqlParameter("@UserID", UserID)
             };
 
-            return await CRUD.UpdateAsync("SP_UpdatePurchase", Parameters, CommandType.StoredProcedure);
+            return await CRUD.UpdateAsync("SP_UpdatePurchase", Parameters);
         }
 
         public static async Task<DataTable?> GetAllPurchase()
         {
-            return await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchases",null, CommandType.StoredProcedure);
+            return await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchases",null);
         }
 
        
 
         public static async Task<bool> DeletePurchase(int PurchaseID)
         {
-            return await CRUD.DeleteAsync("SP_DeletePurchase", "@PurchaseID", PurchaseID, CommandType.StoredProcedure);
+            return await CRUD.DeleteAsync("SP_DeletePurchase", "@PurchaseID", PurchaseID);
         }
 
       

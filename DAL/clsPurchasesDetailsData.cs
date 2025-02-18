@@ -23,7 +23,7 @@ namespace DAL
                 new SqlParameter("@", Warrnty)
             };
 
-            return await CRUD.AddAsync("", Parameters, CommandType.StoredProcedure);
+            return await CRUD.AddAsync("", Parameters);
 
         }
 
@@ -38,23 +38,23 @@ namespace DAL
                 new SqlParameter("@", Warrnty)
             };
 
-            return await CRUD.UpdateAsync("", Parameters, CommandType.StoredProcedure);
+            return await CRUD.UpdateAsync("", Parameters);
 
         }
 
         public static async Task<DataTable?> GetAllPurchaseDetail()
         {
-            return await CRUD.GetAllAsDataTableAsync("", null, CommandType.StoredProcedure);
+            return await CRUD.GetAllAsDataTableAsync("", null);
         }
 
         public static async Task<bool> DeletePurchaseDetils(int PurchaseID)
         {
-            return await CRUD.DeleteAsync("", "", PurchaseID, CommandType.StoredProcedure);
+            return await CRUD.DeleteAsync("", "", PurchaseID);
         }
 
         public static async Task<object[]?> GetPurchaseDetialByPurchaseID(int ID)
         {
-            return await CRUD.GetByColumnValueAsync("", "@", ID, CommandType.StoredProcedure);
+            return await CRUD.GetByColumnValueAsync("", "@", ID);
         }
 
         //اضافه عملية جلب مشتريات بواسطة اسم منتج مطلوب عمله

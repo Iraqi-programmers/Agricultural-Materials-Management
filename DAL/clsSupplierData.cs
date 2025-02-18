@@ -20,7 +20,7 @@ namespace DAL
                 new SqlParameter("@Address", Address)
             };
            
-           return await CRUD.AddAsync("SP_AddSupplier", Parameters, CommandType.StoredProcedure);
+           return await CRUD.AddAsync("SP_AddSupplier", Parameters);
         }
 
         public static async Task<bool> UpdateSupplier(int ID, string SupplierName, string Phone, string Address)
@@ -33,7 +33,7 @@ namespace DAL
                 new SqlParameter("@Address", Address)
             };
             
-            return await CRUD.UpdateAsync("SP_UpdateSupplier", Parameters, CommandType.StoredProcedure);
+            return await CRUD.UpdateAsync("SP_UpdateSupplier", Parameters);
 
         }
 
@@ -44,12 +44,12 @@ namespace DAL
 
         public static async Task<bool> DeleteSupplier(int ID)
         {
-            return await CRUD.DeleteAsync("SP_DeleteSupplier", "@SupplierID" ,ID, CommandType.StoredProcedure);
+            return await CRUD.DeleteAsync("SP_DeleteSupplier", "@SupplierID" ,ID);
         }
 
         public static async Task<object[]?> GetSupplierByID(int ID)
         {
-            return await CRUD.GetByColumnValueAsync("SP_GetSupplierByID", "@SupplierID", ID, CommandType.StoredProcedure);
+            return await CRUD.GetByColumnValueAsync("SP_GetSupplierByID", "@SupplierID", ID);
         }
 
     }

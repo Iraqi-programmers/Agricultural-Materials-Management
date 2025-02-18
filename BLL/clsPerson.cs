@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using DAL;
 
+
 namespace BLL
 {
     public class clsPerson : absClassesHelper

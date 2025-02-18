@@ -20,7 +20,7 @@ namespace DAL
                 new SqlParameter("@DebtPaymentDate",DeptPaymentDate)
             };
 
-            return await CRUD.AddAsync("SP_AddSupplierDebt", Parameters, CommandType.StoredProcedure);
+            return await CRUD.AddAsync("SP_AddSupplierDebt", Parameters);
         }
 
 
@@ -34,7 +34,7 @@ namespace DAL
                 new SqlParameter("@DebtPaymentDate",DeptPaymentDate)
             };
 
-            return await CRUD.UpdateAsync("SP_UpdateSupplierDebt", Parameters, CommandType.StoredProcedure);
+            return await CRUD.UpdateAsync("SP_UpdateSupplierDebt", Parameters);
 
         }
 
@@ -45,12 +45,12 @@ namespace DAL
 
         public static async Task<bool> DeleteSupplierDebt(int ID)
         {
-            return await CRUD.DeleteAsync("SP_DeleteSupplierDebt", "@SupplierDebtID", ID, CommandType.StoredProcedure);
+            return await CRUD.DeleteAsync("SP_DeleteSupplierDebt", "@SupplierDebtID", ID);
         }
 
         public static async Task<object[]?> GetSupplierDebtByID(int ID)
         {
-            return await CRUD.GetByColumnValueAsync("SP_GetSupplierDebtsByID", "@SupplierID", ID, CommandType.StoredProcedure);
+            return await CRUD.GetByColumnValueAsync("SP_GetSupplierDebtsByID", "@SupplierID", ID);
         }
 
 

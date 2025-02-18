@@ -46,27 +46,27 @@ namespace DAL
 
            };
 
-            return await CRUD.UpdateAsync("SP_UpdateStockQuantity", parameters, CommandType.StoredProcedure);
+            return await CRUD.UpdateAsync("SP_UpdateStockQuantity", parameters);
         }
 
         public static async Task<bool> DeleteStock(int StockID)
         {
-            return await CRUD.DeleteAsync("SP_DeleteStock", "StockID", StockID, CommandType.StoredProcedure);
+            return await CRUD.DeleteAsync("SP_DeleteStock", "StockID", StockID);
         }
 
         public static async Task<object[]?> GetStockByID(int StockID)
         {
-            return await CRUD.GetByColumnValueAsync("SP_GetStockByID", "StockID", StockID, CommandType.StoredProcedure);
+            return await CRUD.GetByColumnValueAsync("SP_GetStockByID", "StockID", StockID);
         }
 
-        public static async Task<DataTable?> GetAllStocks()
+        public static async Task<DataTable?> GetAllStocks() 
         {
-            return await CRUD.GetAllAsDataTableAsync("SP_GetAllStocks", null, CommandType.StoredProcedure);
+            return await CRUD.GetAllAsDataTableAsync("SP_GetAllStocks", null);
         }
 
-        public static async Task<object?> GetStockByProductID(int ProductID)
+        public static async Task<object?> GetStockByProductID(int ProductID)    
         {
-            return await CRUD.GetByColumnValueAsync("SP_GetStockByProductID", "ProductID", ProductID, CommandType.StoredProcedure);
+            return await CRUD.GetByColumnValueAsync("SP_GetStockByProductID", "ProductID", ProductID);
         }
 
         public static async Task<DataTable?> GetAllStockByProductID(int ProductID)
@@ -76,7 +76,7 @@ namespace DAL
                 new SqlParameter("@ProductID",ProductID)
             };
 
-            return await CRUD.GetAllAsDataTableAsync("SP_GetStockByProductID",pr , CommandType.StoredProcedure);
+            return await CRUD.GetAllAsDataTableAsync("SP_GetStockByProductID",pr);
         }
 
         public static async Task<DataTable?> GetProductByStatus(string Status)
@@ -86,7 +86,7 @@ namespace DAL
                 new SqlParameter("@Status",Status)
             };
 
-            return await CRUD.GetAllAsDataTableAsync("SP_GetStockByStatus", pr, CommandType.StoredProcedure);
+            return await CRUD.GetAllAsDataTableAsync("SP_GetStockByStatus", pr);
         }
 
     }
