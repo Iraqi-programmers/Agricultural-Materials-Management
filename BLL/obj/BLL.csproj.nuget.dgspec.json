@@ -100,11 +100,7 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {
-              "D:\\TraderMaster\\MyLib\\MyLib.csproj": {
-                "projectPath": "D:\\TraderMaster\\MyLib\\MyLib.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {
@@ -127,10 +123,6 @@
               "target": "Package",
               "version": "[6.0.1, )"
             },
-            "Microsoft.Extensions.Configuration": {
-              "target": "Package",
-              "version": "[9.0.2, )"
-            },
             "Microsoft.Extensions.Configuration.Json": {
               "target": "Package",
               "version": "[9.0.2, )"
@@ -138,10 +130,6 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
-            },
-            "System.Configuration.ConfigurationManager": {
-              "target": "Package",
-              "version": "[9.0.2, )"
             }
           },
           "imports": [
