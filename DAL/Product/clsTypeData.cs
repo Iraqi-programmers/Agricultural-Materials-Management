@@ -17,8 +17,8 @@ namespace DAL.Product
             return await CRUD.DeleteAsync("SP_DeleteType", "TypeID", TypeID);
 
         }
-
-        public static async Task<object?> FindByIDAsync(int TypeID)
+        
+        public static async Task<object[]?> FindByIDAsync(int TypeID)
         {
             return await CRUD.GetByColumnValueAsync("SP_GetTypeByID", "TypeID", TypeID);
         }
