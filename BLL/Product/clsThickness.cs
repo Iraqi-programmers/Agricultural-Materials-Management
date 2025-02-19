@@ -23,7 +23,7 @@ namespace BLL.Product
 
         public static async Task<DataTable?> GetAllAsDataTableAsync()
         {
-            return await clsSizeData.GetAllAsDatatableAsync();
+            return await clsThicknessData.GetAllAsDataTableAsync();
         }
 
         public static async Task<clsThickness?> FindBySizeID(int SizeID)
