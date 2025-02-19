@@ -40,16 +40,16 @@ namespace BLL
                 return null;
 
             return new clsUsers(
-                GetInt(dict, "UserID"),
-                GetString(dict, "UserName"),
-                GetString(dict, "Password"),
-                GetBool(dict, "IsActive"),
+                _GetInt(dict, "UserID"),
+                _GetString(dict, "UserName"),
+                _GetString(dict, "Password"),
+                _GetBool(dict, "IsActive"),
                 new clsPerson(
-                    GetInt(dict, "PersonID"),
-                    GetString(dict, "FullName"),
-                    GetString(dict, "NationalNum"),
-                    GetString(dict, "PhoneNumber"),
-                    GetString(dict, "Address")
+                    _GetInt(dict, "PersonID"),
+                    _GetString(dict, "FullName"),
+                    _GetString(dict, "NationalNum"),
+                    _GetString(dict, "PhoneNumber"),
+                    _GetString(dict, "Address")
                 )
             );
         }
