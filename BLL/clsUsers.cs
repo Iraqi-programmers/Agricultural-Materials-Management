@@ -32,37 +32,62 @@ namespace BLL
             _mode = enMode.AddNew;
         }
 
+        // هاي الطريقة اكثر اختصار 
         public static async Task<clsUsers?> GetUserByID(int userId)
         {
-            Dictionary<string, object>? dict = await clsUsersData.GetUserByIDAsync(userId);
+            var dict = await clsUsersData.GetUserByIDAsync(userId);
+            if (dict == null) 
+                return null;
 
-            if (dict != null)
-            {
-                dict.TryGetValue("UserID", out object? _id);
-                dict.TryGetValue("UserName", out object? _userName);
-                dict.TryGetValue("Password", out object? _password);
-                dict.TryGetValue("IsActive", out object? _isActive);
-                dict.TryGetValue("PersonID", out object? _personId);
-                dict.TryGetValue("FullName", out object? _fullName);
-                dict.TryGetValue("NationalNum", out object? _nationalNum);
-                dict.TryGetValue("PhoneNumber", out object? _phoneNumber);
-                dict.TryGetValue("Address", out object? _address);
+            int GetInt(string key) => dict.TryGetValue(key, out var value) && value != null ? Convert.ToInt32(value) : 0;
+            string GetString(string key) => dict.TryGetValue(key, out var value) ? value?.ToString() ?? string.Empty : string.Empty;
+            bool GetBool(string key) => dict.TryGetValue(key, out var value) && value != null && Convert.ToBoolean(value);
 
-                int UserId = _id != null ? Convert.ToInt32(_id) : 0;
-                string userName = _userName?.ToString() ?? string.Empty;
-                string password = _password?.ToString() ?? string.Empty;
-                bool isActive = _isActive != null && Convert.ToBoolean(_isActive);
-                int personId = _personId != null ? Convert.ToInt32(_personId) : 0;
-                string fullName = _fullName?.ToString() ?? string.Empty;
-                string nationalNum = _nationalNum?.ToString() ?? string.Empty;
-                string phoneNumber = _phoneNumber?.ToString() ?? string.Empty;
-                string address = _address?.ToString() ?? string.Empty;
-
-                return new clsUsers(UserId, userName, password, isActive, new clsPerson(personId, fullName, nationalNum, phoneNumber, address));
-            }
-
-            return null;
+            return new clsUsers(
+                GetInt("UserID"),
+                GetString("UserName"),
+                GetString("Password"),
+                GetBool("IsActive"),
+                new clsPerson(
+                    GetInt("PersonID"),
+                    GetString("FullName"),
+                    GetString("NationalNum"),
+                    GetString("PhoneNumber"),
+                    GetString("Address")
+                )
+            );
         }
+
+        //public static async Task<clsUsers?> GetUserByID(int userId)
+        //{
+        //    Dictionary<string, object>? dict = await clsUsersData.GetUserByIDAsync(userId);
+
+        //    if (dict != null)
+        //    {
+        //        dict.TryGetValue("UserID", out object? _id);
+        //        dict.TryGetValue("UserName", out object? _userName);
+        //        dict.TryGetValue("Password", out object? _password);
+        //        dict.TryGetValue("IsActive", out object? _isActive);
+        //        dict.TryGetValue("PersonID", out object? _personId);
+        //        dict.TryGetValue("FullName", out object? _fullName);
+        //        dict.TryGetValue("NationalNum", out object? _nationalNum);
+        //        dict.TryGetValue("PhoneNumber", out object? _phoneNumber);
+        //        dict.TryGetValue("Address", out object? _address);
+
+        //        int UserId = _id != null ? Convert.ToInt32(_id) : 0;
+        //        string userName = _userName?.ToString() ?? string.Empty;
+        //        string password = _password?.ToString() ?? string.Empty;
+        //        bool isActive = _isActive != null && Convert.ToBoolean(_isActive);
+        //        int personId = _personId != null ? Convert.ToInt32(_personId) : 0;
+        //        string fullName = _fullName?.ToString() ?? string.Empty;
+        //        string nationalNum = _nationalNum?.ToString() ?? string.Empty;
+        //        string phoneNumber = _phoneNumber?.ToString() ?? string.Empty;
+        //        string address = _address?.ToString() ?? string.Empty;
+
+        //        return new clsUsers(UserId, userName, password, isActive, new clsPerson(personId, fullName, nationalNum, phoneNumber, address));
+        //    }
+        //    return null;
+        //}
 
         public static async Task<DataTable?> GetAllUsers()
            => await clsUsersData.GetAllUsersAsync();
