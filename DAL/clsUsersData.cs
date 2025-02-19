@@ -8,17 +8,17 @@ namespace DAL
     //Create By Abu Sanad
     public class clsUsersData
     {
-        public static async Task<int?> AddNewUsers(string userName, string password, bool isActive, string FullName, string No, string PhoneNum, string Addrees)
+        public static async Task<int?> AddNewUsers(string userName, string password, bool isActive, string fullName, string no, string phoneNum, string addrees)
         {
             SqlParameter[] prameter =
             {
-                new SqlParameter("@UserName",userName),
-                new SqlParameter("@Password",password),
-                new SqlParameter("@IsActive",isActive),
-                new SqlParameter("@FullName",FullName),
-                new SqlParameter("@NationalNum",No),
-                new SqlParameter("@PhoneNumber",PhoneNum),
-                new SqlParameter("@Address",Addrees)
+                new SqlParameter("@UserName", userName),
+                new SqlParameter("@Password", password),
+                new SqlParameter("@IsActive", isActive),
+                new SqlParameter("@FullName", fullName),
+                new SqlParameter("@NationalNum", no),
+                new SqlParameter("@PhoneNumber", phoneNum),
+                new SqlParameter("@Address", addrees)
             };
 
             return await CRUD.AddAsync("SP_AddPersonThenUser", prameter);
@@ -26,14 +26,14 @@ namespace DAL
 
         public static async Task<bool> UpdateUsers(int userId, string userName, string password, bool isActive)
         {
-            SqlParameter[] Prameter =
+            SqlParameter[] prameters =
             {
-                new SqlParameter("@UserID",userId),
-                new SqlParameter("@UserName",userName),
-                new SqlParameter("@Password",password),
-                new SqlParameter("@IsActive",isActive)
+                new SqlParameter("@UserID", userId),
+                new SqlParameter("@UserName", userName),
+                new SqlParameter("@Password", password),
+                new SqlParameter("@IsActive", isActive)
             };
-            return await CRUD.UpdateAsync("SP_UpdateUser", Prameter);
+            return await CRUD.UpdateAsync("SP_UpdateUser", prameters);
         }
 
         public static async Task<bool> DeleteUserByIDAsync(int userId)
@@ -52,14 +52,14 @@ namespace DAL
             => await CRUD.GetAllAsDataTableAsync("SP_GetAllUsers");
         
 
-        public static async Task<object?> CheckIfUserNameAndPasswordExisst(string UserName, string Password)
+        public static async Task<Dictionary<string, object>?> CheckIfUserNameAndPasswordExisst(string userName, string password)
         {
-            SqlParameter[] pr =
+            SqlParameter[] prameters =
             {
-                new SqlParameter("@UserName",UserName),
-                new SqlParameter("@Password",Password)
+                new SqlParameter("@UserName", userName),
+                new SqlParameter("@Password", password)
             };
-            return await CRUD.GetAsync("SP_AuthenticateUser", pr) ?? null;
+            return await CRUD.GetAsync("SP_AuthenticateUser", prameters);
         }
 
     }

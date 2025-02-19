@@ -11,7 +11,8 @@ namespace BLL
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
 
-        public clsPerson(string fullName="", string nationalNum = "", string phoneNumber = "", string address = "")
+
+        public clsPerson(string fullName, string nationalNum, string phoneNumber, string address)
         {
             FullName = fullName;
             NationalNum = nationalNum;
@@ -20,7 +21,7 @@ namespace BLL
             _mode = enMode.AddNew;
         }
 
-        private clsPerson(int personId, string fullName, string nationalNum, string phoneNumber, string address)
+        public clsPerson(int personId, string fullName, string nationalNum, string phoneNumber, string address)
         {
             Id = personId;
             FullName = fullName;

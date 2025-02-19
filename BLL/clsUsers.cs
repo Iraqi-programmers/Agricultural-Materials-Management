@@ -12,9 +12,9 @@ namespace BLL
 
         public clsPerson Person { get; set; }
 
-        private clsUsers(int userID, string userName, string password, bool isActive, clsPerson person)
+        private clsUsers(int userId, string userName, string password, bool isActive, clsPerson person)
         {
-            Id = userID;
+            Id = userId;
             UserName = userName;
             Password = password;
             IsActive = isActive;
@@ -28,16 +28,8 @@ namespace BLL
 
         public clsUsers()
         {
-            Person = new clsPerson();
+            //Person = new clsPerson();
             _mode = enMode.AddNew;
-            /*
-             new SqlParameter("@Password",password),
-                new SqlParameter("@IsActive",isActive),
-                new SqlParameter("@FullName",FullName),
-                new SqlParameter("@NationalNum",No),
-                new SqlParameter("@PhoneNumber",PhoneNum),
-                new SqlParameter("@Address",Addrees)
-             */
         }
 
         public static async Task<clsUsers?> GetUserByID(int userId)
@@ -46,30 +38,31 @@ namespace BLL
 
             if (dict != null)
             {
-                dict.TryGetValue("UserID", out object? Id);
-                dict.TryGetValue("UserName", out object? UserName);
-                dict.TryGetValue("Password", out object? Password);
-                dict.TryGetValue("IsActive", out object? IsActive);
-                dict.TryGetValue("FullName", out object? FullName);
-                dict.TryGetValue("NationalNum", out object? NationalNum);
-                dict.TryGetValue("PhoneNumber", out object? PhoneNumber);
-                dict.TryGetValue("Address", out object? Address);
+                dict.TryGetValue("UserID", out object? _id);
+                dict.TryGetValue("UserName", out object? _userName);
+                dict.TryGetValue("Password", out object? _password);
+                dict.TryGetValue("IsActive", out object? _isActive);
+                dict.TryGetValue("PersonID", out object? _personId);
+                dict.TryGetValue("FullName", out object? _fullName);
+                dict.TryGetValue("NationalNum", out object? _nationalNum);
+                dict.TryGetValue("PhoneNumber", out object? _phoneNumber);
+                dict.TryGetValue("Address", out object? _address);
 
-                int userId = Id != null ? Convert.ToInt32(Id) : 0;
-                string userName = UserName?.ToString() ?? string.Empty;
-                string password = Password?.ToString() ?? string.Empty;
-                bool isActive = (bool)IsActive;
-                string fullName = FullName?.ToString() ?? string.Empty;
-                string nationalNum = NationalNum?.ToString() ?? string.Empty;
-                string phoneNumber = PhoneNumber?.ToString() ?? string.Empty;
-                string address = Address?.ToString() ?? string.Empty;
+                int UserId = _id != null ? Convert.ToInt32(_id) : 0;
+                string userName = _userName?.ToString() ?? string.Empty;
+                string password = _password?.ToString() ?? string.Empty;
+                bool isActive = _isActive != null && Convert.ToBoolean(_isActive);
+                int personId = _personId != null ? Convert.ToInt32(_personId) : 0;
+                string fullName = _fullName?.ToString() ?? string.Empty;
+                string nationalNum = _nationalNum?.ToString() ?? string.Empty;
+                string phoneNumber = _phoneNumber?.ToString() ?? string.Empty;
+                string address = _address?.ToString() ?? string.Empty;
 
-                return this;
+                return new clsUsers(UserId, userName, password, isActive, new clsPerson(personId, fullName, nationalNum, phoneNumber, address));
             }
 
             return null;
         }
-
 
         public static async Task<DataTable?> GetAllUsers()
            => await clsUsersData.GetAllUsersAsync();
@@ -136,9 +129,7 @@ namespace BLL
                     result = false;
                     break;
             }
-
             return result;
         }
-
     }
 }
