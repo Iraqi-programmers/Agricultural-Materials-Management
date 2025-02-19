@@ -37,16 +37,16 @@ namespace BLL
                 return null;
 
             return new clsUsers(
-                _GetInt(dict, "UserID"),
-                _GetString(dict, "UserName"),
-                _GetString(dict, "Password"),
-                _GetBool(dict, "IsActive"),
+                _GetInt(ref dict, "UserID"),
+                _GetString(ref dict, "UserName"),
+                _GetString(ref dict, "Password"),
+                _GetBool(ref dict, "IsActive"),
                 new clsPerson(
-                    _GetInt(dict, "PersonID"),
-                    _GetString(dict, "FullName"),
-                    _GetString(dict, "NationalNum"),
-                    _GetString(dict, "PhoneNumber"),
-                    _GetString(dict, "Address")
+                    _GetInt(ref dict, "PersonID"),
+                    _GetString(ref dict, "FullName"),
+                    _GetString(ref dict, "NationalNum"),
+                    _GetString(ref dict, "PhoneNumber"),
+                    _GetString(ref dict, "Address")
                 )
             );
         }
