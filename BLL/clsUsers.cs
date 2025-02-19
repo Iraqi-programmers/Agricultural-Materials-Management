@@ -35,25 +35,21 @@ namespace BLL
         // هاي الطريقة اكثر اختصار 
         public static async Task<clsUsers?> GetUserByID(int userId)
         {
-            var dict = await clsUsersData.GetUserByIDAsync(userId);
+            Dictionary<string, object>? dict = await clsUsersData.GetUserByIDAsync(userId);
             if (dict == null) 
                 return null;
 
-            int GetInt(string key) => dict.TryGetValue(key, out var value) && value != null ? Convert.ToInt32(value) : 0;
-            string GetString(string key) => dict.TryGetValue(key, out var value) ? value?.ToString() ?? string.Empty : string.Empty;
-            bool GetBool(string key) => dict.TryGetValue(key, out var value) && value != null && Convert.ToBoolean(value);
-
             return new clsUsers(
-                GetInt("UserID"),
-                GetString("UserName"),
-                GetString("Password"),
-                GetBool("IsActive"),
+                GetInt(dict, "UserID"),
+                GetString(dict, "UserName"),
+                GetString(dict, "Password"),
+                GetBool(dict, "IsActive"),
                 new clsPerson(
-                    GetInt("PersonID"),
-                    GetString("FullName"),
-                    GetString("NationalNum"),
-                    GetString("PhoneNumber"),
-                    GetString("Address")
+                    GetInt(dict, "PersonID"),
+                    GetString(dict, "FullName"),
+                    GetString(dict, "NationalNum"),
+                    GetString(dict, "PhoneNumber"),
+                    GetString(dict, "Address")
                 )
             );
         }
