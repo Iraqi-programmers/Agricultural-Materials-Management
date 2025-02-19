@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using DAL;
 
 namespace BLL
@@ -18,11 +19,7 @@ namespace BLL
             UserName = userName;
             Password = password;
             IsActive = isActive;
-            Person.Id = person.Id;  
-            Person.FullName = person.FullName;
-            Person.NationalNum = person.NationalNum;
-            Person.PhoneNumber = person.PhoneNumber;
-            Person.Address = person.Address;
+            Person = person;
              _mode = enMode.Update;
         }
 
