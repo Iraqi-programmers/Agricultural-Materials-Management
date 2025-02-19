@@ -33,14 +33,15 @@ namespace DAL
         {
             SqlParameter[] parameters =
             {
-            new SqlParameter("@ProductID", ProductID),
-            new SqlParameter("@Quantity", Quantity),
-            new SqlParameter("@Status", Status),
-            new SqlParameter("@IsReturned", IsReturned),
-            new SqlParameter("@Price", Price),
-            new SqlParameter("@WarrintyID", WarrintyID),
+                new SqlParameter("@StockID", StockID),
+                new SqlParameter("@ProductID", ProductID),
+                new SqlParameter("@Quantity", Quantity),
+                new SqlParameter("@Status", Status),
+                new SqlParameter("@IsReturned", IsReturned),
+                new SqlParameter("@Price", Price),
+                new SqlParameter("@WarrintyID", WarrintyID),
 
-        };
+            };
 
             return await CRUD.UpdateAsync("SP_UpdateStock", parameters, CommandType.StoredProcedure);
         }
@@ -69,7 +70,7 @@ namespace DAL
 
         public static async Task<DataTable?> GetAllStocks() 
         {
-            return await CRUD.GetAllAsDataTableAsync("SP_GetAllStocks", null);
+            return await CRUD.GetAllAsDataTableAsync("SP_GetAllStocks");
         }
 
         public static async Task<object?> GetStockByProductID(int ProductID)    

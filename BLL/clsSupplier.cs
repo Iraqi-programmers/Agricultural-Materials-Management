@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
+    // CREATE The class By Zaiun
     public class clsSupplier
     {
         public enum enMode { AddNew = 0, Update = 1};
@@ -16,13 +17,15 @@ namespace BLL
         public int ID { get; set; }
         public string SupplierName { get; set; }
         public string Phone { get; set; }
+        public bool IsPerson { get; set; }
         public string Address { get; set; }
 
-        private clsSupplier(int iD, string supplierName, string phone, string address)
+        private clsSupplier(int iD, string supplierName, string phone, bool IsPerson, string address)
         {
             this.ID = iD;
             this.SupplierName = supplierName;
             this.Phone = phone;
+            this.IsPerson = IsPerson;
             this.Address = address;
             this._Mode = enMode.Update;
         }
@@ -32,6 +35,7 @@ namespace BLL
             this.ID = -1;
             this.SupplierName = "";
             this.Phone = "";
+            this.IsPerson = false;
             this.Address = "";
 
             this._Mode = enMode.AddNew;
@@ -39,13 +43,13 @@ namespace BLL
 
         private async Task<bool> _AddNewSupplier()
         {
-             this.ID = (int)await clsSupplierData.AddSupplier(this.SupplierName, this.Phone, this.Address);
+             this.ID = (int)await clsSupplierData.AddSupplier(this.SupplierName, this.Phone, this.IsPerson, this.Address);
             return this.ID != -1;
         }
 
         private async Task<bool> _UpdateSupplier()
         {
-            return await clsSupplierData.UpdateSupplier(this.ID, this.SupplierName, this.Phone, this.Address);
+            return await clsSupplierData.UpdateSupplier(this.ID, this.SupplierName, this.Phone, this.IsPerson, this.Address);
         }
 
         public async Task<bool> Save()

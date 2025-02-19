@@ -9,6 +9,7 @@ using MyLib_DotNet.DatabaseExecutor;
 
 namespace DAL
 {
+    // CRETE the Class by Mohammed
     public class clsSupplierDebtsData
     {
         public static async Task<int?> AddSupplierDebts(int SupplierID, decimal Amount, DateTime DeptPaymentDate)

@@ -9,27 +9,31 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
+    // CREATE The Class by Zaiun
     public class clsSupplierData
     {
-        public static async Task<int?> AddSupplier(string SupplierName, string Phone, string Address)
+        public static async Task<int?> AddSupplier(string SupplierName, string Phone, bool IsPerson, string Address)
         {
             SqlParameter[] Parameters =
             {
                 new SqlParameter("@SupplierName", SupplierName),
                 new SqlParameter("@Phone", Phone),
+                new SqlParameter("@IsPerson", IsPerson),
                 new SqlParameter("@Address", Address)
+
             };
            
            return await CRUD.AddAsync("SP_AddSupplier", Parameters);
         }
 
-        public static async Task<bool> UpdateSupplier(int ID, string SupplierName, string Phone, string Address)
+        public static async Task<bool> UpdateSupplier(int ID, string SupplierName, string Phone, bool IsPerson,  string Address)
         {
             SqlParameter[] Parameters =
             {
                 new SqlParameter("@SupplierID", ID),
                 new SqlParameter("@SupplierName", SupplierName),
                 new SqlParameter("@Phone", Phone),
+                new SqlParameter("@IsPerson", IsPerson),
                 new SqlParameter("@Address", Address)
             };
             
