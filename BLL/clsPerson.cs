@@ -11,7 +11,7 @@ namespace BLL
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
 
-        public clsPerson(string fullName, string nationalNum, string phoneNumber, string address)
+        public clsPerson(string fullName="", string nationalNum = "", string phoneNumber = "", string address = "")
         {
             Id = null;
             FullName = fullName;

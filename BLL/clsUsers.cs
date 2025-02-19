@@ -7,48 +7,31 @@ using System.Linq.Expressions;
 namespace BLL
 {
     // Create By Abu Sanad
-    public class clsUsers : clsPerson 
+    public class clsUsers : absClassesHelper 
     {
-       
-        public int? UserID { get; private set; }
-        public int? PersonID { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool IsActive { get; set; }
 
+        public clsPerson Person { get; set; }
 
-        private clsUsers(int userID,int personID,  string userName, string password, bool isActive,
-                         string FullName,string No,string PhoneNum,string Address)
-            :base(FullName, No, PhoneNum,Address)
+        private clsUsers(int userID, string userName, string password, bool isActive)
+            
         {
-            this.UserID = userID;
+            Id = userID;
             UserName = userName;
             Password = password;
             IsActive = isActive;
-            base.FullName = FullName;
-            base.NationalNum = No;
-            base.PhoneNumber = PhoneNum;
-            base.Address = Address;
+           
             _mode = enMode.Update;
         }
 
-        public clsUsers(string UserName,string Password,bool IsActive, string FullName, string No, string PhoneNum, string Address)
-             : base(FullName, No, PhoneNum, Address)
+        public clsUsers()
         {
-            
-            this.UserID = null;
-            this.UserName = UserName;
-            this.Password = Password;
-            this.IsActive = IsActive;
-            base.FullName = FullName;
-            base.NationalNum = No;
-            base.PhoneNumber = PhoneNum;
-            base.Address = Address;
-
+            Person = new clsPerson();
             _mode = enMode.AddNew;
         }
 
-      
         public static async Task<clsUsers?> GetUserByID(int userID)
         {
             try
@@ -57,14 +40,13 @@ namespace BLL
 
                 if (obj != null)
                 {
-                    int personID = Convert.ToInt32(obj[1]);
-                    var person = await clsPerson.FindAsync(personID,userID);
+                   
 
-                    return new clsUsers(
-                        Convert.ToInt32(obj[0]), personID, obj[2]?.ToString() ?? "", obj[3]?.ToString() ?? "", Convert.ToBoolean(obj[4]),
-                        person.FullName.ToString() ?? "", person.NationalNum.ToString(), person.PhoneNumber.ToString(), person.Address ?? ""
+                    //return new clsUsers(
+                    //    Convert.ToInt32(obj[0]), personID, obj[2]?.ToString() ?? "", obj[3]?.ToString() ?? "", Convert.ToBoolean(obj[4]),
+                    //    person.FullName.ToString() ?? "", person.NationalNum.ToString(), person.PhoneNumber.ToString(), person.Address ?? ""
                         
-                    );
+                    //);
                 }
             }
             catch (ArgumentException ex)
@@ -80,108 +62,49 @@ namespace BLL
             return null;
         }
 
-      
-        public static async Task<bool> DeleteUser(int userID)
-        {
-            try
-            {
-                if (userID <= 0)
-                    throw new ArgumentException("User ID غير صالح");
-
-                return await clsUsersData.DeleteUserByIDAsync(userID,null);
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine("ArgumentEx:" + ex);
-                return false;
-            }
-            catch (Exception exo)
-            {
-                Console.WriteLine("Erorr:" + exo);
-                return false;
-            }
-        }
-
         public static async Task<DataTable?> GetAllUsers()
-        {
-            return await clsUsersData.GetAllUsersAsync();
-        }
+           => await clsUsersData.GetAllUsersAsync();
 
         public static bool AuthenticateUser(string userName, string password)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
-                    throw new ArgumentException("يجب إدخال اسم المستخدم وكلمة المرور");
+            if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("يجب إدخال اسم المستخدم وكلمة المرور");
 
-                return clsUsersData.CheckIfUserNameAndPasswordExisst(userName, password) != null;
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine("ArgumentEx:" + ex);
-                return false;
-            }
-            catch (Exception exo)
-            {
-                Console.WriteLine("Erorr:" + exo);
-                return false;
-            }
+            return clsUsersData.CheckIfUserNameAndPasswordExisst(userName, password) != null;
         }
 
-        
-        [Description("This Function Adds Person First and Then User Second.")]
+        public static async Task<bool> DeleteUser(int userID)
+        {
+            if (userID <= 0)
+                throw new ArgumentException("User ID غير صالح");
+            return await clsUsersData.DeleteUserByIDAsync(userID);
+        }
+
+        /// <summary>
+        ///  "This Function Adds Person First and Then User Second.")]
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> AddNew()
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password))
-                    throw new ArgumentException("بيانات المستخدم غير مكتملة");
+            if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password))
+                throw new ArgumentException("بيانات المستخدم غير مكتملة");
 
-                
+            Id = await clsUsersData.AddNewUsers(this.UserName, this.Password, this.IsActive, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
 
-                this.UserID = await clsUsersData.AddNewUsers(this.UserName, this.Password, this.IsActive,base.FullName,base.NationalNum,base.PhoneNumber,base.Address,null);
+            return Id.HasValue;
 
-                return this.UserID.HasValue;
-            }
-            catch (ArgumentException ex)
-            {
-                
-                Console.WriteLine($"خطأ: {ex.Message}");
-                return false;
-            }
-            catch (Exception ex)
-            {
-               
-                Console.WriteLine($"خطأ غير متوقع: {ex.Message}");
-                return false;
-            }
         }
 
-       
-        [Description("This Function Update User.")]
+        /// <summary>
+        /// "This Function Update User.")]
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> Update()
         {
-            try
-            {
-                if (UserID <= 0 || string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password))
-                    throw new ArgumentException("بيانات المستخدم غير مكتملة");
+            if (Id <= 0 || string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password))
+                throw new ArgumentException("بيانات المستخدم غير مكتملة");
 
-               
-
-                return await clsUsersData.UpdateUsers(this.UserID, this.UserName, this.Password, this.IsActive,null);
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine("ArgumentEx:" + ex);
-                return false;
-            }
-            catch (Exception exo)
-            {
-                Console.WriteLine("Erorr:" + exo);
-                return false;
-            }
-        
-           
+            return await clsUsersData.UpdateUsers(Id, this.UserName, this.Password, this.IsActive);
         }
 
         public async Task<bool> Save()
