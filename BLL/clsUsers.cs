@@ -1,8 +1,5 @@
-﻿using DAL;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq.Expressions;
+﻿using System.Data;
+using DAL;
 
 namespace BLL
 {
@@ -15,52 +12,64 @@ namespace BLL
 
         public clsPerson Person { get; set; }
 
-        private clsUsers(int userID, string userName, string password, bool isActive)
-            
+        private clsUsers(int userID, string userName, string password, bool isActive, clsPerson person)
         {
             Id = userID;
             UserName = userName;
             Password = password;
             IsActive = isActive;
-           
-            _mode = enMode.Update;
+            Person.Id = person.Id;  
+            Person.FullName = person.FullName;
+            Person.NationalNum = person.NationalNum;
+            Person.PhoneNumber = person.PhoneNumber;
+            Person.Address = person.Address;
+             _mode = enMode.Update;
         }
 
         public clsUsers()
         {
             Person = new clsPerson();
             _mode = enMode.AddNew;
+            /*
+             new SqlParameter("@Password",password),
+                new SqlParameter("@IsActive",isActive),
+                new SqlParameter("@FullName",FullName),
+                new SqlParameter("@NationalNum",No),
+                new SqlParameter("@PhoneNumber",PhoneNum),
+                new SqlParameter("@Address",Addrees)
+             */
         }
 
-        public static async Task<clsUsers?> GetUserByID(int userID)
+        public static async Task<clsUsers?> GetUserByID(int userId)
         {
-            try
-            {
-                var obj = await clsUsersData.GetUserByIDAsync(userID);
+            Dictionary<string, object>? dict = await clsUsersData.GetUserByIDAsync(userId);
 
-                if (obj != null)
-                {
-                   
+            if (dict != null)
+            {
+                dict.TryGetValue("UserID", out object? Id);
+                dict.TryGetValue("UserName", out object? UserName);
+                dict.TryGetValue("Password", out object? Password);
+                dict.TryGetValue("IsActive", out object? IsActive);
+                dict.TryGetValue("FullName", out object? FullName);
+                dict.TryGetValue("NationalNum", out object? NationalNum);
+                dict.TryGetValue("PhoneNumber", out object? PhoneNumber);
+                dict.TryGetValue("Address", out object? Address);
 
-                    //return new clsUsers(
-                    //    Convert.ToInt32(obj[0]), personID, obj[2]?.ToString() ?? "", obj[3]?.ToString() ?? "", Convert.ToBoolean(obj[4]),
-                    //    person.FullName.ToString() ?? "", person.NationalNum.ToString(), person.PhoneNumber.ToString(), person.Address ?? ""
-                        
-                    //);
-                }
+                int userId = Id != null ? Convert.ToInt32(Id) : 0;
+                string userName = UserName?.ToString() ?? string.Empty;
+                string password = Password?.ToString() ?? string.Empty;
+                bool isActive = (bool)IsActive;
+                string fullName = FullName?.ToString() ?? string.Empty;
+                string nationalNum = NationalNum?.ToString() ?? string.Empty;
+                string phoneNumber = PhoneNumber?.ToString() ?? string.Empty;
+                string address = Address?.ToString() ?? string.Empty;
+
+                return this;
             }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine("ArgumentEx:" + ex);
-                return null;
-            }
-            catch (Exception exo)
-            {
-                Console.WriteLine("Erorr:" + exo);
-                return null;
-            }
+
             return null;
         }
+
 
         public static async Task<DataTable?> GetAllUsers()
            => await clsUsersData.GetAllUsersAsync();

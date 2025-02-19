@@ -4,6 +4,6 @@
     {
         protected enum enMode { AddNew, Update };
         protected enMode _mode { get; set; } = enMode.AddNew;
-        public int? Id { get; protected set; }
+        public int Id { get; set; }
     }
 }

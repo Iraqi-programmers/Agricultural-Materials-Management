@@ -13,7 +13,6 @@ namespace BLL
 
         public clsPerson(string fullName="", string nationalNum = "", string phoneNumber = "", string address = "")
         {
-            Id = null;
             FullName = fullName;
             NationalNum = nationalNum;
             PhoneNumber = phoneNumber;

@@ -40,11 +40,11 @@ namespace DAL
           => await CRUD.DeleteAsync("SP_DeleteUser", "UserID", userId);
         
 
-        public static async Task<object[]?> GetUserByIDAsync(int userId)
+        public static async Task<Dictionary<string, object>?> GetUserByIDAsync(int userId)
           => await CRUD.GetByColumnValueAsync("SP_GetUsersByID", "UserID", userId);
         
 
-        public static async Task<object[]?> GetUserByUserNameAsync(string userName)
+        public static async Task<Dictionary<string, object>?> GetUserByUserNameAsync(string userName)
           => await CRUD.GetByColumnValueAsync("SP_GetUsersByUserName", "UserName", userName);
         
 
