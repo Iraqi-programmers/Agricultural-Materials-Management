@@ -4,6 +4,7 @@ using System.Data;
 
 namespace DAL
 {
+    // create PROCEDURE by (zaiun)
     //Create By Abu Sanad
     public class clsWarrintyData
     {
@@ -20,9 +21,9 @@ namespace DAL
         {
             SqlParameter[] parameters =
             {
-        new SqlParameter("@WarrantyID", warrantyId),
-        new SqlParameter("@Period", period)
-    };
+                new SqlParameter("@WarrantyID", warrantyId),
+                new SqlParameter("@Period", period)
+            };
             return await CRUD.UpdateAsync("SP_UpdateWarranty", parameters);
         }
 

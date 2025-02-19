@@ -4,6 +4,7 @@ using MyLib_DotNet.DatabaseExecutor;
 
 namespace DAL
 {
+    //add PROCEDURE by(zaiun) اجتاج شرح عليه بعد مافهمته كله صح
     //Create By Abu Sanad
     public class clsUsersData
     {
@@ -16,9 +17,9 @@ namespace DAL
                 new SqlParameter("@Password",password),
                 new SqlParameter("@IsActive",isActive),
                 new SqlParameter("@FullName",FullName),
-                new SqlParameter("@NationNo",No),
+                new SqlParameter("@NationalNum",No),
                 new SqlParameter("@PhoneNumber",PhoneNum),
-                new SqlParameter("@Adress",Addrees),
+                new SqlParameter("@Address",Addrees),
                 new SqlParameter("@UserID",currentUserId)
             };
 
@@ -55,7 +56,8 @@ namespace DAL
 
         public static async Task<DataTable?> GetAllUsersAsync()
         {
-            return await CRUD.GetAllAsDataTableAsync("SP_");
+           
+            return await CRUD.GetAllAsDataTableAsync("SP_GetAllUsers");
         }
 
         public static async Task<object?> CheckIfUserNameAndPasswordExisst(string UserName, string Password)
