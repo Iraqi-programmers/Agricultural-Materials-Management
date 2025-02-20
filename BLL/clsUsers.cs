@@ -13,13 +13,6 @@ namespace BLL
 
         public clsPerson Person { get; set; }
 
-        public clsUsers(string userName, string password, int personId)
-        {
-            UserName = userName;
-            Password = password;
-            IsActive = true;
-        }
-
         public clsUsers(string userName, string password, clsPerson person)
         {
             UserName = userName;
@@ -55,64 +48,14 @@ namespace BLL
         public static async Task<DataTable?> GetAllUsersAsync()
            => await clsUsersData.GetAllUsersAsync();
 
-        public static async Task<clsUsers?> AddAsync(string userName, string password, int personId)
-        {
-            int? id = await clsUsersData.AddNewUsersAsync(userName, password, null, person.FullName, person.NationalNum, person.PhoneNumber, person.Address);
-            return id != null ? new clsUsers(id, userName, password, true, person) : null;
-            //int? id;
-
-            id = await clsUsersData.AddNewUsersAsync(userName, password, personId);
-            return id != null ? new clsUsers(id, userName, password) : null;
-         
-        }
-
-        public static async Task<clsUsers?> AddAsync(string userName, string password, clsPerson person)
-        {
-            int? id = await clsUsersData.AddNewUsersAsync(userName, password, null, person.FullName, person.NationalNum, person.PhoneNumber, person.Address);
-            return id != null ? new clsUsers(id, userName, password, true, person): null;
-            //int? id;
-            //// نحتاج ستورد بروسيجر تضيف يوزر موجودة بياناته بالنظام
-            //if (personId != null)
-            //{
-            //    id = await clsUsersData.AddNewUsersAsync(userName, password, personId);
-            //    return id != null ? new clsUsers(id, userName, password) : null;
-            //}
-            //// نحتاج ستورد بروسيجر تضيف بيانات يوزر جديد مع البيرسن داتا
-            //else if (person != null)
-            //{
-            //    id = await clsUsersData.AddNewUsersAsync(userName, password, null, person.FullName, person.NationalNum, person.PhoneNumber, person.Address);
-            //    return new clsUsers(id, userName, password, true, person);
-            //}
-            //return null;
-        }
-
-        public async Task<bool> AddAsync(string userName, string password, int? personId = null, clsPerson? person = null)
-        {
-            UserName = userName;
-            Password = password;
-            IsActive = true;
-
-            // نحتاج ستورد بروسيجر تضيف يوزر موجودة بياناته بالنظام
-            if (personId != null)
-                Id = await clsUsersData.AddNewUsersAsync(userName, password, personId);
-            // نحتاج ستورد بروسيجر تضيف بيانات يوزر جديد مع البيرسن داتا
-            else if (person != null)
-            {
-                Person = person;
-                Id = await clsUsersData.AddNewUsersAsync(userName, password, null, person.FullName, person.NationalNum, person.PhoneNumber, person.Address);
-            }
-            return Id.HasValue;
-        }
-
         public async Task<bool> AddAsync(bool addNewPerson = false)
         {
-            // نحتاج ستورد بروسيجر تضيف يوزر موجودة بياناته بالنظام
-            if (!addNewPerson)
-                Id = await clsUsersData.AddNewUsersAsync(UserName, Password, Person.Id);
-            // نحتاج ستورد بروسيجر تضيف بيانات يوزر جديد مع البيرسن داتا
-            else 
-                Id = await clsUsersData.AddNewUsersAsync(UserName, Password, null, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
-            return Id.HasValue;
+            var dict = await clsUsersData.AddNewUsersAsync(UserName, Password, addNewPerson ? null : Person.Id, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
+            if (dict == null) return false;
+            Id = (int)dict["UserID"];
+            if (addNewPerson)
+                Person.Id = (int)dict["PersonID"];
+            return true;
         }
 
         public async Task<bool> UpdateUserAsync()
