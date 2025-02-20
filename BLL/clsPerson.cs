@@ -7,12 +7,12 @@ namespace BLL
     public class clsPerson : absClassesHelper
     {
         public string FullName { get; set; }
-        public string NationalNum { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Address { get; set; }
+        public string? NationalNum { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Address { get; set; }
 
 
-        public clsPerson(string fullName, string nationalNum, string phoneNumber, string address)
+        public clsPerson(string fullName, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
             FullName = fullName;
             NationalNum = nationalNum;
@@ -21,7 +21,7 @@ namespace BLL
             _mode = enMode.AddNew;
         }
 
-        public clsPerson(int personId, string fullName, string nationalNum, string phoneNumber, string address)
+        public clsPerson(int? personId, string fullName, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
             Id = personId;
             FullName = fullName;
