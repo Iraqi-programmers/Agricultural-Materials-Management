@@ -10,7 +10,6 @@ namespace DAL
     //Create By Abu Sanad
     public class clsUsersData
     {
-        
         public static async Task<Dictionary<string, object>?> GetUserByUserNameAndPasswordAsync(string userName, string password)
         {
             SqlParameter[] prameters =
@@ -20,24 +19,15 @@ namespace DAL
             };
             return await CRUD.GetAsync("SP_", prameters);
         }
+
         public static async Task<Dictionary<string, object>?> GetUserByIdAsync(int userId)
             => await CRUD.GetByColumnValueAsync("SP_", "UserID", userId);
+
         public static async Task<Dictionary<string, object>?> GetUserByUserNameAsync(string userName)
           => await CRUD.GetByColumnValueAsync("SP_GetUsersByUserName", "UserName", userName);
 
         public static async Task<DataTable?> GetAllUsersAsync()
             => await CRUD.GetAllAsDataTableAsync("SP_GetAllUsers");
-
-        //public static async Task<int?> AddNewUsersAsync(string userName, string password, int? personId)
-        //{
-        //    SqlParameter[] prameters =
-        //    {
-        //        new SqlParameter("@UserName", userName),
-        //        new SqlParameter("@Password", password),
-        //        new SqlParameter("@PersonID", personId),
-        //    };
-        //    return await CRUD.AddAsync("SP_AddPersonThenUser", prameters);
-        //}
 
         public static async Task<int?> AddNewUsersAsync(string userName, string password, int? personId = null, string? fullName = null, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
@@ -76,7 +66,7 @@ namespace DAL
         }
 
         public static async Task<bool> DeleteUserByIDAsync(int userId)
-          => await CRUD.DeleteAsync("SP_DeleteUser", "UserID", userId);
+            => await CRUD.DeleteAsync("SP_DeleteUser", "UserID", userId);
 
         // انشاء ستورد بروسيجر فقط تغير الازاكتف الى فولس
         public static async Task<bool> DeleteUserByIdAsync(int userId)

@@ -1,6 +1,4 @@
-﻿using BLL;
-
-namespace BLL
+﻿namespace BLL
 {
     public abstract class absClassesHelperBasc 
     {
