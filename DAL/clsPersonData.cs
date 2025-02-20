@@ -19,11 +19,11 @@ namespace DAL
             return await CRUD.AddAsync("SP_", parameters);
         }
 
-        public static async Task<object[]?> GetPersonInfoByIDAsync(int personId)
+        public static async Task<Dictionary<string, object>?> GetPersonInfoByIDAsync(int personId)
             => await CRUD.GetByColumnValueAsync("SP_", "PersonID", personId);
-        public static async Task<object[]?> GetPersonInfoByFullNameAsync(string fullName)
+        public static async Task<Dictionary<string, object>?> GetPersonInfoByFullNameAsync(string fullName)
             => await CRUD.GetByColumnValueAsync("SP_", "FullName", fullName);
-        public static async Task<object[]?> GetPersonInfoByNationalNumAsync(string nationalNum)
+        public static async Task<Dictionary<string, object>?> GetPersonInfoByNationalNumAsync(string nationalNum)
             => await CRUD.GetByColumnValueAsync("SP_", "NationalNum", nationalNum);
 
         /*
