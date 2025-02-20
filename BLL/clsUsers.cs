@@ -33,22 +33,20 @@ namespace BLL
         public static async Task<clsUsers?> GetUserByID(int userId)
         {
             Dictionary<string, object>? dict = await clsUsersData.GetUserByIDAsync(userId);
-            if (dict == null) 
+            if (dict == null)
                 return null;
+            else
+            {
+                int? userID = (int)dict["UserID"];
+                string? userName = (string)dict["UserName"];
+                string? password = (string)dict["Password"];
+                bool isActive = (bool)dict["IsActive"];
+                clsPerson person = new clsPerson((int)dict["PersonID"], (string)dict["FullName"],
+                    (string)dict["NationalNum"], (string)dict["PhoneNumber"], (string)dict["Address"]);
 
-            return new clsUsers(
-                _GetInt(ref dict, "UserID"),
-                _GetString(ref dict, "UserName"),
-                _GetString(ref dict, "Password"),
-                _GetBool(ref dict, "IsActive"),
-                new clsPerson(
-                    _GetInt(ref dict, "PersonID"),
-                    _GetString(ref dict, "FullName"),
-                    _GetString(ref dict, "NationalNum"),
-                    _GetString(ref dict, "PhoneNumber"),
-                    _GetString(ref dict, "Address")
-                )
-            );
+                return new clsUsers(userId, userName, password, isActive, person);  
+            }
+
         }
 
         //public static async Task<clsUsers?> GetUserByID(int userId)
