@@ -1,4 +1,4 @@
-﻿namespace BLL.Product
+﻿namespace BLL
 {
     public abstract class absClassesHelperAdvance : absClassesHelperBasc
     {

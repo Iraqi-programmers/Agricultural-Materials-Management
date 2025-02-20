@@ -19,7 +19,7 @@ namespace DAL
             return await CRUD.AddAsync("SP_", parameters);
         }
 
-        public static async Task<Dictionary<string, object>?> GetPersonInfoByIDAsync(int personId)
+        public static async Task<Dictionary<string, object>?> GetPersonInfoByIdAsync(int personId)
             => await CRUD.GetByColumnValueAsync("SP_", "PersonID", personId);
         public static async Task<Dictionary<string, object>?> GetPersonInfoByFullNameAsync(string fullName)
             => await CRUD.GetByColumnValueAsync("SP_", "FullName", fullName);
@@ -75,15 +75,15 @@ namespace DAL
             SELECT * FROM vw_PersonDetails WHERE PersonID = @PersonID;
         END;
          */
-        public static async Task<object[]?> GetPersonFullDataByIDAsync(int personId)
+        public static async Task<Dictionary<string, object>?> GetPersonFullDataByIDAsync(int personId)
             => await CRUD.GetByColumnValueAsync("SP_", "PersonID", personId);
 
-        public static async Task<object[]?> GetPersonFullDataByFullNameAsync(string fullName)
+        public static async Task<Dictionary<string, object>?> GetPersonFullDataByFullNameAsync(string fullName)
             => await CRUD.GetByColumnValueAsync("SP_", "FullName", fullName);
 
         public static async Task<DataTable?> GetAllPersonsAsDataTableAsync()
             => await CRUD.GetAllAsDataTableAsync("SP_");
-        public static async Task<List<object[]>?> GetAllPersonsAsListAsync()
+        public static async Task<List<Dictionary<string, object>>?> GetAllPersonsAsListAsync()
             => await CRUD.GetAllAsListAsync("SP_");
 
         /*
@@ -96,7 +96,7 @@ namespace DAL
         public static async Task<DataTable?> GetPersonFullDetailsByIDAsync(int personId)
             => await CRUD.GetAllAsDataTableAsync("SP_GetAllPersonsFullDetails", new SqlParameter[] { new SqlParameter("@PersonID", personId) });
         
-        public static async Task<List<object[]>?> GetAllPersonsFullDetailsAsync()
+        public static async Task<List<Dictionary<string, object>>?> GetAllPersonsFullDetailsAsync()
             => await CRUD.GetAllAsListAsync("SP_GetAllPersonsFullDetails");
 
         public static async Task<bool> IsPersonExistAsync(int personId)
