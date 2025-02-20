@@ -1,16 +1,14 @@
 ﻿using System.Data;
 using DAL;
 
-
 namespace BLL
 {
-    public class clsPerson : absClassesHelper
+    public class clsPerson : absClassesHelperAdvance
     {
         public string FullName { get; set; }
         public string? NationalNum { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Address { get; set; }
-
 
         public clsPerson(string fullName, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
