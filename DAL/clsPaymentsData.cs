@@ -14,20 +14,20 @@ namespace DAL
                 new SqlParameter("@Amount", amount),
                 new SqlParameter("@UserID", userId)
             };
-            return await CRUD.AddAsync("SP_", parameters);
+            return await CRUD.AddAsync("SP_AddPeoplePayment", parameters);
         }
 
         public static async Task<object[]?> GetPaymentInfoByIDAsync(int paymentId)
-            => await CRUD.GetByColumnValueAsync("SP_", "PaymentID", paymentId);
+            => await CRUD.GetByColumnValueAsync("SP_GetPaymentByID", "PaymentID", paymentId);
 
         public static async Task<DataTable?> GetAllPaymentsAsDataTableAsync()
-            => await CRUD.GetAllAsDataTableAsync("SP_");
+            => await CRUD.GetAllAsDataTableAsync("SP_GetAllPayment");
 
         public static async Task<List<object[]>?> GetAllPaymentsAsListAsync()
-            => await CRUD.GetAllAsListAsync("SP_");
+            => await CRUD.GetAllAsListAsync("SP_GetAllPayment");
 
         public static async Task<bool> IsPaymentExistAsync(int paymentId)
-            => await CRUD.IsExistAsync("SP_", "PaymentID", paymentId);
+            => await CRUD.IsExistAsync("SP_IsExistPayment", "PaymentID", paymentId);
 
         public static async Task<bool> UpdatePaymentDataAsync(int paymentId, double amount, int userId)
         {
