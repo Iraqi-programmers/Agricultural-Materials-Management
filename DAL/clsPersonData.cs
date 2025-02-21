@@ -6,19 +6,6 @@ namespace DAL
 {
     public class clsPersonData
     {
-        public static async Task<int?> AddNewPersonAsync(string fullName, string nationalNum, string phoneNum, string address, int userId)
-        {
-            SqlParameter[] parameters =
-            {
-                new SqlParameter("@FullName", fullName),
-                new SqlParameter("@NationalNum", nationalNum),
-                new SqlParameter("@PhoneNumber", phoneNum),
-                new SqlParameter("@Address", address),
-                new SqlParameter("@UserID", userId)
-            };
-            return await CRUD.AddAsync("SP_", parameters);
-        }
-
         public static async Task<Dictionary<string, object>?> GetPersonInfoByIdAsync(int personId)
             => await CRUD.GetByColumnValueAsync("SP_", "PersonID", personId);
         public static async Task<Dictionary<string, object>?> GetPersonInfoByFullNameAsync(string fullName)
@@ -75,39 +62,40 @@ namespace DAL
             SELECT * FROM vw_PersonDetails WHERE PersonID = @PersonID;
         END;
          */
-        public static async Task<Dictionary<string, object>?> GetPersonFullDataByIDAsync(int personId)
+        public static async Task<Dictionary<string, object>?> GetPersonFullDataByIdAsync(int personId)
             => await CRUD.GetByColumnValueAsync("SP_", "PersonID", personId);
-
         public static async Task<Dictionary<string, object>?> GetPersonFullDataByFullNameAsync(string fullName)
             => await CRUD.GetByColumnValueAsync("SP_", "FullName", fullName);
+        public static async Task<Dictionary<string, object>?> GetPersonFullDataPhoneNumAsync(string phoneNum)
+            => await CRUD.GetByColumnValueAsync("SP_", "PhoneNumber", phoneNum);
 
         public static async Task<DataTable?> GetAllPersonsAsDataTableAsync()
             => await CRUD.GetAllAsDataTableAsync("SP_");
-        public static async Task<List<Dictionary<string, object>>?> GetAllPersonsAsListAsync()
-            => await CRUD.GetAllAsListAsync("SP_");
+        //public static async Task<List<Dictionary<string, object>>?> GetAllPersonsAsListAsync() => await CRUD.GetAllAsListAsync("SP_");
 
-        /*
-        CREATE PROCEDURE SP_GetAllPersonsFullDetails
-        AS
-        BEGIN
-            SELECT * FROM vw_PersonDetails;
-        END;
-         */
-        public static async Task<DataTable?> GetPersonFullDetailsByIDAsync(int personId)
-            => await CRUD.GetAllAsDataTableAsync("SP_GetAllPersonsFullDetails", new SqlParameter[] { new SqlParameter("@PersonID", personId) });
-        
-        public static async Task<List<Dictionary<string, object>>?> GetAllPersonsFullDetailsAsync()
-            => await CRUD.GetAllAsListAsync("SP_GetAllPersonsFullDetails");
-
-        public static async Task<bool> IsPersonExistAsync(int personId)
-            => await CRUD.IsExistAsync("SP_", "PersonID", personId);
+        public static async Task<bool> IsPersonExistAsync(int? personId)
+        {
+            if (personId == null) return false;
+            return await CRUD.IsExistAsync("SP_", "PersonID", personId);
+        }
         public static async Task<bool> IsPersonExistByFullNameAsync(string fullName)
             => await CRUD.IsExistAsync("SP_", "FullName", fullName);
-        
         public static async Task<bool> IsPersonExistByNationalNumAsync(string nationalNum)
             => await CRUD.IsExistAsync("SP_", "NationalNum", nationalNum);
 
-        public static async Task<bool> UpdatePersonDataAsync(int? personId, string fullName, string nationalNum, string phoneNum, string address, int userId)
+        public static async Task<int?> AddNewPersonAsync(string fullName, string? nationalNum, string? phoneNum, string? address)
+        {
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@FullName", fullName),
+                new SqlParameter("@NationalNum", nationalNum),
+                new SqlParameter("@PhoneNumber", phoneNum),
+                new SqlParameter("@Address", address)
+            };
+            return await CRUD.AddAsync("SP_", parameters);
+        }
+
+        public static async Task<bool> UpdatePersonDataAsync(int? personId, string fullName, string? nationalNum, string? phoneNum, string? address)
         {
             SqlParameter[] parameters =
             {
@@ -115,20 +103,20 @@ namespace DAL
                 new SqlParameter("@FullName", fullName),
                 new SqlParameter("@NationalNum", nationalNum),
                 new SqlParameter("@PhoneNumber", phoneNum),
-                new SqlParameter("@Address", address),
-                new SqlParameter("@UserID", userId)
+                new SqlParameter("@Address", address)
             };
             return await CRUD.UpdateAsync("SP_", parameters);
         }
 
-        public static async Task<bool> DeletePersonByIDAsync(int personId, int userId)
-            => await CRUD.DeleteAsync("SP_", "PersonID", personId, "UserID", userId);
-        public static async Task<bool> DeletePersonByFullNameAsync(string fullName, int userId)
-            => await CRUD.DeleteAsync("SP_", "FullName", fullName, "UserID", userId);
-        public static async Task<bool> DeletePersonByNationalNumAsync(string nationalNum, int userId)
-            => await CRUD.DeleteAsync("SP_", "NationalNum", nationalNum, "UserID", userId);
-
-        public static async Task<bool> DeleteMultiplePersonsAsync(List<int> personIDs, int userId)
-            => await CRUD.DeleteRecordsByIdsAsync("SP_", "People", "PersonID", 0, personIDs, "UserID", userId);
+        // ممنوع الحذف في حال كان ايدي البيرسن مرتبط بجداول اخرى 
+        public static async Task<bool> DeletePersonByIdAsync(int? personId)
+        {
+            if (personId == null) return false;
+            return await CRUD.DeleteAsync("SP_", "PersonID", personId);
+        }
+        public static async Task<bool> DeletePersonByFullNameAsync(string fullName)
+            => await CRUD.DeleteAsync("SP_", "FullName", fullName);
+        public static async Task<bool> DeletePersonByNationalNumAsync(string nationalNum)
+            => await CRUD.DeleteAsync("SP_", "NationalNum", nationalNum);
     }
 }
