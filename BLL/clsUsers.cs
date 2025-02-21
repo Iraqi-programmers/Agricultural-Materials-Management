@@ -45,8 +45,7 @@ namespace BLL
             return __GetUserData(ref dict);
         }
 
-        public static async Task<DataTable?> GetAllUsersAsync()
-           => await clsUsersData.GetAllUsersAsync();
+        public static async Task<DataTable?> GetAllUsersAsync() => await clsUsersData.GetAllUsersAsync();
 
         public async Task<bool> AddAsync(bool addNewPerson = false)
         {
@@ -58,14 +57,10 @@ namespace BLL
             return true;
         }
 
-        public async Task<bool> UpdateUserAsync()
-            => await clsUsersData.UpdateUsersAsync(Id, UserName, Password, IsActive);
-
-        public async Task<bool> UpdateUserWithPersonAsync()
-            => await clsUsersData.UpdateUsersAsync(Id, UserName, Password, IsActive, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
+        public async Task<bool> UpdateUserAsync() => await clsUsersData.UpdateUsersAsync(Id, UserName, Password, IsActive);
+        public async Task<bool> UpdateUserWithPersonAsync() => await clsUsersData.UpdateUsersAsync(Id, UserName, Password, IsActive, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
         
-        public static async Task<bool> DeleteUserByIdAsync(int userId)
-            => await clsUsersData.DeleteUserByIdAsync(userId);
+        public static async Task<bool> DeleteUserByIdAsync(int userId) => await clsUsersData.DeleteUserByIdAsync(userId);
 
         private static clsUsers __GetUserData(ref Dictionary<string, object> dict)
         {

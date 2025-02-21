@@ -88,11 +88,8 @@ namespace DAL
             return await CRUD.UpdateAsync("SP_UpdateUser", prameters);
         }
 
-        public static async Task<bool> DeleteUserByIDAsync(int userId)
-            => await CRUD.DeleteAsync("SP_DeleteUser", "UserID", userId);
-
         public static async Task<bool> DeleteUserByIdAsync(int userId)
-            => await CRUD.UpdateAsync("SP_UpdateUser", new SqlParameter[] { new SqlParameter("@UserID", userId) });
+            => await CRUD.DeleteAsync("SP_DeleteUser", "UserID", userId);
     }
 
 }
