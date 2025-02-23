@@ -31,7 +31,7 @@ namespace BLL
 
         public static async Task<clsUsers?> GetUserByUserNameAndPasswordAsync(string userName, string password)
         {
-            Dictionary<string, object>? dict = await clsUsersData.GetUserByUserNameAndPasswordAsync(userName, password);
+            var dict = await clsUsersData.GetUserByUserNameAndPasswordAsync(userName, password);
             if (dict == null) return null;
             return __FetchUserData(ref dict);
         }
