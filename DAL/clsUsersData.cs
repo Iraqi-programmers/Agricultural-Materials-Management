@@ -27,7 +27,7 @@ namespace DAL
         public static async Task<DataTable?> GetAllUsersAsync()
             => await CRUD.GetAllAsDataTableAsync("SP_GetAllUsers");
 
-        public static async Task<Dictionary<string, object>?> AddNewUsersAsync(string userName, string? password, int? personId = null, string? fullName = null, string? nationalNum = null, string? phoneNumber = null, string? address = null)
+        public static async Task<Dictionary<string, object>?> AddNewUserAsync(string userName, string? password, int? personId = null, string? fullName = null, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
             SqlParameter[] prameters =
             {

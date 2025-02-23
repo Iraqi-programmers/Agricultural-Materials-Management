@@ -47,7 +47,7 @@ namespace BLL
 
         public async Task<bool> AddAsync(bool addNewPerson = false)
         {
-            var dict = await clsUsersData.AddNewUsersAsync(UserName, Password, addNewPerson ? null : Person.Id, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
+            var dict = await clsUsersData.AddNewUserAsync(UserName, Password, addNewPerson ? null : Person.Id, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
             if (dict == null) return false;
             Id = (int)dict["UserID"];
             if (addNewPerson)
