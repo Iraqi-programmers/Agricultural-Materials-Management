@@ -1,6 +1,4 @@
 ﻿using System.Data;
-using System.Net;
-using System.Reflection.Metadata;
 using Microsoft.Data.SqlClient;
 using MyLib_DotNet.DatabaseExecutor;
 
@@ -29,7 +27,7 @@ namespace DAL
         public static async Task<DataTable?> GetAllUsersAsync()
             => await CRUD.GetAllAsDataTableAsync("SP_GetAllUsers");
 
-        public static async Task<Dictionary<string, object>?> AddNewUsersAsync(string userName, string password, int? personId = null, string? fullName = null, string? nationalNum = null, string? phoneNumber = null, string? address = null)
+        public static async Task<Dictionary<string, object>?> AddNewUsersAsync(string userName, string? password, int? personId = null, string? fullName = null, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
             SqlParameter[] prameters =
             {
@@ -71,7 +69,7 @@ namespace DAL
 
         // انشاء ستورد بروسيجر يعدل بيانات البيرسن فقط الي بيهن قييم واليوزر
         
-        public static async Task<bool> UpdateUsersAsync(int? userId, string userName, string password, bool isActive, string? fullName = null, string? nationalNum = null, string? phoneNumber = null, string? address = null)
+        public static async Task<bool> UpdateUsersAsync(int? userId, string userName, string? password, bool isActive, string? fullName = null, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
             SqlParameter[] prameters =
             {
