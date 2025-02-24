@@ -29,6 +29,16 @@ namespace BLL
             Person = person;
         }
 
+        public async Task<bool> AddAsync(bool addNewPerson = false)
+        {
+            var dict = await clsUsersData.AddNewUserAsync(UserName, Password, addNewPerson ? null : Person.Id, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
+            if (dict == null) return false;
+            Id = (int)dict["UserID"];
+            if (addNewPerson)
+                Person.Id = (int)dict["PersonID"];
+            return true;
+        }
+
         public static async Task<clsUsers?> GetUserByUserNameAndPasswordAsync(string userName, string password)
         {
             var dict = await clsUsersData.GetUserByUserNameAndPasswordAsync(userName, password);
@@ -44,16 +54,6 @@ namespace BLL
         }
 
         public static async Task<DataTable?> GetAllUsersAsync() => await clsUsersData.GetAllUsersAsync();
-
-        public async Task<bool> AddAsync(bool addNewPerson = false)
-        {
-            var dict = await clsUsersData.AddNewUserAsync(UserName, Password, addNewPerson ? null : Person.Id, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
-            if (dict == null) return false;
-            Id = (int)dict["UserID"];
-            if (addNewPerson)
-                Person.Id = (int)dict["PersonID"];
-            return true;
-        }
 
         public async Task<bool> UpdateUserAsync() => await clsUsersData.UpdateUsersAsync(Id, UserName, Password, IsActive);
         public async Task<bool> UpdateUserWithPersonAsync() => await clsUsersData.UpdateUsersAsync(Id, UserName, Password, IsActive, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
