@@ -67,7 +67,7 @@ namespace BLL
                 (string)dict["UserName"],
                 (bool)dict["IsActive"],
                 clsPerson.FetchPersonData(ref dict)
-                );
+            );
         }
     }
 }

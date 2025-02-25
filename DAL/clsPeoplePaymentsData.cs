@@ -17,11 +17,9 @@ namespace DAL
             return await CRUD.AddAsync("SP_AddPeoplePayment", parameters);
         }
 
-        public static async Task<Dictionary<string, object>?> GetAsync(int paymentId)
-            => await CRUD.GetByColumnValueAsync("SP_GetPaymentByID", "PaymentID", paymentId);
+        public static async Task<Dictionary<string, object>?> GetAsync(int paymentId) => await CRUD.GetByColumnValueAsync("SP_GetPaymentByID", "PaymentID", paymentId);
 
-        public static async Task<DataTable?> GetAllAsync()
-            => await CRUD.GetAllAsDataTableAsync("SP_GetAllPayment");
+        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllPayment");
 
         public static async Task<bool> UpdateAsync(int paymentId, double amount, int userId)
         {
@@ -34,8 +32,7 @@ namespace DAL
             return await CRUD.UpdateAsync("SP_UpdatePayment", parameters);
         }
 
-        public static async Task<bool> DeleteAsync(int paymentId)
-            => await CRUD.DeleteAsync("SP_DeletePaymentByID", "PaymentID", paymentId);
+        public static async Task<bool> DeleteAsync(int paymentId) => await CRUD.DeleteAsync("SP_DeletePaymentByID", "PaymentID", paymentId);
     }
 
 }
