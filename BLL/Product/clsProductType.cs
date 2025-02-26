@@ -1,61 +1,50 @@
 ﻿using DAL.Product;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 //Yousif 
 namespace BLL.Product
 {
-    public class clsProductType :absClassesHelper
+    public class clsProductType :absClassesHelperBasc
     {
-        string TypeName { set; get; }
-        
+        string typeName { set; get; }
         public clsProductType(string TypeName)
         {
-            _mode = enMode.AddNew;
             Id = null;
-            this.TypeName = TypeName;
+            this.typeName = TypeName;
         }
-
         private clsProductType(int TypeID,  string TypeName)
         {
             this.Id = TypeID;
-            this.TypeName = TypeName;
-            _mode = enMode.Update;
+            this.typeName = TypeName;
         }
-
-        public static async Task<DataTable?> GetAllAsDataTableAsync()
+        public static async Task<DataTable?> getAllAsDataTableAsync()
         {
-            return await clsProductTypeData.GetAllAsync();
+            return await clsProductTypeData.getAllAsDatatableAsync();
         }
-
-
-        public static async Task<clsProductType?> FindTypeAsync(int TypeID)
+        public static async Task<clsProductType?> findTypeAsync(int TypeID)
         {
-            var data = await clsProductTypeData.FindByIDAsync(TypeID);
+            var data = await clsProductTypeData.findByIDAsync(TypeID);
 
             return new clsProductType(TypeID, (string)data[1]) ?? null;
         }
-
-        public async Task<bool> SaveAsync()
+        private  async Task<int?> __addAsync()
         {
-            if (_mode == enMode.AddNew)
+            return await clsProductTypeData.addAsync(typeName);
+        }
+        private async Task<bool> __update()
+        {
+            return await clsProductTypeData.updateAsync(Id, typeName);
+        }
+
+        public async Task<bool> saveAsync()
+        {
+            if(Id == null)
             {
-                var newId = await clsProductTypeData.AddAsync(TypeName);
-                if (newId.HasValue)
-                {
-                    Id = newId.Value;
-                    _mode = enMode.Update;
-                    return true;
-                }
-                else
-                    return false;
+                Id = await __addAsync();
+                return Id != null;
             }
-            else
-                return await clsProductTypeData.UpdateAsync(this.Id, this.TypeName);
+            return await __update();
+                
         }
 
         

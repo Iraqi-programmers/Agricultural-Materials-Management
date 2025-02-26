@@ -2,19 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BLL.Product
 {
-    public class clsCompany : absClassesHelper
+    public class clsCompany : absClassesHelperBasc
     {
         string CompanyName { set; get; }
 
         public clsCompany(string CompanyName)
         {
-            _mode = enMode.AddNew;
             Id = null;
             this.CompanyName =CompanyName;
         }
@@ -23,37 +23,35 @@ namespace BLL.Product
         {
             Id = companyID;
             this.CompanyName = CompanyName;
-            _mode = enMode.Update;
         }
 
-        public static async Task<DataTable?> GetAllAsDataTableAsync()
+        public static async Task<DataTable?> getAllAsDataTableAsync()
         {
-            return await clsCompanyData.GetAllAsDatatableAsync();
+            return await clsCompanyData.getAllAsDatatableAsync();
         }
 
-        public static async Task<clsCompany?> FindCompanyByIDAsync(int CompanyID)
+        public static async Task<clsCompany?> findCompanyByIDAsync(int CompanyID)
         {
-            var data = await clsCompanyData.FindByIDAsync(CompanyID);
+            var data = await clsCompanyData.findByIDAsync(CompanyID);
 
             return new clsCompany(CompanyID, data?[1] as string) ?? null;
         }
-
+        private async Task<int?> __addAsync()
+        {
+            return await clsCompanyData.addAsync(CompanyName);
+        }
+        private async Task<bool> __update()
+        {
+            return await clsCompanyData.updateAsync(Id, CompanyName);
+        }
         public async Task<bool> SaveAsync()
         {
-            if (_mode == enMode.AddNew)
+            if(Id == null)
             {
-                var newId = await clsCompanyData.AddAsync(CompanyName);
-                if (newId.HasValue)
-                {
-                    Id = newId.Value;
-                    _mode = enMode.Update;
-                    return true;
-                }
-                else
-                    return false;
+                Id = await __addAsync();
+                return Id != null;
             }
-            else
-                return await clsCompanyData.UpdateAsync(this.Id, this.CompanyName);
+            return await __update();
         }
 
 

@@ -6,33 +6,34 @@ namespace DAL.Product
 {
     public static class clsSizeData
     {
-        public static async Task<DataTable?> GetAllAsDatatableAsync()
+        public static async Task<DataTable?> getAllAsDatatableAsync()
         {
             return await CRUD.GetAllAsDataTableAsync("SP_GetAllSizes");
 
         }
-        public static async Task<bool> DeleteAsync(int SizeID)
+        public static async Task<bool> deleteAsync(int SizeID)
         {
 
             return await CRUD.DeleteAsync("SP_DeleteType", "SizeID", SizeID);
 
         }
 
-        public static async Task<object[]?> FindByIDAsync(int SizeID)
+        public static async Task<object[]?> findByIDAsync(int SizeID)
         {
             return await CRUD.GetByColumnValueAsync("SP_GetSizeByID", "SizeID", SizeID);
         }
 
-        public static async Task<int?> AddAsync(double Size)
+        public static async Task<int?> addAsync(double Size)
         {
             SqlParameter[] sqlParameter =
             {
                 new SqlParameter("@Size", Size)
+               
             };
             return await CRUD.AddAsync("SP_AddSize", sqlParameter);
 
         }
-        public static async Task<bool> UpdateAsync(int? SizeID, double Size)
+        public static async Task<bool> updateAsync(int? SizeID, double Size)
         {
             SqlParameter[] parameters =
             {

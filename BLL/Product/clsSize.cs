@@ -1,55 +1,54 @@
 ﻿using DAL.Product;
 using System.Data;
+using System.Diagnostics.Contracts;
 //yousif
 namespace BLL.Product
 {
-    public class clsSize:absClassesHelper
+    public class clsSize: absClassesHelperBasc
     {
-        double Size { set; get; }
+        double size { set; get; }
 
         public clsSize(double size)
         {
-            _mode = enMode.AddNew;
             Id = null;
-            Size = size;
+            this.size = size;
         }
 
-        private clsSize(int SizeID, double size)
+        private clsSize(int sizeID, double size)
         {
-            Id = SizeID;
-            Size = size;
-            _mode = enMode.Update;
+            Id = sizeID;
+            this.size = size;
         }
 
-        public static async Task<DataTable?> GetAllAsDataTableAsync()
+        public static async Task<DataTable?> getAllAsDataTableAsync()
         {
-            return await clsSizeData.GetAllAsDatatableAsync();
+            return await clsSizeData.getAllAsDatatableAsync();
         }
 
-        public static async Task<clsSize?> FindBySizeID(int SizeID)
+        public static async Task<clsSize?> findBySizeID(int SizeID)
         {
-            var data = await clsSizeData.FindByIDAsync(SizeID);
+            var data = await clsSizeData.findByIDAsync(SizeID);
 
             return new clsSize(SizeID, data?[1] as double? ?? 0.0) ?? null;
         }
 
-        public async Task<bool> SaveAsync()
+        private async Task<int?> __addAsync()
         {
-            if (_mode == enMode.AddNew)
-            {
-                var newId = await clsSizeData.AddAsync(Size);
-                if (newId.HasValue)
-                {
-                    Id = newId.Value;
-                    _mode = enMode.Update;
-                    return true;
-                }
-                else
-                    return false;
-            }
-            else
-                return await clsSizeData.UpdateAsync(Id, this.Size);
+            return await clsSizeData.addAsync(size);
+        }
 
+        private async Task<bool> __updateAsync()
+        {
+            return await clsSizeData.updateAsync(this.Id, size);
+        }
+        public async Task<bool> saveAsync()
+        {
+            if(Id == null)
+            {
+                Id = await __addAsync();
+                return true;
+            }
+            return await __updateAsync();
         }
 
     }

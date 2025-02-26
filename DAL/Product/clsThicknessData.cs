@@ -6,24 +6,24 @@ namespace DAL.Product
 {
     public static class clsThicknessData
     {
-        public static async Task<DataTable?> GetAllAsDataTableAsync()
+        public static async Task<DataTable?> getAllAsDataTableAsync()
         {
             return await CRUD.GetAllAsDataTableAsync("SP_GetAllThickness");
 
         }
-        public static async Task<bool> DeleteAsync(int ThicknessID)
+        public static async Task<bool> deleteAsync(int ThicknessID)
         {
 
             return await CRUD.DeleteAsync("SP_DeleteThickness", "ThicknessID", ThicknessID);
 
         }
 
-        public static async Task<object[]?> FindByIDAsync(int ThicknessID)
+        public static async Task<object[]?> findByIDAsync(int ThicknessID)
         {
             return await CRUD.GetByColumnValueAsync("SP_GetThicknessByID", "ThicknessID", ThicknessID);
         }
 
-        public static async Task<int?> AddAsync(double Thickness)
+        public static async Task<int?> addAsync(double Thickness)
         {
             SqlParameter[] sqlParameter =
             {
@@ -31,7 +31,7 @@ namespace DAL.Product
             };
             return await CRUD.AddAsync("SP_AddThickness", sqlParameter);
         }
-        public static async Task<bool> UpdateAsync(int? ThicknessID, double Thickness)
+        public static async Task<bool> updateAsync(int? ThicknessID, double Thickness)
         {
             SqlParameter[] parameters =
             {

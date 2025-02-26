@@ -1,56 +1,59 @@
 ﻿using DAL.Product;
+using Microsoft.Identity.Client;
 using System.Data;
 //Yousif
 namespace BLL.Product
 {
-    public class clsThickness :absClassesHelper
+    public class clsThickness : absClassesHelperBasc
     {
-        double Thickness { set; get; }
+        double thickness { set; get; }
 
         public clsThickness(double Thickness)
         {
-            _mode = enMode.AddNew;
             Id = null;
-            this.Thickness = Thickness;
+            this.thickness = Thickness;
         }
 
         private clsThickness(int ThicknessID, double Thickness)
         {
             Id = ThicknessID;
-            this.Thickness = Thickness;
-            _mode = enMode.Update;
+            this.thickness = Thickness;
         }
 
-        public static async Task<DataTable?> GetAllAsDataTableAsync()
+        public static async Task<DataTable?> getAllAsDataTableAsync()
         {
-            return await clsThicknessData.GetAllAsDataTableAsync();
+            return await clsThicknessData.getAllAsDataTableAsync();
+        }
+        
+        private  async Task<int?> __addAsync()
+        {
+            return await clsThicknessData.addAsync(thickness);
         }
 
-        public static async Task<clsThickness?> FindBySizeID(int SizeID)
+        private  async Task<bool> __update()
         {
-            var data = await clsThicknessData.FindByIDAsync(SizeID);
+            return await clsThicknessData.updateAsync(this.Id, thickness);
+        }
+
+        public async Task<bool> save()
+        {
+            if(this.Id == null)
+            {
+                Id = await __addAsync();
+                return true;
+            }
+            return await __update();
+        }
+
+        
+
+        public static async Task<clsThickness?> findBySizeID(int SizeID)
+        {
+            var data = await clsThicknessData.findByIDAsync(SizeID);
 
             return new clsThickness(SizeID, data?[1] as double? ?? 0.0) ?? null;
         }
 
-        public async Task<bool> SaveAsync()
-        {
-            if (_mode == enMode.AddNew)
-            {
-                var newId = await clsThicknessData.AddAsync(Thickness);
-                if (newId.HasValue)
-                {
-                    Id = newId.Value;
-                    _mode = enMode.Update;
-                    return true;
-                }
-                else
-                    return false;
-            }
-            else
-                return await clsThicknessData.UpdateAsync(Id, this.Thickness);
-
-        }
 
 
     }
