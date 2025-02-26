@@ -3,53 +3,152 @@ using DAL;
 
 namespace BLL
 {
-    public class clsSalesDetails : absClassesHelper
+    public class clsSalesDetails : absClassesHelperBasc
     {
-        public int SaleID { get; set; }
-        public int StockID { get; set; }
-        public DateTime WarrantyDate { get; set; }
+        public int SaleId { get; set; }
+        public int StockId { get; set; }
+        public DateTime? WarrantyDate { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
         public double TotalCost { get; set; }
 
-        public clsSalesDetails(int stockId, DateTime warrantyDate, double price, int quantity, double totalCost)
+        // نحتاج نمسح محتوى القائمة بعد الانتهاء 
+        public static List<clsSalesDetails> SalesDetailsList { get; private set; } = new List<clsSalesDetails>();
+
+        public clsSalesDetails(int stockId, double price, int quantity, double totalCost, uint period = 0)
         {
-            StockID = stockId;
-            WarrantyDate = warrantyDate;
+            StockId = stockId;
+            WarrantyDate = period > 0 ? GetDateAfterDays(period) : null;
             Price = price;
             Quantity = quantity;
             TotalCost = totalCost;
+            SalesDetailsList.Add(this);
         }
 
-        private clsSalesDetails(int detailId, int saleId, int stockId, DateTime warrantyDate, double price, int quantity, double totalCost)
+        public clsSalesDetails(int? detailId, int saleId, int stockId, double price, int quantity, double totalCost, DateTime? warrantyDate)
         {
             Id = detailId;
-            SaleID = saleId;
-            StockID = stockId;
-            WarrantyDate = warrantyDate;
+            SaleId = saleId;
+            StockId = stockId;
             Price = price;
             Quantity = quantity;
             TotalCost = totalCost;
-            _mode = enMode.Update;
+            WarrantyDate = warrantyDate;
         }
 
-        public static async Task<clsSalesDetails?> FindAsync(int detailId)
+        public clsSalesDetails(List<clsSalesDetails> salesDetailsList)
         {
-            var data = await clsSalesDetailsData.GetSaleDetailInfoByIDAsync(detailId);
-            return new clsSalesDetails(detailId, data?[1] as int? ?? 0, data?[2] as int? ?? 0, data?[3] as DateTime? ?? DateTime.MinValue, data?[4] as int? ?? 0, data?[5] as int? ?? 0, data?[6] as int? ?? 0) ?? null;
+            SalesDetailsList = salesDetailsList;
         }
 
-        public static async Task<bool> IsSaleDetailExistAsync(int detailID)
-            => await clsSalesDetailsData.IsSaleDetailExistAsync(detailID);
+        public clsSalesDetails? GetDetailByStockId(int stockId)
+        {
+            var detail = SalesDetailsList.FirstOrDefault(d => d.StockId == stockId);
+            if (detail != null)
+            {
+                Id = detail.Id;
+                SaleId = detail.SaleId;
+                WarrantyDate = detail.WarrantyDate;
+                Price = detail.Price;
+                Quantity = detail.Quantity;
+                TotalCost = detail.TotalCost;
+                return this;
+            }
+            return null;
+        }
 
-        
-        public static async Task<DataTable?> GetAllSalesDetailsAsDataTableAsync()
-            => await clsSalesDetailsData.GetAllSaleDetailsAsDataTableAsync();
+        public static bool UpdateProductDetail(int stockId, DateTime? warrantyDate = null, double? price = null, int? quantity = null, double? totalCost = null)
+        {
+            var detail = SalesDetailsList.FirstOrDefault(d => d.StockId == stockId);
+            if (detail != null)
+            {
+                detail.WarrantyDate = warrantyDate ?? detail.WarrantyDate;
+                detail.Price = price ?? detail.Price;
+                detail.Quantity = quantity ?? detail.Quantity;
+                detail.TotalCost = totalCost ?? detail.TotalCost;
+                return true;
+            }
+            return false;
+        }
 
-        public static async Task<List<object[]>?> GetAllSalesDetailsAsListAsync()
-            => await clsSalesDetailsData.GetAllSaleDetailsAsListAsync();
+        public static bool RemoveProdectDetailFromList(int stockId)
+        {
+            var detail = SalesDetailsList.FirstOrDefault(d => d.StockId == stockId);
+            if (detail != null)
+            {
+                SalesDetailsList.Remove(detail);
+                return true;
+            }
+            return false;
+        }
 
-        public static async Task<bool> DeleteMultipleAsync(List<int> detailIDs, int userId)
-            => await clsSalesDetailsData.DeleteMultipleSaleDetailsAsync(detailIDs, userId);
+        public bool UpdateWarrantyDate(byte day, byte month, ushort year)
+        {
+            int currentYear = DateTime.Now.Year;
+
+            if (day > 31 || month > 12 || year < currentYear)
+                return false;
+            try
+            {
+                WarrantyDate = new DateTime(year, month, day);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool ClearSalesDetailsList()
+        {
+            SalesDetailsList.Clear();
+            return SalesDetailsList.Count == 0;
+        }
+
+        public static async Task<DataTable?> GetAllAsync() => await clsSalesDetailsData.GetAllAsync();
+
+
+        //public static async Task<clsSalesDetails?> LoadDetailsAsync(int saleId)
+        //{
+        //    var dataList = await clsSalesDetailsData.GetAllAsync(saleId);
+
+        //    if (dataList == null || dataList.Count == 0)
+        //        return null;
+
+        //    List<clsSalesDetails> detailsList = dataList.Select(data => new clsSalesDetails(
+        //        (int)data["DetailID"],
+        //        saleId,  
+        //        (int)data["StockID"], 
+        //        (double)data["Price"], 
+        //        (int)data["Quantity"], 
+        //        (double)data["TotalCost"],
+        //        data["WarrantyDate"] != DBNull.Value ? Convert.ToDateTime(data["WarrantyDate"]) : null)
+        //    ).ToList();
+
+        //    if (detailsList.Count == 0) return null;
+
+        //    var firstDetail = detailsList.First();
+
+        //    clsSalesDetails salesDetails = new clsSalesDetails(
+        //        firstDetail.Id,
+        //        firstDetail.SaleId,
+        //        firstDetail.StockId,
+        //        firstDetail.Price,
+        //        firstDetail.Quantity,
+        //        firstDetail.TotalCost,
+        //        firstDetail.WarrantyDate
+        //    );
+
+        //    if (detailsList.Count > 1) detailsList.RemoveAt(0);
+
+        //    SalesDetailsList = detailsList;
+
+        //    return salesDetails;
+        //}
+
+        private DateTime? GetDateAfterDays(uint days) => DateTime.Now.AddDays(days);
+
+        public ushort CalculateTotalDays(byte years = 0, byte months = 0, byte days = 0)
+            => (ushort)((years > 0 ? years * 365 : 0) + (months > 0 ? months * 30 : 0) + days); 
     }
 }

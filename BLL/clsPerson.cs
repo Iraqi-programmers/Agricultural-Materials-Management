@@ -3,7 +3,7 @@ using DAL;
 
 namespace BLL
 {
-    public class clsPerson : absClassesHelperAdvance
+    public class clsPerson : absClassesHelperBasc
     {
         public string FullName { get; set; }
         public string? NationalNum { get; set; }
@@ -18,7 +18,7 @@ namespace BLL
             Address = address;
         }
 
-        private clsPerson(int? personId, string fullName, string? nationalNum = null, string? phoneNumber = null, string? address = null)
+        public clsPerson(int? personId, string fullName, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
             Id = personId;
             FullName = fullName;
@@ -27,68 +27,59 @@ namespace BLL
             Address = address;
         }
 
-        public static async Task<clsPerson?> GetPersonByIdAsync(int personId)
-        {
-            var data = await clsPersonData.GetPersonInfoByIdAsync(personId);
-            if (data == null) return null;
-            return __GetPersonData(ref data);
-        }
-        public static async Task<clsPerson?> GetPersonByFullNameAsync(string fullName)
-        {
-            var data = await clsPersonData.GetPersonInfoByFullNameAsync(fullName);
-            if (data == null) return null;
-            return __GetPersonData(ref data);
-        }
-        public static async Task<clsPerson?> GetPersonInfoByNationalNumAsync(string nationalNum)
-        {
-            var data = await clsPersonData.GetPersonInfoByNationalNumAsync(nationalNum);
-            if (data == null) return null;
-            return __GetPersonData(ref data);
-        }
-
-        public static async Task<Dictionary<string, object>?> GetPersonFullDataByIdAsync(int personId)
-            => await clsPersonData.GetPersonFullDataByIdAsync(personId);
-        public static async Task<Dictionary<string, object>?> GetPersonFullDataByFullNameAsync(string fullName)
-            => await clsPersonData.GetPersonFullDataByFullNameAsync(fullName);
-        public static async Task<Dictionary<string, object>?> GetPersonFullDataPhoneNumAsync(string phoneNum)
-            => await clsPersonData.GetPersonFullDataPhoneNumAsync(phoneNum);
-
-        public static async Task<DataTable?> GetAllPeopleAsDataTableAsync() => await clsPersonData.GetAllPersonsAsDataTableAsync();
-        //public static async Task<List<Dictionary<string, object>>?> GetAllPeopleAsListAsync() => await clsPersonData.GetAllPersonsAsListAsync();
-
-        public static async Task<bool> IsPersonExistByIdAsync(int personId) => await clsPersonData.IsPersonExistAsync(personId);
-        public static async Task<bool> IsPersonExistByFullNameAsync(string fullName) => await clsPersonData.IsPersonExistByFullNameAsync(fullName);
-        public static async Task<bool> IsPersonExistByNationalNumAsync(string nationalNum) => await clsPersonData.IsPersonExistByNationalNumAsync(nationalNum);
-
         public async Task<bool> AddAsync()
         {
-            Id = await clsPersonData.AddNewPersonAsync(FullName, NationalNum, PhoneNumber, Address);
+            Id = await clsPersonData.AddAsync(FullName, NationalNum, PhoneNumber, Address);
             return Id != null;
         }
 
-        public async Task<bool> UpdatePersonDataAsync() => await clsPersonData.UpdatePersonDataAsync(Id, FullName, NationalNum, PhoneNumber, Address);
-
-        public static async Task<bool> DeleteAsync(int? personId) => await clsPersonData.DeletePersonByIdAsync(personId);
-        public static async Task<bool> DeleteByFullNameAsync(string fullName) => await clsPersonData.DeletePersonByFullNameAsync(fullName);
-        public static async Task<bool> DeleteByNationalNumAsync(string nationalNum) => await clsPersonData.DeletePersonByNationalNumAsync(nationalNum);
-
-        public async Task<bool> DeleteAsync() => await DeleteAsync(Id);
-        public async Task<bool> DeleteByFullNameAsync() => await DeleteByFullNameAsync(FullName);
-        public async Task<bool> DeleteByNationalNumAsync()
+        public static async Task<clsPerson?> GetByIdAsync(int personId)
         {
-            if (NationalNum == null) return false;
-            return await DeleteByNationalNumAsync(NationalNum);
+            var data = await clsPersonData.GetByIdAsync(personId);
+            if (data == null) return null;
+            return FetchPersonData(ref data);
+        }
+        public static async Task<clsPerson?> GetByFullNameAsync(string fullName)
+        {
+            var data = await clsPersonData.GetByFullNameAsync(fullName);
+            if (data == null) return null;
+            return FetchPersonData(ref data);
+        }
+        public static async Task<clsPerson?> GetByNationalNumAsync(string nationalNum)
+        {
+            var data = await clsPersonData.GetByNationalNumAsync(nationalNum);
+            if (data == null) return null;
+            return FetchPersonData(ref data);
         }
 
-        private static clsPerson __GetPersonData(ref Dictionary<string, object> dict)
-        {
-            int? personId = (int)dict["PersonID"];
-            string fullName = (string)dict["FullName"];
-            string? nationalNum = dict["NationalNum"] != null ? (string)dict["NationalNum"] : null;
-            string? phoneNumber = dict["PhoneNumber"] != null ? (string)dict["PhoneNumber"] : null;
-            string? address = dict["Address"] != null ? (string)dict["Address"] : null;
+        public static async Task<Dictionary<string, object>?> GetFullDataByIdAsync(int personId) => await clsPersonData.GetFullDataByIdAsync(personId);
+        public static async Task<Dictionary<string, object>?> GetFullDataByFullNameAsync(string fullName) => await clsPersonData.GetFullDataByFullNameAsync(fullName);
+        public static async Task<Dictionary<string, object>?> GetFullDataPhoneNumAsync(string phoneNum) => await clsPersonData.GetFullDataPhoneNumAsync(phoneNum);
 
-            return new clsPerson(personId, fullName, nationalNum, phoneNumber, address);
+        public static async Task<DataTable?> GetAllAsDataTableAsync() => await clsPersonData.GetAllAsDataTableAsync();
+        public static async Task<List<Dictionary<string, object>>?> GetAllAsListAsync() => await clsPersonData.GetAllAsListAsync();
+
+        public static async Task<bool> IsExistByIdAsync(int personId) => await clsPersonData.IsExistAsync(personId);
+        public static async Task<bool> IsExistByFullNameAsync(string fullName) => await clsPersonData.IsExistByFullNameAsync(fullName);
+        public static async Task<bool> IsExistByNationalNumAsync(string nationalNum) => await clsPersonData.IsExistByNationalNumAsync(nationalNum);
+
+        public async Task<bool> UpdateAsync() => await clsPersonData.UpdateAsync(Id, FullName, NationalNum, PhoneNumber, Address);
+
+        public static async Task<bool> DeleteByIdAsync(int? personId) => await clsPersonData.DeleteByIdAsync(personId);
+        public static async Task<bool> DeleteByFullNameAsync(string fullName) => await clsPersonData.DeleteByFullNameAsync(fullName);
+        public static async Task<bool> DeleteByNationalNumAsync(string nationalNum) => await clsPersonData.DeleteByNationalNumAsync(nationalNum);
+
+        public async Task<bool> DeleteAsync() => await DeleteByIdAsync(Id);
+        
+        public static clsPerson FetchPersonData(ref Dictionary<string, object> dict)
+        {
+            return new clsPerson(
+                (int)dict["PersonID"],
+                (string)dict["FullName"],
+                dict["NationalNum"] != DBNull.Value ? Convert.ToString(dict["NationalNum"]) : null,
+                dict["PhoneNumber"] != DBNull.Value ? Convert.ToString(dict["PhoneNumber"]) : null,
+                dict["Address"] != DBNull.Value ? Convert.ToString(dict["Address"]) : null
+            );
         }
     }
 }
