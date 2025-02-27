@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Product
 {
-    public class clsProduct
+    public class clsProduct :absClassesHelperBasc
     {
 
     }

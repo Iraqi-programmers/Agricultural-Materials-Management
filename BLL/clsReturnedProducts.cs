@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BLL
 {
     //Create By Abu Sanad
-    public class clsReturnedProducts : absClassesHelper
+    public class clsReturnedProducts : absClassesHelperBasc
     {
 
         public int? ReturnedProductID { get; private set; }

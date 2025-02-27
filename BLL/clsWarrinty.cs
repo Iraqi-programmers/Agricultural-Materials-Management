@@ -61,6 +61,10 @@ namespace BLL
             return await clsWarrintyData.GetAllWarrantiesAsync();
         }
 
+        public ushort CalculateTotalDays(byte years = 0, byte months = 0, byte days = 0)
+        => (ushort)((years > 0 ? years * 365 : 0) + (months > 0 ? months * 30 : 0) + days);
+
+
 
 
 
