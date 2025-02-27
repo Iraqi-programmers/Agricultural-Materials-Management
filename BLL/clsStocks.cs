@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using BLL.Product;
+using DAL;
 using System.ComponentModel;
 using System.Data;
 
@@ -12,24 +13,22 @@ namespace BLL
         public decimal Price { get; set; }
         public clsProduct ProductInfo { get; set; }
 
-        private clsStocks(int stockID, int quantity, string status, bool IsReturned, decimal price, clsProduct productInfo)
+        private clsStocks(int stockID, int quantity, string status, decimal price, clsProduct productInfo)
         {
             Id = stockID;
             Quantity = quantity;
             Status = status;
             this.Price = price;
-            this.IsReturned = IsReturned;
             this.ProductInfo = productInfo;
         }
 
-        public clsStocks(clsProduct productedInfo, bool isReturned, int quantity, string status, decimal price)
+        public clsStocks(clsProduct productedInfo, int quantity, string status, decimal price)
         {
+            Id = null;
             this.ProductInfo = productedInfo;
             this.Quantity = quantity;
             this.Status = status;
             this.Price = price;
-
-            this.IsReturned = isReturned;
         }
 
         public static async Task<clsStocks?> GetStockByID(int StockID)
@@ -46,20 +45,13 @@ namespace BLL
 
         public static async Task<DataTable?> GetAllStocksAsync() => await clsStocksData.GetAllStocks();
 
-        public async Task<bool?> AddAsync()
+        public async Task<bool> AddAsync()
         {
-            Id = await clsStocksData.AddNewStock(ProductInfo.Id ?? null, this.Quantity, this.Status, this.IsReturned, this.Price);
+            Id = await clsStocksData.AddNewStock(ProductInfo.Id ?? null, this.Quantity, this.Status, this.Price);
             return Id != null;
-            //if (Dic == null) return false;
-            //else
-            //{
-            //    Id = (int)Dic["StokeID"];
-            //    ProductInfo.Id = (int)Dic["ProductID"];
-            //}
-            //return true;
         }
         public async Task<bool> UpdateAsync()
-        => await clsStocksData.UpdateStock(Id, ProductInfo.Id ?? null, this.Quantity, this.Status, this.IsReturned, this.Price);
+        => await clsStocksData.UpdateStock(Id, ProductInfo.Id ?? null, this.Quantity, this.Status, this.Price);
 
 
         //التعديل هنا بعد اكتمال كلاس البرودكت
@@ -69,7 +61,6 @@ namespace BLL
                 (int)dict["StiockID"],
                 (int)dict["Quantity"],
                 (string)dict["Status"],
-                (bool)dict["IsReturned"],
                 (decimal)dict["Price"], new clsProduct() //Defuld Constrctor
                                                          //clsProduct.FetchProductData(ref dict)
             );
