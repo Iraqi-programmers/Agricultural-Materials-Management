@@ -1,62 +1,72 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using MyLib_DotNet.DatabaseExecutor;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Net;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace DAL
 {
     public class clsPurchasesData
     {
-        public static async Task<int?> AddPurchase(DateTime PurchaseDate,int SupplierID, decimal TotalPrice, decimal TotalPaid, int UserID)
+        public static async Task<int?> AddAsync(string details, DateTime purchaseDate, int supplierId, double totalPrice, double? totalPaid, bool isDebt, int userId)
         {
-            SqlParameter[] Parameters =
+            SqlParameter[] parameters = 
             {
-                new SqlParameter("@PurchaseDate", PurchaseDate),
-                new SqlParameter("@SupplierID", SupplierID),
-                new SqlParameter("@TotalPrice", TotalPrice),
-                new SqlParameter("@TotalPaid", TotalPaid),
-                new SqlParameter("@UserID", UserID)
+                new SqlParameter("@Details", details),
+                new SqlParameter("@PurchaseDate", purchaseDate),
+                new SqlParameter("@SupplierID", supplierId),
+                new SqlParameter("@TotalPrice", totalPrice),
+                new SqlParameter("@TotalPaid", totalPaid),
+                new SqlParameter("@IsDebt", isDebt),
+                new SqlParameter("@UserID", userId)
             };
-
-            return await CRUD.AddAsync("SP_AddPurchase", Parameters);
+            return await CRUD.AddAsync("SP_AddPurchaseWithDetails", parameters);
         }
 
-        public static async Task<bool> UpdatePurchase(int PurchaseID, DateTime PurchaseDate, int SupplierID, decimal TotalPrice, decimal TotalPaid, int UserID)
+        public static async Task<Dictionary<string, object>?> GetByIdAsync(int purchaseId)
         {
-            SqlParameter[] Parameters =
+            var result = await CRUD.GetByColumnValueAsync("SP_GetPurchaseWithDetailsById", "PurchaseID", purchaseId);
+            if (result == null) return null;
+
+            if (result.ContainsKey("PurchaseDetailsJson") && result["PurchaseDetailsJson"] != DBNull.Value)
             {
-                new SqlParameter("@PurchaseID", PurchaseID),
-                new SqlParameter("@PurchaseDate", PurchaseDate),
-                new SqlParameter("@SupplierID", SupplierID),
-                new SqlParameter("@TotalPrice", TotalPrice),
-                new SqlParameter("@TotalPaid", TotalPaid),
-                new SqlParameter("@UserID", UserID)
+                string detailsJson = result["PurchaseDetailsJson"].ToString()!;
+                result["PurchaseDetails"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
+            }
+            return result;
+        }
+
+        public static async Task<DataTable?> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            SqlParameter[] parameters = 
+            {
+                new SqlParameter("@StartDate", startDate),
+                new SqlParameter("@EndDate", endDate)
             };
-
-            return await CRUD.UpdateAsync("SP_UpdatePurchase", Parameters);
+            return await CRUD.GetAllAsDataTableAsync("SP_GetPurchasesByDateRange", parameters);
         }
 
-        public static async Task<DataTable?> GetAllPurchase()
+        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchases");
+
+        public static async Task<bool> UpdateAsync(string details, DateTime purchaseDate, int? purchaseId, int supplierId, double totalPrice, double? totalPaid, bool isDebt, int userId)
         {
-            return await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchases",null);
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@Details", details),
+                new SqlParameter("@PurchaseID", purchaseId),
+                new SqlParameter("@PurchaseDate", purchaseDate),
+                new SqlParameter("@SupplierID", supplierId),
+                new SqlParameter("@TotalPrice", totalPrice),
+                new SqlParameter("@TotalPaid", totalPaid),
+                new SqlParameter("@IsDebt", isDebt),
+                new SqlParameter("@UserID", userId)
+            };
+            return await CRUD.UpdateAsync("SP_UpdatePurchaseDetails", parameters);
         }
 
-       
-
-        public static async Task<bool> DeletePurchase(int PurchaseID)
+        public static async Task<bool> DeleteAsync(int? purchaseId)
         {
-            return await CRUD.DeleteAsync("SP_DeletePurchase", "@PurchaseID", PurchaseID);
+            if (purchaseId == null) return false;
+            return await CRUD.DeleteAsync("SP_DeletePurchase", "@PurchaseID", purchaseId);
         }
-
-      
-        //البحث عن مشتريات خلال فتره معيننة
-        //التحقق من المشتريات غير المسدددة والعكس
-        //حساب اجمالي المدفوهات للموردين 
     }
 }

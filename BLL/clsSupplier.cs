@@ -1,108 +1,74 @@
-﻿using DAL;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+using DAL;
 
 namespace BLL
 {
-    // CREATE The class By Zaiun
-    public class clsSupplier
+    public class clsSupplier : absClassesHelperBasc
     {
-        public enum enMode { AddNew = 0, Update = 1};
-        public enMode _Mode = enMode.AddNew;
-
-        public int ID { get; set; }
         public string SupplierName { get; set; }
         public string Phone { get; set; }
         public bool IsPerson { get; set; }
         public string Address { get; set; }
 
-        private clsSupplier(int iD, string supplierName, string phone, bool IsPerson, string address)
+        public clsSupplier(string supplierName, string phone, bool isPerson, string address)
         {
-            this.ID = iD;
-            this.SupplierName = supplierName;
-            this.Phone = phone;
-            this.IsPerson = IsPerson;
-            this.Address = address;
-            this._Mode = enMode.Update;
+            SupplierName = supplierName;
+            Phone = phone;
+            IsPerson = isPerson;
+            Address = address;
         }
 
-        public clsSupplier()
+        public clsSupplier(int supplierId, string supplierName, string phone, bool isPerson, string address)
         {
-            this.ID = -1;
-            this.SupplierName = "";
-            this.Phone = "";
-            this.IsPerson = false;
-            this.Address = "";
-
-            this._Mode = enMode.AddNew;
+            Id = supplierId;
+            SupplierName = supplierName;
+            Phone = phone;
+            IsPerson = isPerson;
+            Address = address;
         }
 
-        private async Task<bool> _AddNewSupplier()
+        public async Task<int?> AddAsync()
         {
-             this.ID = (int)await clsSupplierData.AddSupplier(this.SupplierName, this.Phone, this.IsPerson, this.Address);
-            return this.ID != -1;
+            Id = await clsSupplierData.AddAsync(SupplierName, Phone, IsPerson, Address);
+            return Id;
         }
 
-        private async Task<bool> _UpdateSupplier()
+        public static async Task<clsSupplier?> GetByIdAsync(int supplierId)
         {
-            return await clsSupplierData.UpdateSupplier(this.ID, this.SupplierName, this.Phone, this.IsPerson, this.Address);
+            var data = await clsSupplierData.GetByIdAsync(supplierId);
+            if (data == null) return null;
+            return __FetchSupplierData(ref data);
+        }
+        public static async Task<clsSupplier?> GetByNameAsync(string supplierName)
+        {
+            var data = await clsSupplierData.GetByNameAsync(supplierName);
+            if (data == null) return null;
+            return __FetchSupplierData(ref data);
+        }
+        public static async Task<clsSupplier?> GetByPhoneAsync(string phone)
+        {
+            var data = await clsSupplierData.GetByPhoneAsync(phone);
+            if (data == null) return null;
+            return __FetchSupplierData(ref data);
         }
 
-        public async Task<bool> Save()
+        public static async Task<DataTable?> GetAllSuppliersAsync() => await clsSupplierData.GetAllAsync();
+
+        public async Task<bool> UpdateAsync() => await clsSupplierData.UpdateAsync(Id, SupplierName, Phone, IsPerson, Address);
+
+        public static async Task<bool> DeleteByIdAsync(int? supplierId) => await clsSupplierData.DeleteAsync(supplierId);
+
+        public async Task<bool> DeleteByIdAsync() => await DeleteByIdAsync(Id);
+
+        private static clsSupplier __FetchSupplierData(ref Dictionary<string, object> dict)
         {
-           
-            return _Mode switch
-            {
-                enMode.AddNew => await _AddNewSupplier(),
-                enMode.Update => await _UpdateSupplier(),
-                _ => false
-            };
+            return new clsSupplier(
+                (int)dict["SupplierID"],
+                (string)dict["SupplierName"],
+                (string)dict["Phone"],
+                (bool)dict["IsPerson"],
+                (string)dict["Address"]
+            );
         }
-
-        //public async Task<bool> Save()
-        //{
-        //    switch(_Mode)
-        //    {
-        //            case enMode.AddNew:
-        //            {
-        //                if (await _AddNewSupplier())
-        //                {
-        //                    _Mode = enMode.Update;
-        //                    return true;
-        //                }
-        //                else
-        //                { return false; }
-
-        //            }
-        //            case enMode.Update:
-        //            {
-        //                return await _UpdateSupplier();
-        //            }
-
-        //    }
-        //    return false;
-
-        //}
-
-        public static async Task<DataTable?> GetAllSuppliers()
-        {
-            return await clsSupplierData.GetAllSupplier();
-        }
-
-        public static async Task<bool> DeleteSupplier(int id)
-        {
-            return await clsSupplierData.DeleteSupplier(id);
-        }
-
-        public static async Task<object[]?> Find(int id)
-        {
-            return await clsSupplierData.GetSupplierByID(id);
-        }
-
     }
-
 }

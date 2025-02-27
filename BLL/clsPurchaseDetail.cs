@@ -1,85 +1,77 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using DAL;
 
 namespace BLL
 {
-    public class clsPurchaseDetail
+    public class clsPurchaseDetail : absClassesHelperBasc
     {
-        public enum enMode { AddNew = 0, Update = 1 };
-        public enMode _Mode;
-
-        public int PurchaseDetailID {  get; set; }   
-        public int PurchesID {  get; set; }   
-        public int ProductID {  get; set; }   
-        public decimal Price {  get; set; }
-        public string Status { get; set; } 
+        public int PurchaseId { get; set; }
+        public int ProductId { get; set; }
+        public double Price { get; set; }
+        public string Status { get; set; }
         public int Quantity { get; set; }
-        public DateTime WarrintyDate { get; set; }
+        public DateTime WarrantyDate { get; set; }
 
-        private clsPurchaseDetail(int purchaseDetailID, int purchesID, int productID, decimal price, string status, int quantity, DateTime warrintyDate)
+        public static List<clsPurchaseDetail> PurchaseDetailsList { get; private set; } = new List<clsPurchaseDetail>();
+
+        public clsPurchaseDetail(int purchaseId, int productId, double price, string status, int quantity, DateTime warrantyDate)
         {
-            PurchaseDetailID = purchaseDetailID;
-            PurchesID = purchesID;
-            ProductID = productID;
+            PurchaseId = purchaseId;
+            ProductId = productId;
             Price = price;
             Status = status;
             Quantity = quantity;
-            WarrintyDate = warrintyDate;
-            _Mode = enMode.Update;
+            WarrantyDate = warrantyDate;
+            PurchaseDetailsList.Add(this);
         }
 
-        private clsPurchaseDetail()
+        public clsPurchaseDetail(int? purchaseDetailId, int purchaseId, int productId, double price, string status, int quantity, DateTime warrantyDate)
         {
-            PurchaseDetailID = -1;
-            PurchesID =-1;
-            ProductID = -1;
-            Price = 0;
-            Status = "";
-            Quantity = 0;
-            WarrintyDate = DateTime.Now;
-            _Mode = enMode.AddNew;
+            Id = purchaseDetailId;
+            PurchaseId = purchaseId;
+            ProductId = productId;
+            Price = price;
+            Status = status;
+            Quantity = quantity;
+            WarrantyDate = warrantyDate;
         }
 
-        public static async Task<DataTable?> GetAllPurchaseDetails()
-        {
-            return await clsPurchasesDetailsData.GetAllPurchaseDetail();
-        }
+        //public clsPurchaseDetail(List<clsPurchaseDetail> purchaseDetailsList)
+        //{
+        //    PurchaseDetailsList = purchaseDetailsList;
+        //}
 
-        public static async Task<bool> Delete(int ID)
+        public static bool UpdatePurchaseDetail(int purchaseDetailID, double? price = null, string? status = null, int? quantity = null, DateTime? warrantyDate = null)
         {
-            return await clsPurchasesDetailsData.DeletePurchaseDetils(ID);
-        }
-
-        private async Task<bool> _AddNew()
-        {
-            this.PurchaseDetailID =(int) await clsPurchasesDetailsData.AddPurchaseDetail( this.PurchesID,  this.ProductID,  this.Price, this.Status,  this.Quantity, this.WarrintyDate);
-
-            return this.PurchaseDetailID!=-1;
-        }
-
-        private async Task<bool> _Update()
-        {
-            return await clsPurchasesDetailsData.UpdatePurchaseDetail(this.PurchaseDetailID ,this.Price, this.Status, this.Quantity, this.WarrintyDate);
-        }
-
-        public async Task<bool> Save()
-        {
-            return _Mode switch
+            var detail = PurchaseDetailsList.FirstOrDefault(d => d.Id == purchaseDetailID);
+            if (detail != null)
             {
-                enMode.AddNew => await _AddNew(),
-                enMode.Update => await _Update(),
-                _ => false
-            };
+                detail.Price = price ?? detail.Price;
+                detail.Status = status ?? detail.Status;
+                detail.Quantity = quantity ?? detail.Quantity;
+                detail.WarrantyDate = warrantyDate ?? detail.WarrantyDate;
+                return true;
+            }
+            return false;
         }
 
+        public static bool RemovePurchaseDetailFromList(int purchaseDetailID)
+        {
+            var detail = PurchaseDetailsList.FirstOrDefault(d => d.Id == purchaseDetailID);
+            if (detail != null)
+            {
+                PurchaseDetailsList.Remove(detail);
+                return true;
+            }
+            return false;
+        }
 
+        public static bool ClearPurchaseDetailsList()
+        {
+            PurchaseDetailsList.Clear();
+            return PurchaseDetailsList.Count == 0;
+        }
 
-
-
+        public static async Task<DataTable?> GetAllAsync() => await clsPurchasesDetailsData.GetAllAsync();
     }
 }

@@ -5,22 +5,23 @@ using System.Data;
 namespace BLL
 {
     [Description("Create By Abu Sanad")]
-    class clsStocks
+    class clsStocks : absClassesHelperBasc
     {
-       public enum Mod { AddNew,Update}
+       //public enum Mod { AddNew,Update}
 
-        public Mod mod = Mod.AddNew;
+       // public Mod mod = Mod.AddNew;
 
         public int? StockID { get; private set; }
         public int ProductID { get; set; }
         public int Quantity { get; set; }
-        public int WarrintyID { get; set; }
         public string Status { get; set; }
-        public bool IsReturned { get; set; }
         public decimal Price { get; set; }
+        public int WarrintyID { get; set; }
+
+        //public bool IsReturned { get; set; }
 
 
-       // clsWarrinty WarrintyInfo
+        // clsWarrinty WarrintyInfo
         //clsProductInfo ProductInfo
         private clsStocks(int stockID, int productID, int quantity, string status,bool IsReturned,decimal Price,int Warrinty)
         {
@@ -30,10 +31,10 @@ namespace BLL
             Status = status;
             this.WarrintyID = Warrinty;
             this.Price = Price;
-            this.IsReturned = IsReturned;
+            //this.IsReturned = IsReturned;
             //ProductInfo=clsProductInfo.GetProductByID(ProductID);
            // WarrintyInfo= clsWarrintyInfo.GetWarrintyByID(WarrintyID)
-            mod = Mod.Update ;
+            //mod = Mod.Update ;
 
         }
 
@@ -45,8 +46,8 @@ namespace BLL
             this.Status = string.Empty;
             this.Price = -1;
             this.WarrintyID = -1;
-            this.IsReturned = false;
-            mod = Mod.AddNew;
+            //this.IsReturned = false;
+            //mod = Mod.AddNew;
         }
 
         public static async Task<clsStocks> GetStockByID(int StockID)
@@ -58,9 +59,9 @@ namespace BLL
                 if (obj != null)
                 {
                     return new clsStocks(
-                 Convert.ToInt32(obj[0]),
-                 Convert.ToInt32(obj[1]),
-                 Convert.ToInt32(obj[2]),
+                  Convert.ToInt32(obj[0]),
+                  Convert.ToInt32(obj[1]),
+                  Convert.ToInt32(obj[2]),
                   obj[3].ToString() ?? "",
                   Convert.ToBoolean(obj[4]),
                   Convert.ToDecimal(obj[5]),

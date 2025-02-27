@@ -1,61 +1,46 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using MyLib_DotNet.DatabaseExecutor;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL
 {
-    // CREATE The Class by Zaiun
     public class clsSupplierData
     {
-        public static async Task<int?> AddSupplier(string SupplierName, string Phone, bool IsPerson, string Address)
+        public static async Task<int?> AddAsync(string supplierName, string phone, bool isPerson, string address)
         {
-            SqlParameter[] Parameters =
+            SqlParameter[] parameters =
             {
-                new SqlParameter("@SupplierName", SupplierName),
-                new SqlParameter("@Phone", Phone),
-                new SqlParameter("@IsPerson", IsPerson),
-                new SqlParameter("@Address", Address)
-
+                new SqlParameter("@SupplierName", supplierName),
+                new SqlParameter("@Phone", phone),
+                new SqlParameter("@IsPerson", isPerson),
+                new SqlParameter("@Address", address)
             };
-           
-           return await CRUD.AddAsync("SP_AddSupplier", Parameters);
+            return await CRUD.AddAsync("SP_AddSupplier", parameters);
         }
 
-        public static async Task<bool> UpdateSupplier(int ID, string SupplierName, string Phone, bool IsPerson,  string Address)
+        public static async Task<Dictionary<string, object>?> GetByIdAsync(int supplierId) => await CRUD.GetByColumnValueAsync("SP_GetSupplierByID", "@SupplierID", supplierId);
+        public static async Task<Dictionary<string, object>?> GetByNameAsync(string supplierName) => await CRUD.GetByColumnValueAsync("SP_", "@SupplierName", supplierName);
+        public static async Task<Dictionary<string, object>?> GetByPhoneAsync(string phone) => await CRUD.GetByColumnValueAsync("SP_", "@Phone", phone);
+
+        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllSuppliers");
+
+        public static async Task<bool> UpdateAsync(int? supplierId, string supplierName, string phone, bool isPerson,  string address)
         {
-            SqlParameter[] Parameters =
+            SqlParameter[] parameters =
             {
-                new SqlParameter("@SupplierID", ID),
-                new SqlParameter("@SupplierName", SupplierName),
-                new SqlParameter("@Phone", Phone),
-                new SqlParameter("@IsPerson", IsPerson),
-                new SqlParameter("@Address", Address)
+                new SqlParameter("@SupplierID", supplierId),
+                new SqlParameter("@SupplierName", supplierName),
+                new SqlParameter("@Phone", phone),
+                new SqlParameter("@IsPerson", isPerson),
+                new SqlParameter("@Address", address)
             };
-            
-            return await CRUD.UpdateAsync("SP_UpdateSupplier", Parameters);
-
+            return await CRUD.UpdateAsync("SP_UpdateSupplier", parameters);
         }
 
-        public static async Task<DataTable?> GetAllSupplier()
+        public static async Task<bool> DeleteAsync(int? supplierId)
         {
-            return await CRUD.GetAllAsDataTableAsync("SP_GetAllSuppliers");
+            if (supplierId == null) return false;
+            return await CRUD.DeleteAsync("SP_DeleteSupplier", "@SupplierID", supplierId);
         }
-
-        public static async Task<bool> DeleteSupplier(int ID)
-        {
-            return await CRUD.DeleteAsync("SP_DeleteSupplier", "@SupplierID" ,ID);
-        }
-
-        public static async Task<object[]?> GetSupplierByID(int ID)
-        {
-            return await CRUD.GetByColumnValueAsync("SP_GetSupplierByID", "@SupplierID", ID);
-        }
-
     }
-
 }

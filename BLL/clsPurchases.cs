@@ -1,85 +1,153 @@
-﻿using DAL;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+using DAL;
+using Newtonsoft.Json;
 
 namespace BLL
 {
-    public class clsPurchases
+    public class clsPurchases : absClassesHelperBasc
     {
-        public enum enMode { AddNew = 0, Update = 1 };
-        public enMode _Mode;
+        public DateTime Date { get; private set; }
+        public int SupplierId { get; set; }
+        public double TotalPrice { get; set; }
+        public double? TotalPaid { get; set; }
+        public bool IsDebt { get; set; }
+        public int UserId { get; private set; }
 
-        public int? PurchaseID;
-        public int? SupllierID;
-        public int? UserID;
-        public DateTime PurchaseDate;
-        public decimal TotalPrice { get; set; }
-        public decimal TotalPaid { get; set; }
+        public clsPurchaseDetail? PurchaseDetails { get; set; }
 
-        clsSupplier SupplierInfo { get; set; }
-        clsUsers UserInfo { get; set; }
-        private clsPurchases( int? purchaseID, int? supllierID, int? userID, DateTime purchaseDate, decimal totalPrice, decimal totalPaid)
+        public clsPurchases(clsPurchaseDetail purchaseDetails, DateTime date, int supplierId, double totalPrice, double? totalPaid, int userId)
         {
-            this.PurchaseID = purchaseID;
-            this.SupllierID = supllierID;
-            this.UserID = userID;
-            this.PurchaseDate = purchaseDate;
-            this.TotalPrice = totalPrice;
-            this.TotalPaid = totalPaid;
-            
-            this._Mode = enMode.Update;
+            SupplierId = supplierId;
+            Date = date;
+            PurchaseDetails = purchaseDetails;
+            TotalPrice = totalPrice;
+            TotalPaid = totalPaid;
+            IsDebt = totalPrice == totalPaid;
+            UserId = userId;
         }
 
-        public clsPurchases()
+        private clsPurchases(int purchasesId, int supplierId, DateTime date, double totalPrice, bool isDebt, double? totalPaid, int userId)
         {
-            this.PurchaseID = null;
-            this.SupllierID = null;
-            this.UserID = null;
-            this.PurchaseDate = DateTime.Now;
-            this.TotalPrice = 0;
-            this.TotalPaid = 0;
-            UserInfo = new clsUsers();
-            SupplierInfo = new clsSupplier();
-            this._Mode = enMode.AddNew;
+            Id = purchasesId;
+            SupplierId = supplierId;
+            Date = date;
+            TotalPrice = totalPrice;
+            TotalPaid = totalPaid;
+            IsDebt = isDebt;
+            UserId = userId;
         }
 
-        public static async Task<DataTable?> GetAllPurchase()
+        public async Task<int?> AddAsync()
         {
-            return await clsPurchasesData.GetAllPurchase();
+            Id = await clsPurchasesData.AddAsync(JsonConvert.SerializeObject(clsPurchaseDetail.PurchaseDetailsList), Date, SupplierId, TotalPrice, TotalPaid, IsDebt, UserId);
+            return Id;
         }
 
-        public static async Task<bool> Delete(int ID)
+        public static async Task<clsPurchases?> GetByIdAsync(int purchaseId)
         {
-            return await clsPurchasesData.DeletePurchase(ID);
+            var dict = await clsPurchasesData.GetByIdAsync(purchaseId);
+            if (dict == null) return null;
+            return __FetchPurchaseData(ref dict);
         }
 
-        private async Task<bool> _AddNew()
-        {
-            this.PurchaseID = await clsPurchasesData.AddPurchase(this.PurchaseDate, (int)SupllierID, this.TotalPrice, this.TotalPaid, (int)UserID);
+        public static async Task<DataTable?> GetAllPurchasesAsDataTableAsync() => await clsPurchasesData.GetAllAsync();
 
-            return this.PurchaseID.HasValue;
-        }
+        public async Task<bool> UpdateAsync() 
+            => await clsPurchasesData.UpdateAsync(JsonConvert.SerializeObject(clsPurchaseDetail.PurchaseDetailsList), Date, Id, SupplierId, TotalPrice, TotalPaid, IsDebt, UserId);
 
-        private async Task<bool> _Update()
-        {
-            return await clsPurchasesData.UpdatePurchase((int)PurchaseID, PurchaseDate, (int)SupllierID, TotalPrice, this.TotalPaid, (int)UserID);
-        }
+        public static async Task<bool> DeleteAsync(int? purchaseId) => await clsPurchasesData.DeleteAsync(purchaseId);
 
-        public async Task<bool> Save()
+        public async Task<bool> DeleteAsync() => await DeleteAsync(Id);
+
+        private static clsPurchases __FetchPurchaseData(ref Dictionary<string, object> dict)
         {
-            return _Mode switch
+            int id = (int)dict["PurchaseID"];
+
+            List<clsPurchaseDetail> purchaseDetailsList = new();
+            if (dict.ContainsKey("PurchaseDetails") && dict["PurchaseDetails"] is List<Dictionary<string, object>> detailsList)
             {
-                enMode.AddNew => await _AddNew(),
-                enMode.Update => await _Update(),
-                _ => false
+                foreach (var detail in detailsList)
+                {
+                    purchaseDetailsList.Add(new clsPurchaseDetail(
+                        id,
+                        (int)detail["ProductID"],
+                        (double)detail["Price"],
+                        (string)detail["Status"],
+                        (int)detail["Quantity"],
+                        (DateTime)detail["WarrantyDate"]
+                    ));
+                }
+            }
+            return new clsPurchases(
+                id,
+                (int)dict["UserID"],
+                (DateTime)dict["Date"],
+                (double)dict["TotalPrice"],
+                (bool)dict["IsDebt"],
+                dict["TotalPaid"] != DBNull.Value ? Convert.ToDouble(dict["TotalPaid"]) : (double?)null,
+                dict["SupplierID"] != DBNull.Value ? Convert.ToInt32(dict["SupplierID"]) : (int?)null
+            )
+            {
+                PurchaseDetails = purchaseDetailsList.Count > 0 ? new clsPurchaseDetail(purchaseDetailsList) : null
             };
         }
-
     }
 
+    //public class clsPurchases : absClassesHelperBasc
+    //{
+    //    public DateTime Date { get; set; }
+    //    public int SupplierId { get; set; }
+    //    public decimal TotalPrice { get; set; }
+    //    public decimal TotalPaid { get; set; }
+    //    public bool IsDebt { get; set; }
+    //    public int UserId { get; set; }
+
+    //    public clsPurchases(DateTime purchaseDate, int supplierId, decimal totalPrice, decimal totalPaid, bool isDebt, int userId)
+    //    {
+    //        Date = purchaseDate;
+    //        SupplierId = supplierId;
+    //        TotalPrice = totalPrice;
+    //        TotalPaid = totalPaid;
+    //        IsDebt = isDebt;
+    //        UserId = userId;
+    //    }
+
+    //    public clsPurchases(int purchaseId, DateTime purchaseDate, int supplierId, decimal totalPrice, decimal totalPaid, bool isDebt, int userId)
+    //    {
+    //        Id = purchaseId;
+    //        Date = purchaseDate;
+    //        SupplierId = supplierId;
+    //        TotalPrice = totalPrice;
+    //        TotalPaid = totalPaid;
+    //        IsDebt = isDebt;
+    //        UserId = userId;
+    //    }
+
+    //    public async Task<int?> AddAsync()
+    //    {
+    //        Id = await clsPurchasesData.AddAsync(Date, SupplierId, TotalPrice, TotalPaid, IsDebt, UserId);
+    //        return Id;
+    //    }
+
+    //    public static async Task<DataTable?> GetAllAsync() => await clsPurchasesData.GetAllAsync();
+
+    //    public async Task<bool> UpdateAsync() => await clsPurchasesData.UpdateAsync(Id, Date, SupplierId, TotalPrice, TotalPaid, IsDebt, UserId);
+
+    //    public static async Task<bool> DeleteByIdAsync(int? id) => await clsPurchasesData.DeleteAsync(id);
+
+    //    public async Task<bool> DeleteByIdAsync() => await DeleteByIdAsync(Id);
+
+    //    private static clsPurchases __FetchPurchaseData(ref Dictionary<string, object> dict)
+    //    {
+    //        return new clsPurchases(
+    //            (int)dict["PurchaseID"],
+    //            (DateTime)dict["PurchaseDate"],
+    //            (int)dict["SupplierID"],
+    //            (decimal)dict["TotalPrice"],
+    //            (decimal)dict["TotalPaid"],
+    //            (bool)dict["IsDebt"],
+    //            (int)dict["UserID"]
+    //        );
+    //    }
+    //}
 }
