@@ -48,16 +48,17 @@ namespace BLL
 
         public static async Task<DataTable?> GetAllStocksAsync() => await clsStocksData.GetAllStocks();
 
-        public async Task<bool> AddAsync()
+        public async Task<bool?> AddAsync()
         {
-            var Dic = await clsStocksData.AddNewStock(ProductInfo.Id ?? null, this.Quantity, this.Status, this.IsReturned, this.Price);
-            if (Dic == null) return false;
-            else
-            {
-                Id = (int)Dic["StokeID"];
-                ProductInfo.Id = (int)Dic["ProductID"];
-            }
-            return true;
+            Id = await clsStocksData.AddNewStock(ProductInfo.Id ?? null, this.Quantity, this.Status, this.IsReturned, this.Price);
+            return Id != null;
+            //if (Dic == null) return false;
+            //else
+            //{
+            //    Id = (int)Dic["StokeID"];
+            //    ProductInfo.Id = (int)Dic["ProductID"];
+            //}
+            //return true;
         }
         public async Task<bool> UpdateAsync()
         => await clsStocksData.UpdateStock(Id, ProductInfo.Id ?? null, this.Quantity, this.Status, this.IsReturned, this.Price);

@@ -13,7 +13,8 @@ namespace DAL
     //Create By Abu Sanad
     public class clsStocksData
     {
-        public static async Task<Dictionary<string,object>?> AddNewStock(int? ProductID, int Quantity, string Status,bool IsReturned,decimal Price)
+        // هنا المفروض البرودكت ايدي ما يقبل null
+        public static async Task<int?> AddNewStock(int? ProductID, int Quantity, string Status,bool IsReturned,decimal Price)
         {
             SqlParameter[] parameters =
             {
@@ -25,7 +26,7 @@ namespace DAL
             
         };
 
-            return await CRUD.GetAsync("SP_AddStock", parameters);
+            return await CRUD.AddAsync("SP_AddStock", parameters);
         }
 
         public static async Task<bool> UpdateStock(int? StockID, int? ProductID, int Quantity, string Status,bool IsReturned, decimal Price)

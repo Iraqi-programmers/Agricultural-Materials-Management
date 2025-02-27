@@ -60,7 +60,7 @@ namespace BLL
         
         public static async Task<bool> DeleteAsync(int userId) => await clsUsersData.DeleteByIdAsync(userId);
 
-        private static clsUsers __FetchUserData(ref Dictionary<string, object> dict)
+        public static clsUsers __FetchUserData(ref Dictionary<string, object> dict)
         {
             return new clsUsers(
                 (int)dict["UserID"],

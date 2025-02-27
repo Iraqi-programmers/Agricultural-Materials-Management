@@ -15,21 +15,21 @@ namespace BLL
     {
         //يجب التعديل على هذا الكلاس
         public clsStocks stockinfo { get; set; }
-        public  clsPerson PersonInfo { get; set; }
+       // public  clsPerson PersonInfo { get; set; }
         public  clsUsers UserInfo { get; set; }
 
-        public clsWarrintyReturnesToPeople(clsStocks stockInfo, clsPerson personInfo, clsUsers userInfo)
+        public clsWarrintyReturnesToPeople(clsStocks stockInfo, clsUsers userInfo)
         {
             this.stockinfo = stockInfo;
-            PersonInfo = personInfo;
+           // PersonInfo = personInfo;
             UserInfo = userInfo;
         }
 
-        private clsWarrintyReturnesToPeople(int warrantyRetID,clsPerson person,clsUsers userinfo)
+        private clsWarrintyReturnesToPeople(int warrantyRetID,clsUsers userInfo)
         {
              Id = warrantyRetID;
-            this.PersonInfo = person;
-            this.UserInfo = userinfo;
+           // this.PersonInfo = person;
+            this.UserInfo = userInfo;
         }
 
 
@@ -43,7 +43,7 @@ namespace BLL
 
         public static async Task<bool> DeleteAsync(int WarrintyReturnesID) => await clsWarrintyReturnesToPeopleData.Delete(WarrintyReturnesID);
 
-        public  async Task<bool> UpdateAsync(int warrantyReturnedID) => await clsWarrintyReturnesToPeopleData.Update(warrantyReturnedID, PersonInfo.Id, UserInfo.Id);
+        public  async Task<bool> UpdateAsync(int warrantyReturnedID) => await clsWarrintyReturnesToPeopleData.Update(warrantyReturnedID, UserInfo.Person.Id, UserInfo.Id);
 
         public static async Task<DataTable?> GetAllAsync() => await clsWarrintyReturnesToPeopleData.GetAll();
 
@@ -69,9 +69,8 @@ namespace BLL
         {
             return new clsWarrintyReturnesToPeople(
                 (int)dict["WarrantyReturnedID"],
-                 new clsPerson(""),
-                new clsUsers("","",new clsPerson(""))//Defuld Constrctor
-                                                        
+                  clsUsers.__FetchUserData(ref dict)
+
             );
         }
     }
