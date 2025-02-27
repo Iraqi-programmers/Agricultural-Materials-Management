@@ -43,14 +43,14 @@ namespace BLL
         {
             var dict = await clsUsersData.GetByUserNameAndPasswordAsync(userName, password);
             if (dict == null) return null;
-            return __FetchUserData(ref dict);
+            return FetchUserData(ref dict);
         }
 
         public static async Task<clsUsers?> GetByIdAsync(int userId)
         {
             var dict = await clsUsersData.GetByIdAsync(userId);
             if (dict == null) return null;
-            return __FetchUserData(ref dict);
+            return FetchUserData(ref dict);
         }
 
         public static async Task<DataTable?> GetAllAsync() => await clsUsersData.GetAllAsync();
@@ -60,7 +60,7 @@ namespace BLL
         
         public static async Task<bool> DeleteAsync(int userId) => await clsUsersData.DeleteByIdAsync(userId);
 
-        public static clsUsers __FetchUserData(ref Dictionary<string, object> dict)
+        public static clsUsers FetchUserData(ref Dictionary<string, object> dict)
         {
             return new clsUsers(
                 (int)dict["UserID"],
