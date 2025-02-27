@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using Microsoft.Data.SqlClient;
 using MyLib_DotNet.DatabaseExecutor;
 
 namespace DAL
 {
-   // CREATE  the class by Mohammed
     public class clsSupplierPymentsData
     {
-        
         public static async Task<int?> AddSupplierPyment( decimal Amount,int SupplierID,DateTime PymentDate,int PurchaseID,int UserID)
         {
             SqlParameter[] Parameters =
@@ -23,7 +16,6 @@ namespace DAL
                 new SqlParameter("@PurchaseID",PurchaseID),
                 new SqlParameter("@UserID", UserID)
             };
-
             return await CRUD.AddAsync("SP_AddSupplierPayment", Parameters);
         }
 
@@ -37,9 +29,7 @@ namespace DAL
                 new SqlParameter("@PurchaseID",PurchaseID),
                 new SqlParameter("@UserID", UserID)
             };
-
             return await CRUD.UpdateAsync("SP_UpdateSupplierPayment", Parameters);
-
         }
 
         public static async Task<DataTable?> GetAllSupplierPayments()
