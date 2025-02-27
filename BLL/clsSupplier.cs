@@ -37,19 +37,19 @@ namespace BLL
         {
             var data = await clsSupplierData.GetByIdAsync(supplierId);
             if (data == null) return null;
-            return __FetchSupplierData(ref data);
+            return FetchSupplierData(ref data);
         }
         public static async Task<clsSupplier?> GetByNameAsync(string supplierName)
         {
             var data = await clsSupplierData.GetByNameAsync(supplierName);
             if (data == null) return null;
-            return __FetchSupplierData(ref data);
+            return FetchSupplierData(ref data);
         }
         public static async Task<clsSupplier?> GetByPhoneAsync(string phone)
         {
             var data = await clsSupplierData.GetByPhoneAsync(phone);
             if (data == null) return null;
-            return __FetchSupplierData(ref data);
+            return FetchSupplierData(ref data);
         }
 
         public static async Task<DataTable?> GetAllSuppliersAsync() => await clsSupplierData.GetAllAsync();
@@ -60,7 +60,7 @@ namespace BLL
 
         public async Task<bool> DeleteByIdAsync() => await DeleteByIdAsync(Id);
 
-        private static clsSupplier __FetchSupplierData(ref Dictionary<string, object> dict)
+        public static clsSupplier FetchSupplierData(ref Dictionary<string, object> dict)
         {
             return new clsSupplier(
                 (int)dict["SupplierID"],
