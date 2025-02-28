@@ -13,58 +13,56 @@ namespace BLL
         public decimal Price { get; set; }
         public clsProduct ProductInfo { get; set; }
 
-        private clsStocks(int stockID, int quantity, string status, decimal price, clsProduct productInfo)
-        {
-            Id = stockID;
-            Quantity = quantity;
-            Status = status;
-            this.Price = price;
-            this.ProductInfo = productInfo;
-        }
-
         public clsStocks(clsProduct productedInfo, int quantity, string status, decimal price)
         {
-            Id = null;
             this.ProductInfo = productedInfo;
             this.Quantity = quantity;
             this.Status = status;
             this.Price = price;
         }
 
-        public static async Task<clsStocks?> GetStockByID(int StockID)
+        private clsStocks(int stockId, int quantity, string status, decimal price, clsProduct productInfo)
         {
-            var obj = await clsStocksData.GetStockByID(StockID);
-            if (obj != null) return null;
-            else
-                return __FetchStockData(ref obj);
+            Id = stockId;
+            Quantity = quantity;
+            Status = status;
+            this.Price = price;
+            this.ProductInfo = productInfo;
         }
 
-        public static async Task<bool> DeleteStockAsync(int StockID) => await clsStocksData.DeleteStock(StockID);
-
-        public static async Task<bool> UpdateStockQuantityAsync(int stockId, int quantity) => await clsStocksData.UpdateStockQuantity(stockId, quantity);
-
-        public static async Task<DataTable?> GetAllStocksAsync() => await clsStocksData.GetAllStocks();
-
-        public async Task<bool> AddAsync()
+        public static async Task<clsStocks?> GetByIDAsync(int stockId)
         {
-            Id = await clsStocksData.AddNewStock(ProductInfo.Id ?? null, this.Quantity, this.Status, this.Price);
-            return Id != null;
+            var obj = await clsStocksData.GetStockByID(stockId);
+            if (obj == null) return null;
+            return FetchStockData(ref obj);
         }
-        public async Task<bool> UpdateAsync()
-        => await clsStocksData.UpdateStock(Id, ProductInfo.Id ?? null, this.Quantity, this.Status, this.Price);
 
+        public static async Task<DataTable?> GetAllAsync() => await clsStocksData.GetAllStocks();
+
+        //private static async Task<bool> __UpdateAsync(int stockId, int quantity) => await clsStocksData.UpdateStockQuantity(stockId, quantity);
+
+        //private async Task<bool> __AddAsync()
+        //{
+        //    Id = await clsStocksData.AddNewStock(ProductInfo.Id ?? null, this.Quantity, this.Status, this.Price);
+        //    return Id != null;
+        //}
+
+        //public async Task<bool> UpdateAsync()
+        //    => await clsStocksData.UpdateStock(Id, ProductInfo.Id ?? null, this.Quantity, this.Status, this.Price);
+
+        public static async Task<bool> DeleteAsync(int stockId) => await clsStocksData.DeleteStock(stockId);
 
         //التعديل هنا بعد اكتمال كلاس البرودكت
-        private static clsStocks __FetchStockData(ref Dictionary<string, object> dict)
+        internal static clsStocks FetchStockData(ref Dictionary<string, object> dict)
         {
             return new clsStocks(
                 (int)dict["StiockID"],
                 (int)dict["Quantity"],
                 (string)dict["Status"],
-                (decimal)dict["Price"], new clsProduct() //Defuld Constrctor
-                                                         //clsProduct.FetchProductData(ref dict)
+                (decimal)dict["Price"], 
+                new clsProduct() //Defuld Constrctor
+                                 //clsProduct.FetchProductData(ref dict)
             );
         }
-
     }
 }

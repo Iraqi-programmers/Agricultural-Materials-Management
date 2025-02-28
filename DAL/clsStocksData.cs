@@ -14,79 +14,69 @@ namespace DAL
     public class clsStocksData
     {
         // هنا المفروض البرودكت ايدي ما يقبل null
-        public static async Task<int?> AddNewStock(int? ProductID, int Quantity, string Status,decimal Price)
+        public static async Task<int?> AddAsync(int? productId, int quantity, string status, decimal price)
         {
             SqlParameter[] parameters =
             {
-            new SqlParameter("@ProductID", ProductID),
-            new SqlParameter("@Quantity", Quantity),
-            new SqlParameter("@Status", Status),
-            new SqlParameter("@Price", Price)
-            
-        };
-
+                new SqlParameter("@ProductID", productId),
+                new SqlParameter("@Quantity", quantity),
+                new SqlParameter("@Status", status),
+                new SqlParameter("@Price", price)
+            };
             return await CRUD.AddAsync("SP_AddStock", parameters);
         }
 
-        public static async Task<bool> UpdateStock(int? StockID, int? ProductID, int Quantity, string Status, decimal Price)
+        public static async Task<bool> UpdateStock(int? stockId, int? productId, int quantity, string status, decimal price)
         {
             SqlParameter[] parameters =
             {
-                new SqlParameter("@StockID", StockID),
-                new SqlParameter("@ProductID", ProductID),
-                new SqlParameter("@Quantity", Quantity),
-                new SqlParameter("@Status", Status),
-                new SqlParameter("@Price", Price),
-
+                new SqlParameter("@StockID", stockId),
+                new SqlParameter("@ProductID", productId),
+                new SqlParameter("@Quantity", quantity),
+                new SqlParameter("@Status", status),
+                new SqlParameter("@Price", price),
             };
-
             return await CRUD.UpdateAsync("SP_UpdateStock", parameters);
         }
 
         public static async Task<bool> UpdateStockQuantity(int stockId, int quantity)
         {
             SqlParameter[] parameters =
-           {
-            new SqlParameter("@StockID", stockId),
-            new SqlParameter("@Quantity", quantity)
-
-           };
-
+            {
+                new SqlParameter("@StockID", stockId),
+                new SqlParameter("@Quantity", quantity)
+            };
             return await CRUD.UpdateAsync("SP_UpdateStockQuantity", parameters);
         }
 
-        public static async Task<bool> DeleteStock(int StockID)
-         => await CRUD.DeleteAsync("SP_DeleteStock", "StockID", StockID);
+        public static async Task<bool> DeleteStock(int stockId)
+            => await CRUD.DeleteAsync("SP_DeleteStock", "StockID", stockId);
         
-
-        public static async Task<Dictionary<string, object>?> GetStockByID(int StockID)
-        => await CRUD.GetByColumnValueAsync("SP_GetStockByID", "StockID", StockID);
+        public static async Task<Dictionary<string, object>?> GetStockByID(int stockId)
+            => await CRUD.GetByColumnValueAsync("SP_GetStockByID", "StockID", stockId);
         
         public static async Task<DataTable?> GetAllStocks() 
-        => await CRUD.GetAllAsDataTableAsync("SP_GetAllStocks");
+            => await CRUD.GetAllAsDataTableAsync("SP_GetAllStocks");
         
-        public static async Task<Dictionary<string, object>?> GetStockByProductID(int ProductID)    
-         => await CRUD.GetByColumnValueAsync("SP_GetStockByProductID", "ProductID", ProductID);
+        public static async Task<Dictionary<string, object>?> GetStockByProductID(int productId)    
+            => await CRUD.GetByColumnValueAsync("SP_GetStockByProductID", "ProductID", productId);
        
-        public static async Task<DataTable?> GetAllStockByProductID(int ProductID)
+        public static async Task<DataTable?> GetAllStockByProductID(int productId)
         {
-            SqlParameter[] pr =
+            SqlParameter[] parameters =
             {
-                new SqlParameter("@ProductID",ProductID)
+                new SqlParameter("@ProductID", productId)
             };
-
-            return await CRUD.GetAllAsDataTableAsync("SP_GetStockByProductID",pr);
+            return await CRUD.GetAllAsDataTableAsync("SP_GetStockByProductID", parameters);
         }
 
-        public static async Task<DataTable?> GetProductByStatus(string Status)
+        public static async Task<DataTable?> GetProductByStatus(string status)
         {
-            SqlParameter[] pr =
+            SqlParameter[] parameters =
             {
-                new SqlParameter("@Status",Status)
+                new SqlParameter("@Status", status)
             };
-
-            return await CRUD.GetAllAsDataTableAsync("SP_GetStockByStatus", pr);
+            return await CRUD.GetAllAsDataTableAsync("SP_GetStockByStatus", parameters);
         }
-
     }
 }

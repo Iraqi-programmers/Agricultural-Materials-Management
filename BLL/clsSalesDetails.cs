@@ -12,9 +12,6 @@ namespace BLL
         public int Quantity { get; set; }
         public double TotalCost { get; set; }
 
-        // نحتاج نمسح محتوى القائمة بعد الانتهاء 
-        //public static List<clsSalesDetails> SalesDetailsList { get; private set; } = new List<clsSalesDetails>();
-
         public clsSalesDetails(clsStocks stock, double price, int quantity, double totalCost, uint period = 0)
         {
             Stock = stock;
@@ -22,7 +19,6 @@ namespace BLL
             Price = price;
             Quantity = quantity;
             TotalCost = totalCost;
-            //SalesDetailsList.Add(this);
         }
 
         private clsSalesDetails(int? detailId, int saleId, clsStocks stock, double price, int quantity, double totalCost, DateTime? warrantyDate)
@@ -34,6 +30,13 @@ namespace BLL
             Quantity = quantity;
             TotalCost = totalCost;
             WarrantyDate = warrantyDate;
+        }
+
+        public static async Task<clsSalesDetails?> GetByIdAsync(int detailId)
+        {
+            var dict = await clsSalesDetailsData.GetByIdAsync(detailId);
+            if (dict == null) return null;
+            return FetchSalesDetailsData(ref dict);
         }
 
         //public clsSalesDetails(List<clsSalesDetails> salesDetailsList)
@@ -150,5 +153,18 @@ namespace BLL
 
         //public ushort CalculateTotalDays(byte years = 0, byte months = 0, byte days = 0)
         //    => (ushort)((years > 0 ? years * 365 : 0) + (months > 0 ? months * 30 : 0) + days); 
+
+        internal static clsSalesDetails FetchSalesDetailsData(ref Dictionary<string, object> dict)
+        {
+            return new clsSalesDetails(
+                (int)dict["SalesDetailID"],
+                (int)dict["SaleID"],
+                clsStocks.FetchStockData(ref dict),
+                (double)dict["Price"],
+                (int)dict["Quantity"],
+                (double)dict["TotalCost"],
+                (DateTime)dict["Date"]
+            );
+        }
     }
 }

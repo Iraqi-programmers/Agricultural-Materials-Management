@@ -23,8 +23,8 @@ namespace DAL
 
         public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchaseDetails");
         
-        public static async Task<List<Dictionary<string, object>>?> GetByIdAsync(int purchaseId)
-            => await CRUD.GetAllAsListAsync("SP_", new SqlParameter[] { new SqlParameter("@PurchaseID", purchaseId) });
+        public static async Task<Dictionary<string, object>?> GetByIdAsync(int purchaseId)
+            => await CRUD.GetByColumnValue("SP_", new SqlParameter[] { new SqlParameter("@PurchaseID", purchaseId) });
 
         public static async Task<List<Dictionary<string, object>>?> GetByProductNameAsync(string productName)
             => await CRUD.GetAllAsListAsync("SP_", new SqlParameter[] { new SqlParameter("@ProductName", productName) });
