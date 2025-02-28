@@ -18,7 +18,7 @@ namespace BLL
             Address = address;
         }
 
-        public clsPerson(int? personId, string fullName, string? nationalNum = null, string? phoneNumber = null, string? address = null)
+        private clsPerson(int? personId, string fullName, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
             Id = personId;
             FullName = fullName;
@@ -27,10 +27,17 @@ namespace BLL
             Address = address;
         }
 
-        public async Task<bool> AddAsync()
+        public async Task<bool> SaveAsync()
+        {
+            if (!Id.HasValue) 
+                return await __AddAsync();
+            return await __UpdateAsync();
+        }
+
+        private async Task<bool> __AddAsync()
         {
             Id = await clsPersonData.AddAsync(FullName, NationalNum, PhoneNumber, Address);
-            return Id != null;
+            return Id.HasValue;
         }
 
         public static async Task<clsPerson?> GetByIdAsync(int personId)
@@ -63,7 +70,7 @@ namespace BLL
         public static async Task<bool> IsExistByFullNameAsync(string fullName) => await clsPersonData.IsExistByFullNameAsync(fullName);
         public static async Task<bool> IsExistByNationalNumAsync(string nationalNum) => await clsPersonData.IsExistByNationalNumAsync(nationalNum);
 
-        public async Task<bool> UpdateAsync() => await clsPersonData.UpdateAsync(Id, FullName, NationalNum, PhoneNumber, Address);
+        private async Task<bool> __UpdateAsync() => await clsPersonData.UpdateAsync(Id, FullName, NationalNum, PhoneNumber, Address);
 
         public static async Task<bool> DeleteByIdAsync(int? personId) => await clsPersonData.DeleteByIdAsync(personId);
         public static async Task<bool> DeleteByFullNameAsync(string fullName) => await clsPersonData.DeleteByFullNameAsync(fullName);
@@ -71,7 +78,7 @@ namespace BLL
 
         public async Task<bool> DeleteAsync() => await DeleteByIdAsync(Id);
         
-        public static clsPerson FetchPersonData(ref Dictionary<string, object> dict)
+        internal static clsPerson FetchPersonData(ref Dictionary<string, object> dict)
         {
             return new clsPerson(
                 (int)dict["PersonID"],

@@ -69,7 +69,7 @@ namespace BLL
         {
             return new clsWarrintyReturnesToPeople(
                 (int)dict["WarrantyReturnedID"],
-                  clsUsers.__FetchUserData(ref dict)
+                  clsUsers.FetchUserData(ref dict)
 
             );
         }

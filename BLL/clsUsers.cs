@@ -7,7 +7,7 @@ namespace BLL
     public class clsUsers : absClassesHelperBasc
     {
         public string UserName { get; set; }
-        public string? Password { get; set; }
+        public string Password { get; set; } = "";
         public bool IsActive { get; set; }
 
         public clsPerson Person { get; private set; }
@@ -24,19 +24,21 @@ namespace BLL
         {
             Id = userId;
             UserName = userName;
-            Password = null;
             IsActive = isActive;
             Person = person;
         }
 
-        public async Task<bool> AddAsync(bool addNewPerson = false)
+        public async Task<bool> SaveAsync()
         {
-            var dict = await clsUsersData.AddAsync(UserName, Password, addNewPerson ? null : Person.Id, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
-            if (dict == null) return false;
-            Id = (int)dict["UserID"];
-            if (addNewPerson)
-                Person.Id = (int)dict["PersonID"];
-            return true;
+            if (!Id.HasValue) 
+                return await __AddAsync();
+            return await __UpdateAsync();
+        }
+
+        private async Task<bool> __AddAsync()
+        {
+            Id = await clsUsersData.AddAsync(UserName, Password, Person.Id);
+            return Id.HasValue;
         }
 
         public static async Task<clsUsers?> GetByUserNameAndPasswordAsync(string userName, string password)
@@ -55,12 +57,13 @@ namespace BLL
 
         public static async Task<DataTable?> GetAllAsync() => await clsUsersData.GetAllAsync();
 
-        public async Task<bool> UpdateAsync() => await clsUsersData.UpdateAsync(Id, UserName, Password, IsActive);
-        public async Task<bool> UpdateUserWithPersonAsync() => await clsUsersData.UpdateAsync(Id, UserName, Password, IsActive, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
+        public async Task<bool> __UpdateAsync() => await clsUsersData.UpdateAsync(Id, UserName, Password, IsActive, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
+
+        //public async Task<bool> UpdateUserWithPersonAsync() => await clsUsersData.UpdateAsync(Id, UserName, Password, IsActive, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
         
         public static async Task<bool> DeleteAsync(int userId) => await clsUsersData.DeleteByIdAsync(userId);
 
-        public static clsUsers FetchUserData(ref Dictionary<string, object> dict)
+        internal static clsUsers FetchUserData(ref Dictionary<string, object> dict)
         {
             return new clsUsers(
                 (int)dict["UserID"],

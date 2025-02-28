@@ -5,10 +5,10 @@ namespace BLL
 {
     public class clsSupplier : absClassesHelperBasc
     {
-        public string SupplierName { get; set; }
-        public string Phone { get; set; }
-        public bool IsPerson { get; set; }
-        public string Address { get; set; }
+        public string SupplierName { get; set; } = "";
+        public string Phone { get; set; } = "";
+        public bool IsPerson { get; set; } = false;
+        public string Address { get; set; } = "";
 
         public clsSupplier(string supplierName, string phone, bool isPerson, string address)
         {
@@ -18,7 +18,7 @@ namespace BLL
             Address = address;
         }
 
-        public clsSupplier(int supplierId, string supplierName, string phone, bool isPerson, string address)
+        private clsSupplier(int supplierId, string supplierName, string phone, bool isPerson, string address)
         {
             Id = supplierId;
             SupplierName = supplierName;
@@ -27,10 +27,19 @@ namespace BLL
             Address = address;
         }
 
-        public async Task<int?> AddAsync()
+        internal clsSupplier() { }
+
+        public async Task<bool> SaveAsync()
+        {
+            if (!Id.HasValue)
+                return await __AddAsync();
+            return await __UpdateAsync();
+        }
+
+        private async Task<bool> __AddAsync()
         {
             Id = await clsSupplierData.AddAsync(SupplierName, Phone, IsPerson, Address);
-            return Id;
+            return Id.HasValue;
         }
 
         public static async Task<clsSupplier?> GetByIdAsync(int supplierId)
@@ -54,13 +63,13 @@ namespace BLL
 
         public static async Task<DataTable?> GetAllSuppliersAsync() => await clsSupplierData.GetAllAsync();
 
-        public async Task<bool> UpdateAsync() => await clsSupplierData.UpdateAsync(Id, SupplierName, Phone, IsPerson, Address);
+        private async Task<bool> __UpdateAsync() => await clsSupplierData.UpdateAsync(Id, SupplierName, Phone, IsPerson, Address);
 
         public static async Task<bool> DeleteByIdAsync(int? supplierId) => await clsSupplierData.DeleteAsync(supplierId);
 
         public async Task<bool> DeleteByIdAsync() => await DeleteByIdAsync(Id);
 
-        public static clsSupplier FetchSupplierData(ref Dictionary<string, object> dict)
+        internal static clsSupplier FetchSupplierData(ref Dictionary<string, object> dict)
         {
             return new clsSupplier(
                 (int)dict["SupplierID"],

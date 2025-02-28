@@ -7,7 +7,7 @@ namespace DAL
 {
     public class clsPurchasesData
     {
-        public static async Task<int?> AddAsync(string details, DateTime purchaseDate, int supplierId, double totalPrice, double? totalPaid, bool isDebt, int userId)
+        public static async Task<int?> AddAsync(string details, DateTime purchaseDate, int? supplierId, double totalPrice, double? totalPaid, bool isDebt, int? userId)
         {
             SqlParameter[] parameters = 
             {
@@ -24,15 +24,19 @@ namespace DAL
 
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int purchaseId)
         {
-            var result = await CRUD.GetByColumnValueAsync("SP_GetPurchaseWithDetailsById", "PurchaseID", purchaseId);
-            if (result == null) return null;
+            // نحتاج بيانات القائمة 
+            // بيانات السبلاير 
+            // وبيانات البرجيسز ديتيلز 
+            var dict = await CRUD.GetByColumnValueAsync("SP_GetPurchaseWithDetailsById", "PurchaseID", purchaseId);
 
-            if (result.ContainsKey("PurchaseDetailsJson") && result["PurchaseDetailsJson"] != DBNull.Value)
+            if (dict == null) return null;
+
+            if (dict.ContainsKey("PurchaseDetailsJson") && dict["PurchaseDetailsJson"] != DBNull.Value)
             {
-                string detailsJson = result["PurchaseDetailsJson"].ToString()!;
-                result["PurchaseDetails"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
+                string detailsJson = dict["PurchaseDetailsJson"].ToString()!;
+                dict["PurchaseDetails"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
             }
-            return result;
+            return dict;
         }
 
         public static async Task<DataTable?> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
@@ -47,7 +51,7 @@ namespace DAL
 
         public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchases");
 
-        public static async Task<bool> UpdateAsync(string details, DateTime purchaseDate, int? purchaseId, int supplierId, double totalPrice, double? totalPaid, bool isDebt, int userId)
+        public static async Task<bool> UpdateAsync(string details, DateTime purchaseDate, int? purchaseId, int? supplierId, double totalPrice, double? totalPaid, bool isDebt, int? userId)
         {
             SqlParameter[] parameters =
             {

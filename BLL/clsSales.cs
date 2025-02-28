@@ -7,61 +7,69 @@ namespace BLL
     public class clsSales : absClassesHelperBasc
     {
         public DateTime Date { get; private set; }
-        public int? PersonId { get; set; }
-        public int UserId { get; private set; }
+        public clsPerson? Person { get; set; }
+        public clsUsers User { get; private set; }
         public double SaleTotalCost { get; set; }
         public double? PaidAmount {  get; set; }
         public bool IsDebt { get; set; }
         
         public clsSalesDetails? SalesDetails { get; set; }
 
-        public clsSales(clsSalesDetails objSalesDetails, int userId, double saleTotalCost, bool isDebt, double? paidAmount = null, int? personId = null)
+        public clsSales(clsSalesDetails salesDetails, clsUsers user, double saleTotalCost, bool isDebt, double? paidAmount = null, clsPerson? person = null)
         {
-            PersonId = personId;
-            UserId = userId;
+            Person = person;
+            User = user;
             SaleTotalCost = saleTotalCost;
-            SalesDetails = objSalesDetails;
+            SalesDetails = salesDetails;
             PaidAmount = paidAmount;
             IsDebt = isDebt;
         }
 
-        private clsSales(int id, int userId, DateTime date, double saleTotalCost, bool isDebt, double? paidAmount = null, int? personId = null)
+        private clsSales(int id, clsUsers user, DateTime date, double saleTotalCost, bool isDebt, double? paidAmount = null, clsPerson? person = null)
         {
             Id = id;
             Date = date;
-            PersonId = personId;
-            UserId = userId;
+            Person = person;
+            User = user;
             SaleTotalCost = saleTotalCost;
             PaidAmount = paidAmount;
             IsDebt = isDebt;
         }
 
-        public async Task<int?> AddSaleAsync(string? fullName = null, string? nationalNum = null, string? phoneNum = null, string? address = null)
+        public async Task<bool> SaveAsync()
         {
-            Id = await clsSalesData.AddAsync(JsonConvert.SerializeObject(clsSalesDetails.SalesDetailsList), UserId, SaleTotalCost, PaidAmount, PersonId, fullName, nationalNum, phoneNum, address);
-            return Id;
+            if (!Id.HasValue)
+                return await __AddAsync();
+            return await __UpdateAsync();
+        }
+
+        private async Task<bool> __AddAsync()
+        {
+            Id = await clsSalesData.AddAsync(JsonConvert.SerializeObject(clsSalesDetails.SalesDetailsList), User.Id, SaleTotalCost, PaidAmount, Person?.Id);
+            return Id.HasValue;
         }
 
         public static async Task<clsSales?> GetByIdAsync(int saleId)
         {
             var dict = await clsSalesData.GetByIdAsync(saleId);
             if (dict == null) return null;
-            return __FetchSaleData(ref dict);
+            return FetchSaleData(ref dict);
         }
 
-        public static async Task<DataTable?> GetAllSalesAsDataTableAsync() => await clsSalesData.GetAllAsync();       
+        public static async Task<DataTable?> GetAllAsync() => await clsSalesData.GetAllAsync();       
 
-        public async Task<bool> UpdateAsync(int userId) => await clsSalesData.UpdateAsync(userId, JsonConvert.SerializeObject(clsSalesDetails.SalesDetailsList), SaleTotalCost);
+        private async Task<bool> __UpdateAsync() => await clsSalesData.UpdateAsync(User.Id, JsonConvert.SerializeObject(clsSalesDetails.SalesDetailsList), SaleTotalCost);
 
-        public static async Task<bool> DeleteAsync(int? saleId, int userId, bool returnToStock = false) => await clsSalesData.DeleteAsync(saleId, userId, returnToStock);
+        public static async Task<bool> DeleteAsync(int? saleId, int? userId, bool returnToStock = false) => await clsSalesData.DeleteAsync(saleId, userId, returnToStock);
 
-        public async Task<bool> DeleteAsync(bool returnToStock = false) => await DeleteAsync(Id, UserId, returnToStock);
+        public async Task<bool> DeleteAsync(bool returnToStock = false) => await DeleteAsync(Id, User.Id, returnToStock);
 
-        private static clsSales __FetchSaleData(ref Dictionary<string, object> dict)
+        internal static clsSales FetchSaleData(ref Dictionary<string, object> dict)
         {
             int id = (int)dict["SaleID"];
 
             List<clsSalesDetails> salesDetailsList = new();
+
             if (dict.ContainsKey("SalesDetails") && dict["SalesDetails"] is List<Dictionary<string, object>> detailsList)
             {
                 foreach (var detail in detailsList)
@@ -79,12 +87,12 @@ namespace BLL
             }
             return new clsSales(
                 id,
-                (int)dict["UserID"],
+                clsUsers.FetchUserData(ref dict),
                 (DateTime)dict["Date"],
                 (double)dict["SaleTotalCost"],
                 (bool)dict["IsDebt"],
                 dict["PaidAmount"] != DBNull.Value ? Convert.ToDouble(dict["PaidAmount"]) : (double?)null,
-                dict["PersonID"] != DBNull.Value ? Convert.ToInt32(dict["PersonID"]) : (int?)null
+                clsPerson.FetchPersonData(ref dict)
             )
             {
                 SalesDetails = salesDetailsList.Count > 0 ? new clsSalesDetails(salesDetailsList) : null

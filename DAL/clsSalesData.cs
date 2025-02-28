@@ -7,6 +7,8 @@ namespace DAL
 {
     public class clsSalesData
     {
+        // هاي نلغي اضافة الشخص من داخلها افضل تبقى بس تاخذ ايدي شخص او لا 
+        // يعني اذا نحتاج نضيف بيانات شخص لازم نضيفه من الواجه بالبداية او نمرر ايديه او نختار ايدي الشخص اذا جان اله بيانات بالسستم 
         /*
         CREATE PROCEDURE SP_AddSaleWithDetails
             @UserID INT,
@@ -14,10 +16,6 @@ namespace DAL
             @SaleTotalCost DECIMAL(10,2),
             @PaidAmount DECIMAL(10,2) = NULL,
             @PersonID INT = NULL,
-            @FullName NVARCHAR(255) = NULL,
-            @NationalNum NVARCHAR(50) = NULL,
-            @PhoneNumber NVARCHAR(50) = NULL,
-            @Address NVARCHAR(255) = NULL,
             @SaleID INT OUTPUT
         AS
         BEGIN
@@ -42,26 +40,7 @@ namespace DAL
                 BEGIN
                     SET @NewPersonID = @PersonID;
                 END
-                ELSE IF @FullName IS NOT NULL
-                BEGIN
-                    IF @NationalNum IS NOT NULL
-                    BEGIN
-                        SELECT @NewPersonID = PersonID FROM Persons WHERE NationalNum = @NationalNum;
-                    END
-
-                    IF @NewPersonID IS NULL AND @PhoneNumber IS NOT NULL
-                    BEGIN
-                        SELECT @NewPersonID = PersonID FROM Persons WHERE PhoneNumber = @PhoneNumber;
-                    END
-
-                    IF @NewPersonID IS NULL 
-                    BEGIN
-                        INSERT INTO Persons (FullName, NationalNum, PhoneNumber, Address)
-                        VALUES (@FullName, @NationalNum, @PhoneNumber, @Address);
-                        SET @NewPersonID = SCOPE_IDENTITY();
-                    END
-                END
-
+                
                 -- إدراج عملية البيع
                 INSERT INTO Sales (SaleDate, PersonID, UserID, SaleTotalCost, PaidAmount, IsDebt)
                 VALUES (GETDATE(), @NewPersonID, @UserID, @SaleTotalCost, @PaidAmount, @IsDebt);
@@ -108,7 +87,7 @@ namespace DAL
             END CATCH;
         END;
          */
-        public static async Task<int?> AddAsync(string details, int userId, double saleTotalCost, double? paidAmount = null, int? personId = null, string? fullName = null, string? nationalNum = null, string? phoneNum = null, string? address = null)
+        public static async Task<int?> AddAsync(string details, int? userId, double saleTotalCost, double? paidAmount = null, int? personId = null)
         {
             var parameters = new SqlParameter[]
             {
@@ -117,11 +96,10 @@ namespace DAL
                 new SqlParameter("@SaleTotalCost", saleTotalCost),
                 new SqlParameter("@PaidAmount", paidAmount)
             };
-            if (personId.HasValue) parameters.Append(new SqlParameter("@PersonID", personId));
-            if (!string.IsNullOrWhiteSpace(fullName)) parameters.Append(new SqlParameter("@FullName", fullName));
-            if (!string.IsNullOrWhiteSpace(nationalNum)) parameters.Append(new SqlParameter("@NationalNum", nationalNum));
-            if (!string.IsNullOrWhiteSpace(phoneNum)) parameters.Append(new SqlParameter("@PhoneNumber", phoneNum));
-            if (!string.IsNullOrWhiteSpace(address)) parameters.Append(new SqlParameter("@Address", address));
+
+            if (personId.HasValue) 
+                parameters.Append(new SqlParameter("@PersonID", personId));
+
             return await CRUD.AddAsync("SP_AddSaleWithDetails", parameters);
         }
 
@@ -158,16 +136,19 @@ namespace DAL
          */
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int saleId)
         {
-            var result = await CRUD.GetByColumnValueAsync("SP_GetSaleWithDetailsById", "SaleID", saleId);
+            // dict لازم يحتوي على بيانات اليوزر كاملة
+            // وبيانات البيرسن الزبون ايظا اذا كانت موجودة
+            // وبيانات السيل مع جميع الريكوردز الي تمثل المنجات الموجودة بالقائمة
+            var dict = await CRUD.GetByColumnValueAsync("SP_GetSaleWithDetailsById", "SaleID", saleId);
 
-            if (result == null) return null;
+            if (dict == null) return null;
 
-            if (result.ContainsKey("SalesDetailsJson") && result["SalesDetailsJson"] != DBNull.Value)
+            if (dict.ContainsKey("SalesDetailsJson") && dict["SalesDetailsJson"] != DBNull.Value)
             {
-                string detailsJson = result["SalesDetailsJson"].ToString()!;
-                result["SalesDetails"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
+                string detailsJson = dict["SalesDetailsJson"].ToString()!;
+                dict["SalesDetails"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
             }
-            return result;
+            return dict;
         }
 
         public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_");
@@ -325,7 +306,7 @@ namespace DAL
         END;
 
          */
-        public static async Task<bool> UpdateAsync(int saleId, string details, double SaleTotalCost, double? paidAmount = null)
+        public static async Task<bool> UpdateAsync(int? saleId, string details, double SaleTotalCost, double? paidAmount = null)
         {
             var parameters = new SqlParameter[]
             {
@@ -392,7 +373,7 @@ namespace DAL
             END CATCH;
         END;
          */
-        public static async Task<bool> DeleteAsync(int? saleId, int userId, bool returnToStock = false)
+        public static async Task<bool> DeleteAsync(int? saleId, int? userId, bool returnToStock = false)
         {
             SqlParameter[] parameters =
             {
