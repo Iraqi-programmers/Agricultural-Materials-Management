@@ -1,46 +1,45 @@
 ﻿using DAL.Product;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Formats.Asn1;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+
+//yousif
 namespace BLL.Product
 {
+
     public class clsCompany : absClassesHelperBasc
     {
-        string CompanyName { set; get; }
+        public string CompanyName { set; get; }
 
-        public clsCompany(string CompanyName)
+        public clsCompany(string companyName)
         {
             Id = null;
-            this.CompanyName =CompanyName;
+            this.CompanyName =companyName;
         }
 
-        private clsCompany(int companyID, string CompanyName)
+        private clsCompany(int companyID, string companyName)
         {
             Id = companyID;
-            this.CompanyName = CompanyName;
+            this.CompanyName = companyName;
         }
 
-        public static async Task<DataTable?> getAllAsDataTableAsync()
+        public static async Task<DataTable?> GetAllAsync()
         {
             return await clsCompanyData.getAllAsDatatableAsync();
         }
 
-        public static async Task<clsCompany?> findCompanyByIDAsync(int CompanyID)
+        public static async Task<clsCompany?> FindByIDAsync(int companyID)
         {
-            var data = await clsCompanyData.findByIDAsync(CompanyID);
+            var data = await clsCompanyData.FindByIDAsync(companyID);
+            
 
-            return new clsCompany(CompanyID, data?[1] as string) ?? null;
+            return new clsCompany(companyID, data?[1] as string) ?? null;
         }
-        private async Task<int?> __addAsync()
+
+        private async Task<int?> __AddAsync()
         {
             return await clsCompanyData.addAsync(CompanyName);
         }
-        private async Task<bool> __update()
+        private async Task<bool> __Update()
         {
             return await clsCompanyData.updateAsync(Id, CompanyName);
         }
@@ -48,10 +47,10 @@ namespace BLL.Product
         {
             if(Id == null)
             {
-                Id = await __addAsync();
+                Id = await __AddAsync();
                 return Id != null;
             }
-            return await __update();
+            return await __Update();
         }
 
 

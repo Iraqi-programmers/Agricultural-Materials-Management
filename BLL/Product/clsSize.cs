@@ -6,49 +6,49 @@ namespace BLL.Product
 {
     public class clsSize: absClassesHelperBasc
     {
-        double size { set; get; }
+        public double Size { set; get; }
 
         public clsSize(double size)
         {
             Id = null;
-            this.size = size;
+            Size = size;
         }
 
         private clsSize(int sizeID, double size)
         {
             Id = sizeID;
-            this.size = size;
+            Size = size;
         }
 
-        public static async Task<DataTable?> getAllAsDataTableAsync()
+        public static async Task<DataTable?> GetAllAsync()
         {
             return await clsSizeData.getAllAsDatatableAsync();
         }
 
-        public static async Task<clsSize?> findBySizeID(int SizeID)
+        public static async Task<clsSize?> FindByIDAsync(int SizeID)
         {
             var data = await clsSizeData.findByIDAsync(SizeID);
 
             return new clsSize(SizeID, data?[1] as double? ?? 0.0) ?? null;
         }
 
-        private async Task<int?> __addAsync()
+        private async Task<int?> __AddAsync()
         {
-            return await clsSizeData.addAsync(size);
+            return await clsSizeData.addAsync(Size);
         }
 
-        private async Task<bool> __updateAsync()
+        private async Task<bool> __UpdateAsync()
         {
-            return await clsSizeData.updateAsync(this.Id, size);
+            return await clsSizeData.updateAsync(this.Id, Size);
         }
-        public async Task<bool> saveAsync()
+        public async Task<bool> aveAsync()
         {
             if(Id == null)
             {
-                Id = await __addAsync();
+                Id = await __AddAsync();
                 return true;
             }
-            return await __updateAsync();
+            return await __UpdateAsync();
         }
 
     }
