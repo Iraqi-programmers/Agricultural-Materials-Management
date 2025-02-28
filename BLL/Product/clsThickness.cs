@@ -6,48 +6,46 @@ namespace BLL.Product
 {
     public class clsThickness : absClassesHelperBasc
     {
-        double thickness { set; get; }
+        double Thickness { set; get; }
 
-        public clsThickness(double Thickness)
+        public clsThickness(double thickness)
         {
             Id = null;
-            this.thickness = Thickness;
+            this.Thickness = thickness;
         }
 
-        private clsThickness(int ThicknessID, double Thickness)
+        private clsThickness(int thicknessId, double thickness)
         {
-            Id = ThicknessID;
-            this.thickness = Thickness;
+            Id = thicknessId;
+            Thickness = thickness;
         }
 
-        public static async Task<DataTable?> getAllAsDataTableAsync()
+        public static async Task<DataTable?> GetAllAsync()
         {
             return await clsThicknessData.getAllAsDataTableAsync();
         }
         
-        private  async Task<int?> __addAsync()
+        private  async Task<bool> __AddAsync()
         {
-            return await clsThicknessData.addAsync(thickness);
+            Id = await clsThicknessData.AddAsync(Thickness);
+            return Id.HasValue;
         }
 
-        private  async Task<bool> __update()
+        private  async Task<bool> __UpdateAsync()
         {
-            return await clsThicknessData.updateAsync(this.Id, thickness);
+            return await clsThicknessData.updateAsync(this.Id, Thickness);
         }
 
-        public async Task<bool> save()
+        public async Task<bool> SaveAsync()
         {
-            if(this.Id == null)
-            {
-                Id = await __addAsync();
-                return true;
-            }
-            return await __update();
+            if (!Id.HasValue)
+                return await __AddAsync();
+            return await __UpdateAsync();
         }
 
         
 
-        public static async Task<clsThickness?> findBySizeID(int SizeID)
+        public static async Task<clsThickness?> FindBySizeIDAsync(int SizeID)
         {
             var data = await clsThicknessData.findByIDAsync(SizeID);
 

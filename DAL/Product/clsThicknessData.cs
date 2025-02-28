@@ -23,7 +23,7 @@ namespace DAL.Product
             return await CRUD.GetByColumnValueAsync("SP_GetThicknessByID", "ThicknessID", ThicknessID);
         }
 
-        public static async Task<int?> addAsync(double Thickness)
+        public static async Task<int?> AddAsync(double Thickness)
         {
             SqlParameter[] sqlParameter =
             {

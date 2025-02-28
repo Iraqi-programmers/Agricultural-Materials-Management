@@ -1,0 +1,68 @@
+﻿using DAL;
+using Microsoft.Data.SqlClient;
+using System.Data;
+
+namespace BLL.Product
+{
+    //Create By Abu Sanad
+
+    //updated ByYousif
+    public class clsWarrinty : absClassesHelperBasc
+    {
+
+        public int Period { get; set; }
+
+        public clsWarrinty(int period)
+        {
+            Period = period;
+        }
+
+        private clsWarrinty(int warrintyId, int Period)
+        {
+            this.Period = Period;
+        }
+
+        private async Task<bool> __AddNewAsync()
+        {
+            Id = await clsWarrintyData.AddAsync(Period);
+            return Id.HasValue;
+        }
+
+        private async Task<bool> __UpdateAsync() => await clsWarrintyData.UpdateAsync(Id, Period);
+
+        public async Task<bool> SaveAsync()
+        {
+            if (!Id.HasValue)
+                return await __AddNewAsync();
+            return await __UpdateAsync();
+        }
+
+        public async Task<bool> Delete()
+        {
+            if (Id == null)
+                throw new ArgumentException("WarrantyID غير موجود للحذف!");
+
+            return await clsWarrintyData.DeleteAsync(Id.Value);
+        }
+
+        public static async Task<clsWarrinty?> GetByID(int warrantyId)
+        {
+            var result = await clsWarrintyData.GetByIdAsync(warrantyId);
+            if (result == null) return null;
+            int period = (int)result["Period"];
+            return new clsWarrinty(warrantyId, period);
+        }
+
+        public static async Task<DataTable?> GetAll() => await clsWarrintyData.GetAllAsync();
+
+
+        public ushort CalculateTotalDays(byte years = 0, byte months = 0, byte days = 0)
+        => (ushort)((years > 0 ? years * 365 : 0) + (months > 0 ? months * 30 : 0) + days);
+
+
+
+
+
+    }
+
+}

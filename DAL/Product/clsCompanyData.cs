@@ -23,10 +23,9 @@ namespace DAL.Product
 
         }
 
-        public static async Task<object[]?> findByIDAsync(int CompanyID)
-        {
-            return await CRUD.GetByColumnValueAsync("SP_GetCompanyByID", "TypeID", CompanyID);
-        }
+        public static async Task<Dictionary<string, object>?> FindByIDAsync(int companyId)
+            => await CRUD.GetByColumnValueAsync("SP_", "PersonID", companyId);
+
         public static async Task<object?> findCompanyByNameAsync(string CompanyName)
         {
             return await CRUD.GetByColumnValueAsync("SP_GetCompanyByName", "CompanyName", CompanyName);
