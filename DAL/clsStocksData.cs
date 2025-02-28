@@ -14,14 +14,13 @@ namespace DAL
     public class clsStocksData
     {
         // هنا المفروض البرودكت ايدي ما يقبل null
-        public static async Task<int?> AddNewStock(int? ProductID, int Quantity, string Status,bool IsReturned,decimal Price)
+        public static async Task<int?> AddNewStock(int? ProductID, int Quantity, string Status,decimal Price)
         {
             SqlParameter[] parameters =
             {
             new SqlParameter("@ProductID", ProductID),
             new SqlParameter("@Quantity", Quantity),
             new SqlParameter("@Status", Status),
-            new SqlParameter("@IsReturned", IsReturned),
             new SqlParameter("@Price", Price)
             
         };
@@ -29,7 +28,7 @@ namespace DAL
             return await CRUD.AddAsync("SP_AddStock", parameters);
         }
 
-        public static async Task<bool> UpdateStock(int? StockID, int? ProductID, int Quantity, string Status,bool IsReturned, decimal Price)
+        public static async Task<bool> UpdateStock(int? StockID, int? ProductID, int Quantity, string Status, decimal Price)
         {
             SqlParameter[] parameters =
             {
@@ -37,7 +36,6 @@ namespace DAL
                 new SqlParameter("@ProductID", ProductID),
                 new SqlParameter("@Quantity", Quantity),
                 new SqlParameter("@Status", Status),
-                new SqlParameter("@IsReturned", IsReturned),
                 new SqlParameter("@Price", Price),
 
             };

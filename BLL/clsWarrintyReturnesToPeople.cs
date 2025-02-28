@@ -10,38 +10,34 @@ using System.Threading.Tasks;
 namespace BLL
 {
     //Create By Abu Sanad
-
     public class clsWarrintyReturnesToPeople :absClassesHelperBasc
     {
-        //يجب التعديل على هذا الكلاس
-        public clsStocks stockinfo { get; set; }
-       // public  clsPerson PersonInfo { get; set; }
+        public clsReturnedStocks Stockinfo { get; set; }
         public  clsUsers UserInfo { get; set; }
 
-        public clsWarrintyReturnesToPeople(clsStocks stockInfo, clsUsers userInfo)
+        public clsWarrintyReturnesToPeople(clsReturnedStocks stockInfo, clsUsers userInfo)
         {
-            this.stockinfo = stockInfo;
-           // PersonInfo = personInfo;
+            Id = null;
+            this.Stockinfo = stockInfo;
             UserInfo = userInfo;
         }
 
-        private clsWarrintyReturnesToPeople(int warrantyRetID,clsUsers userInfo)
+        private clsWarrintyReturnesToPeople(int warrantyRetID, clsReturnedStocks stockInfo, clsUsers userInfo)
         {
              Id = warrantyRetID;
-           // this.PersonInfo = person;
+            this.Stockinfo = stockInfo;
             this.UserInfo = userInfo;
         }
 
 
-        public static async Task<clsWarrintyReturnesToPeople?> GetByID(int WarrintyReturnesID)
+        public static async Task<clsWarrintyReturnesToPeople?> GetByID(int warrintyReturnesID)
         {
-            var obj = await clsWarrintyReturnesToPeopleData.GetByID(WarrintyReturnesID);
-            if (obj != null) return null;
-            else
-                return __FetchWarrintyReturnesData(ref obj);
+            var obj = await clsWarrintyReturnesToPeopleData.GetByID(warrintyReturnesID);
+            if (obj == null) return null;
+            return __FetchWarrintyReturnesData(ref obj);
         }
 
-        public static async Task<bool> DeleteAsync(int WarrintyReturnesID) => await clsWarrintyReturnesToPeopleData.Delete(WarrintyReturnesID);
+        public static async Task<bool> DeleteAsync(int warrintyReturnesID) => await clsWarrintyReturnesToPeopleData.Delete(warrintyReturnesID);
 
         public  async Task<bool> UpdateAsync(int warrantyReturnedID) => await clsWarrintyReturnesToPeopleData.Update(warrantyReturnedID, UserInfo.Person.Id, UserInfo.Id);
 
@@ -58,13 +54,9 @@ namespace BLL
             }
             return true;
         }
-        //public async Task<bool> UpdateAsync()
-        //=> await clsWarrintyReturnesToPeopleData.Update(Id);
+        public async Task<bool> UpdateAsync()
+        => await clsWarrintyReturnesToPeopleData.Update(Id,UserInfo.Person.Id,UserInfo.Id);
 
-
-
-
-        //التعديل هنا بعد اكتمال كلاس الارجاع للمخزن
         private static clsWarrintyReturnesToPeople __FetchWarrintyReturnesData(ref Dictionary<string, object> dict)
         {
             return new clsWarrintyReturnesToPeople(
