@@ -20,6 +20,10 @@ namespace DAL
             return await CRUD.AddAsync("SP_", parameters);
         }
 
+        // نحتاج ستورد
+        public static async Task<Dictionary<string, object>?> GetByIdAsync(int detailId)
+            => await CRUD.GetByColumnValueAsync("SP_", "SalesDetailID", detailId);
+
         public static async Task<List<Dictionary<string, object>>?> GetAllAsync(int saleId) 
             => await CRUD.GetAllAsListAsync("SP_", new SqlParameter[] { new SqlParameter("@SaleID", saleId) });
 

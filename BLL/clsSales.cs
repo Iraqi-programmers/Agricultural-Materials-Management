@@ -13,27 +13,28 @@ namespace BLL
         public double? PaidAmount {  get; set; }
         public bool IsDebt { get; set; }
         
-        public clsSalesDetails? SalesDetails { get; set; }
+        public List<clsSalesDetails> SalesDetailsList { get; set; }
 
-        public clsSales(clsSalesDetails salesDetails, clsUsers user, double saleTotalCost, bool isDebt, double? paidAmount = null, clsPerson? person = null)
+        public clsSales(List<clsSalesDetails> salesDetailsList, clsUsers user, double saleTotalCost, bool isDebt, double? paidAmount = null, clsPerson? person = null)
         {
             Person = person;
             User = user;
             SaleTotalCost = saleTotalCost;
-            SalesDetails = salesDetails;
+            SalesDetailsList = salesDetailsList;
             PaidAmount = paidAmount;
             IsDebt = isDebt;
         }
 
-        private clsSales(int id, clsUsers user, DateTime date, double saleTotalCost, bool isDebt, double? paidAmount = null, clsPerson? person = null)
+        private clsSales(int selesId, List<clsSalesDetails> salesDetailsList, clsUsers user, DateTime date, double saleTotalCost, bool isDebt, double? paidAmount = null, clsPerson? person = null)
         {
-            Id = id;
+            Id = selesId;
             Date = date;
             Person = person;
             User = user;
             SaleTotalCost = saleTotalCost;
             PaidAmount = paidAmount;
             IsDebt = isDebt;
+            SalesDetailsList = salesDetailsList;
         }
 
         public async Task<bool> SaveAsync()
@@ -45,7 +46,7 @@ namespace BLL
 
         private async Task<bool> __AddAsync()
         {
-            Id = await clsSalesData.AddAsync(JsonConvert.SerializeObject(clsSalesDetails.SalesDetailsList), User.Id, SaleTotalCost, PaidAmount, Person?.Id);
+            Id = await clsSalesData.AddAsync(JsonConvert.SerializeObject(SalesDetailsList), User.Id, SaleTotalCost, PaidAmount, Person?.Id);
             return Id.HasValue;
         }
 
@@ -58,19 +59,19 @@ namespace BLL
 
         public static async Task<DataTable?> GetAllAsync() => await clsSalesData.GetAllAsync();       
 
-        private async Task<bool> __UpdateAsync() => await clsSalesData.UpdateAsync(User.Id, JsonConvert.SerializeObject(clsSalesDetails.SalesDetailsList), SaleTotalCost);
+        private async Task<bool> __UpdateAsync() => await clsSalesData.UpdateAsync(User.Id, JsonConvert.SerializeObject(SalesDetailsList), SaleTotalCost);
 
         public static async Task<bool> DeleteAsync(int? saleId, int? userId, bool returnToStock = false) => await clsSalesData.DeleteAsync(saleId, userId, returnToStock);
 
         public async Task<bool> DeleteAsync(bool returnToStock = false) => await DeleteAsync(Id, User.Id, returnToStock);
 
         internal static clsSales FetchSaleData(ref Dictionary<string, object> dict)
-        {
+        { 
             int id = (int)dict["SaleID"];
 
             List<clsSalesDetails> salesDetailsList = new();
 
-            if (dict.ContainsKey("SalesDetails") && dict["SalesDetails"] is List<Dictionary<string, object>> detailsList)
+            if (dict.ContainsKey("SalesDetailsData") && dict["SalesDetailsData"] is List<Dictionary<string, object>> detailsList)
             {
                 foreach (var detail in detailsList)
                 {

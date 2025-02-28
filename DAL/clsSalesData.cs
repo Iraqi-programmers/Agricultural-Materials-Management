@@ -146,7 +146,7 @@ namespace DAL
             if (dict.ContainsKey("SalesDetailsJson") && dict["SalesDetailsJson"] != DBNull.Value)
             {
                 string detailsJson = dict["SalesDetailsJson"].ToString()!;
-                dict["SalesDetails"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
+                dict["SalesDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
             }
             return dict;
         }

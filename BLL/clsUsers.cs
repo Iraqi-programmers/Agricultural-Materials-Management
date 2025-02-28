@@ -58,8 +58,6 @@ namespace BLL
         public static async Task<DataTable?> GetAllAsync() => await clsUsersData.GetAllAsync();
 
         public async Task<bool> __UpdateAsync() => await clsUsersData.UpdateAsync(Id, UserName, Password, IsActive, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
-
-        //public async Task<bool> UpdateUserWithPersonAsync() => await clsUsersData.UpdateAsync(Id, UserName, Password, IsActive, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
         
         public static async Task<bool> DeleteAsync(int userId) => await clsUsersData.DeleteByIdAsync(userId);
 
