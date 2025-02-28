@@ -6,21 +6,20 @@ namespace DAL
 {
     public class clsSalesDetailsData
     {
-        public static async Task<int?> AddAsync(int stockId, uint quantity, DateTime warrantyDate, float price, float totaCost, int userId)
-        {
-            SqlParameter[] parameters =
-            {
-                new SqlParameter("@StockID", stockId),
-                new SqlParameter("@Quantity", quantity),
-                new SqlParameter("@WarrntyDate", warrantyDate),
-                new SqlParameter("@Price", price),
-                new SqlParameter("@TotaCost", totaCost),
-                new SqlParameter("@UserID", userId)
-            };
-            return await CRUD.AddAsync("SP_", parameters);
-        }
+        //public static async Task<int?> AddAsync(int stockId, uint quantity, DateTime warrantyDate, float price, float totaCost, int userId)
+        //{
+        //    SqlParameter[] parameters =
+        //    {
+        //        new SqlParameter("@StockID", stockId),
+        //        new SqlParameter("@Quantity", quantity),
+        //        new SqlParameter("@WarrntyDate", warrantyDate),
+        //        new SqlParameter("@Price", price),
+        //        new SqlParameter("@TotaCost", totaCost),
+        //        new SqlParameter("@UserID", userId)
+        //    };
+        //    return await CRUD.AddAsync("SP_", parameters);
+        //}
 
-        // نحتاج ستورد
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int detailId)
             => await CRUD.GetByColumnValueAsync("SP_", "SalesDetailID", detailId);
 

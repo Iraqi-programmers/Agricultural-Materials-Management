@@ -34,7 +34,7 @@ namespace DAL
             if (dict.ContainsKey("PurchaseDetailsJson") && dict["PurchaseDetailsJson"] != DBNull.Value)
             {
                 string detailsJson = dict["PurchaseDetailsJson"].ToString()!;
-                dict["PurchaseDetails"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
+                dict["PurchaseDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
             }
             return dict;
         }

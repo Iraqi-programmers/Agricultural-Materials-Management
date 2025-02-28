@@ -12,32 +12,32 @@ namespace BLL
         public double? TotalPaid { get; set; }
         public bool IsDebt { get; set; }
 
-        public clsUsers User { get; private set; }
+        public clsUsers UserInfo { get; private set; }
 
-        public clsSupplier Supplier { get; private set; }
+        public clsSupplier SupplierInfo { get; private set; }
 
         public List<clsPurchaseDetail> PurchaseDetailsList { get; private set; }
 
         public clsPurchases(List<clsPurchaseDetail> purchaseDetailsList, clsSupplier supplier, DateTime date, double totalPrice, double? totalPaid, clsUsers user)
         {
-            Supplier = supplier;
+            SupplierInfo = supplier;
             Date = date;
             PurchaseDetailsList = purchaseDetailsList;
             TotalPrice = totalPrice;
             TotalPaid = totalPaid;
             IsDebt = totalPrice == totalPaid;
-            User = user;
+            UserInfo = user;
         }
 
         private clsPurchases(int purchasesId, List<clsPurchaseDetail> purchaseDetailsList, ref clsSupplier supplier, DateTime date, double totalPrice, bool isDebt, double? totalPaid, clsUsers user)
         {
             Id = purchasesId;
-            Supplier = supplier;
+            SupplierInfo = supplier;
             Date = date;
             TotalPrice = totalPrice;
             TotalPaid = totalPaid;
             IsDebt = isDebt;
-            User = user;
+            UserInfo = user;
             PurchaseDetailsList = purchaseDetailsList;
         }
 
@@ -50,7 +50,7 @@ namespace BLL
 
         private async Task<bool> __AddAsync()
         {
-            Id = await clsPurchasesData.AddAsync(JsonConvert.SerializeObject(PurchaseDetailsList), Date, Supplier.Id, TotalPrice, TotalPaid, IsDebt, User.Id);
+            Id = await clsPurchasesData.AddAsync(JsonConvert.SerializeObject(PurchaseDetailsList), Date, SupplierInfo.Id, TotalPrice, TotalPaid, IsDebt, UserInfo.Id);
             return Id.HasValue;
         }
 
@@ -61,10 +61,10 @@ namespace BLL
             return FetchPurchaseData(ref dict);
         }
 
-        public static async Task<DataTable?> GetAllPurchasesAsDataTableAsync() => await clsPurchasesData.GetAllAsync();
+        public static async Task<DataTable?> GetAllAsync() => await clsPurchasesData.GetAllAsync();
 
         private async Task<bool> __UpdateAsync()
-            => await clsPurchasesData.UpdateAsync(JsonConvert.SerializeObject(PurchaseDetailsList), Date, Id, Supplier.Id, TotalPrice, TotalPaid, IsDebt, User.Id);
+            => await clsPurchasesData.UpdateAsync(JsonConvert.SerializeObject(PurchaseDetailsList), Date, Id, SupplierInfo.Id, TotalPrice, TotalPaid, IsDebt, UserInfo.Id);
 
         public static async Task<bool> DeleteAsync(int? purchaseId) => await clsPurchasesData.DeleteAsync(purchaseId);
 
@@ -76,13 +76,13 @@ namespace BLL
 
             clsSupplier supplier = new();
 
-            if (dict.ContainsKey("SupplierJson") && dict["SupplierJson"] is Dictionary<string, object> supplierData)
+            if (dict.ContainsKey("SupplierData") && dict["SupplierData"] is Dictionary<string, object> supplierData)
                 supplier = clsSupplier.FetchSupplierData(ref supplierData);
 
             clsUsers user = new();
 
-            if (dict.ContainsKey("SupplierJson") && dict["SupplierJson"] is Dictionary<string, object> supplierData)
-                user = clsSupplier.FetchSupplierData(ref userData);
+            if (dict.ContainsKey("UserData") && dict["UserData"] is Dictionary<string, object> userData)
+                user = clsUsers.FetchUserData(ref userData);
 
             List<clsPurchaseDetail> purchaseDetailsList = new();
 
@@ -109,7 +109,7 @@ namespace BLL
                 (double)dict["TotalPrice"],
                 (bool)dict["IsDebt"],
                 dict["TotalPaid"] != DBNull.Value ? Convert.ToDouble(dict["TotalPaid"]) : (double?)null,
-                (int)dict["UserID"]
+                user
             );
         }
     }

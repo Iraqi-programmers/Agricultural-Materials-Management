@@ -21,13 +21,13 @@ namespace DAL
             return await CRUD.AddAsync("SP_", parameters);
         }
 
-        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchaseDetails");
-        
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int purchaseId)
-            => await CRUD.GetByColumnValue("SP_", new SqlParameter[] { new SqlParameter("@PurchaseID", purchaseId) });
+            => await CRUD.GetByColumnValueAsync("SP_", "PurchaseID", purchaseId);
 
         public static async Task<List<Dictionary<string, object>>?> GetByProductNameAsync(string productName)
             => await CRUD.GetAllAsListAsync("SP_", new SqlParameter[] { new SqlParameter("@ProductName", productName) });
+
+        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchaseDetails");
 
         public static async Task<bool> UpdateAsync(int purchaseDetailId, decimal price, string status, int quantity, DateTime warrantyDate)
         {

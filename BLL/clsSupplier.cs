@@ -65,9 +65,9 @@ namespace BLL
 
         private async Task<bool> __UpdateAsync() => await clsSupplierData.UpdateAsync(Id, SupplierName, Phone, IsPerson, Address);
 
-        public static async Task<bool> DeleteByIdAsync(int? supplierId) => await clsSupplierData.DeleteAsync(supplierId);
+        public static async Task<bool> DeleteAsync(int? supplierId) => await clsSupplierData.DeleteAsync(supplierId);
 
-        public async Task<bool> DeleteByIdAsync() => await DeleteByIdAsync(Id);
+        public async Task<bool> DeleteAsync() => await DeleteAsync(Id);
 
         internal static clsSupplier FetchSupplierData(ref Dictionary<string, object> dict)
         {
