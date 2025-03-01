@@ -21,7 +21,7 @@ namespace BLL
             TotalCost = totalCost;
         }
 
-        private clsSalesDetails(int? detailId, int saleId, clsStocks stock, double price, int quantity, double totalCost, DateTime? warrantyDate)
+        internal clsSalesDetails(int? detailId, int saleId, clsStocks stock, double price, int quantity, double totalCost, DateTime? warrantyDate)
         {
             Id = detailId;
             SaleId = saleId;

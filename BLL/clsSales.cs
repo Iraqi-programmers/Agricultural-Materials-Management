@@ -1,6 +1,8 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using DAL;
 using Newtonsoft.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BLL
 {
@@ -78,7 +80,7 @@ namespace BLL
                     salesDetailsList.Add(new clsSalesDetails(
                         (int)detail["DetailID"],
                         id,
-                        (int)detail["StockID"],
+                        clsStocks.FetchStockData(ref dict),
                         (double)detail["Price"],
                         (int)detail["Quantity"],
                         (double)detail["TotalCost"],
@@ -86,18 +88,17 @@ namespace BLL
                     ));
                 }
             }
+
             return new clsSales(
                 id,
+                salesDetailsList,
                 clsUsers.FetchUserData(ref dict),
                 (DateTime)dict["Date"],
                 (double)dict["SaleTotalCost"],
                 (bool)dict["IsDebt"],
                 dict["PaidAmount"] != DBNull.Value ? Convert.ToDouble(dict["PaidAmount"]) : (double?)null,
                 clsPerson.FetchPersonData(ref dict)
-            )
-            {
-                SalesDetails = salesDetailsList.Count > 0 ? new clsSalesDetails(salesDetailsList) : null
-            };
+            );
         }
     }
 }

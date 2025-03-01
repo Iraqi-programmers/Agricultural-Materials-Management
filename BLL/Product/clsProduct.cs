@@ -13,10 +13,10 @@ namespace BLL.Product
     {
         public clsCompany Company { get; set; }
         public clsProductType ProductType { get; set; }
-        public clsSize Size { get; set; }
-        public clsThickness Thickness { get; set; }
-        public clsWarrinty Warrinty { get; set; }
-        public clsProduct(clsCompany company, clsProductType productType, clsSize size, clsThickness thickness, clsWarrinty warrinty)
+        public clsSize? Size { get; set; }
+        public clsThickness? Thickness { get; set; }
+        public clsWarrinty? Warrinty { get; set; }
+        public clsProduct(clsCompany company, clsProductType productType, clsSize? size, clsThickness? thickness, clsWarrinty? warrinty)
         {
             Id = null;
             Company = company;
