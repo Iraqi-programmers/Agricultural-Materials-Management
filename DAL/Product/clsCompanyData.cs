@@ -44,7 +44,7 @@ namespace DAL.Product
             return await CRUD.AddAsync("SP_AddCompany", sqlParameter);
         }
 
-        public static async Task<bool> UpdateAsync(int? CompanyID, string CompanyName)
+        public static async Task<bool> updateAsync(int? CompanyID, string CompanyName)
         {
             SqlParameter[] parameters =
             {

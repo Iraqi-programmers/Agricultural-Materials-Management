@@ -17,9 +17,10 @@ namespace BLL.Product
             Period = period;
         }
 
-        private clsWarrinty(int warrintyId, int Period)
+        private clsWarrinty(int warrintyId, int period)
         {
-            this.Period = Period;
+            Id = warrintyId;
+            this.Period = period;
         }
 
         private async Task<bool> __AddNewAsync()

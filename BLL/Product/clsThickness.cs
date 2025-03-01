@@ -6,7 +6,7 @@ namespace BLL.Product
 {
     public class clsThickness : absClassesHelperBasc
     {
-        double Thickness { set; get; }
+        public double Thickness { set; get; }
 
         public clsThickness(double thickness)
         {
@@ -21,9 +21,8 @@ namespace BLL.Product
         }
 
         public static async Task<DataTable?> GetAllAsync()
-        {
-            return await clsThicknessData.GetAllAsDataTableAsync();
-        }
+         => await clsThicknessData.GetAllAsDataTableAsync();
+        
         
         private  async Task<bool> __AddAsync()
         {
@@ -32,9 +31,8 @@ namespace BLL.Product
         }
 
         private  async Task<bool> __UpdateAsync()
-        {
-            return await clsThicknessData.UpdateAsync(this.Id, Thickness);
-        }
+            => await clsThicknessData.UpdateAsync(this.Id, Thickness);
+        
 
         public async Task<bool> SaveAsync()
         {
@@ -45,11 +43,12 @@ namespace BLL.Product
 
         
 
-        public static async Task<clsThickness?> FindByIdAsync(int SizeID)
+        public static async Task<clsThickness?> FindByIdAsync(int thicknessId)
         {
-            var data = await clsThicknessData.FindByIDAsync(SizeID);
-
-            return new clsThickness(SizeID, data?[1] as double? ?? 0.0) ?? null;
+            var data = await clsThicknessData.FindByIDAsync(thicknessId);
+            if (data == null)
+                return null;
+            return new clsThickness(thicknessId, (double)data["Thickness"]);
         }
 
 
