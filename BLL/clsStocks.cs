@@ -41,14 +41,21 @@ namespace BLL
 
         //private static async Task<bool> __UpdateAsync(int stockId, int quantity) => await clsStocksData.UpdateStockQuantity(stockId, quantity);
 
-        //private async Task<bool> __AddAsync()
-        //{
-        //    Id = await clsStocksData.AddNewStock(ProductInfo.Id ?? null, this.Quantity, this.Status, this.Price);
-        //    return Id != null;
-        //}
+        private async Task<bool> __AddAsync()
+        {
+            Id = await clsStocksData.AddAsync(ProductInfo.Id ?? null, this.Quantity, this.Status, this.Price);
+            return Id != null;
+        }
 
-        //public async Task<bool> UpdateAsync()
-        //    => await clsStocksData.UpdateStock(Id, ProductInfo.Id ?? null, this.Quantity, this.Status, this.Price);
+        private async Task<bool> __UpdateAsync()
+            => await clsStocksData.UpdateAsync(Id, ProductInfo.Id ?? null, this.Quantity, this.Status, this.Price);
+
+        public async Task<bool> SaveAsync()
+        {
+            if (!Id.HasValue)
+                return await __AddAsync();
+            return await __UpdateAsync();
+        }
 
         public static async Task<bool> DeleteAsync(int stockId) => await clsStocksData.DeleteAsync(stockId);
 
@@ -60,8 +67,7 @@ namespace BLL
                 (int)dict["Quantity"],
                 (string)dict["Status"],
                 (decimal)dict["Price"], 
-                new clsProduct() //Defuld Constrctor
-                                 //clsProduct.FetchProductData(ref dict)
+                 clsProduct.FetchProductDataAsync(ref dict) 
             );
         }
     }
