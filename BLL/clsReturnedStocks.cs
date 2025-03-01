@@ -80,12 +80,14 @@ namespace BLL
         //}
 
 
-        public static clsReturnedStocks __FetchReturnedStocksData(ref Dictionary<string, object> dict)
+        internal static clsReturnedStocks FetchReturnedStocksData(ref Dictionary<string, object> dict)
         {
             return new clsReturnedStocks(
                 (int)dict["ReturndStockID"],
                 (int)dict["quantity"],
-                null, clsSupplier.FetchSupplierData(ref dict), clsUsers.__FetchUserData(ref dict)
+                clsSalesDetails.FetchSalesDetailsData(ref dict),
+                clsSupplier.FetchSupplierData(ref dict),
+                clsUsers.FetchUserData(ref dict)
                
             );
         }

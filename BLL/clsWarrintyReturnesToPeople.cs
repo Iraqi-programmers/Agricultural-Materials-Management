@@ -45,11 +45,12 @@ namespace BLL
 
         public async Task<bool> AddAsync()
         {
-            var Dic = await clsWarrintyReturnesToPeopleData.AddNew(Id, -1, -1, UserInfo.Id);
+            var Dic = await clsWarrintyReturnesToPeopleData.AddNew(Stockinfo.Id, UserInfo.Person.Id, UserInfo.Id);
             if (Dic == null) return false;
             else
             {
                 Id = (int)Dic["warrantyReturnedID"];
+               
                
             }
             return true;
@@ -57,10 +58,11 @@ namespace BLL
         public async Task<bool> UpdateAsync()
         => await clsWarrintyReturnesToPeopleData.Update(Id,UserInfo.Person.Id,UserInfo.Id);
 
-        private static clsWarrintyReturnesToPeople __FetchWarrintyReturnesData(ref Dictionary<string, object> dict)
+        internal static clsWarrintyReturnesToPeople __FetchWarrintyReturnesData(ref Dictionary<string, object> dict)
         {
             return new clsWarrintyReturnesToPeople(
                 (int)dict["WarrantyReturnedID"],
+                clsReturnedStocks.FetchReturnedStocksData(ref dict),
                   clsUsers.FetchUserData(ref dict)
 
             );

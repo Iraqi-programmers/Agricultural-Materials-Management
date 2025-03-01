@@ -13,7 +13,7 @@ namespace DAL
 
     public class clsWarrintyReturnesToPeopleData
     {
-        public static async Task<Dictionary<string, object>?> AddNew(int? warrantyReturnedID, int returndStocksID, int personID, int? userID)
+        public static async Task<Dictionary<string, object>?> AddNew(int? returndStocksID, int? personID, int? userID)
         {
             SqlParameter[] parameters =
             {
