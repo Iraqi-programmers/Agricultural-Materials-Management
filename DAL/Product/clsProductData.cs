@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.Design;
 using System.Data;
 using System.Drawing;
+using System.Net.NetworkInformation;
 using System.Reflection.Metadata.Ecma335;
 
 namespace DAL.Product
@@ -32,29 +33,63 @@ namespace DAL.Product
             => await CRUD.GetByColumnValueAsync("SP_GetProductByTypeID", "TypeID", typeId);
         
 
-        public static async Task<int?> AddProductWithAllDetailsAsync(string TypeName, string CompanyName, float Size, float Thickness)
+        public static async Task<int?> AddProductWithAllDetailsAsync(string typeName, string companyName, double size, double thickness, int warrinty)
+        {
+
+            //زيوني لازم تضيف  ستور بروسيجر تضيف برودكت من خلال البيانات
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@TypeName", typeName),
+                new SqlParameter("@CompanyName", companyName),
+                new SqlParameter("@Thickness", thickness),
+                new SqlParameter("@Size", size),
+                new SqlParameter("@Warrinty", warrinty)
+
+            };
+            return await CRUD.AddAsync("SP_AddProductWithAllDetails", parameters);
+
+        }
+        public static async Task<int?> AddAsync(int? productTypeId, int? companyId, int? sizeId, int? thicknessId)
         {
             SqlParameter[] parameters =
-{
-                new SqlParameter("@@TypeName", TypeName),
-                new SqlParameter("@CompanyName", CompanyName),
-                new SqlParameter("@Thickness", Thickness),
-                new SqlParameter("@Size", Size)
+            {
+                new SqlParameter("@productTypeId", productTypeId),
+                new SqlParameter("@companyId", companyId),
+                new SqlParameter("@ThicknessID", thicknessId),
+                new SqlParameter("@SizeID", sizeId)
 
             };
             return await CRUD.AddAsync("SP_AddProductWithAllDetails", parameters);
 
         }
 
-        public static async Task<bool?> UpdateAsync(int productID, int TypeID, int CompanyID, int DetailsID)
+        public static async Task<bool> UpdateAllProductDataAsync(int productID, string typeName, string companyName, double size, double thickness, int warrinty)
+        {
+            //لازم  ستور بروسيجر تعدل عليهن 
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@TypeName", typeName),
+                new SqlParameter("@CompanyName", companyName),
+                new SqlParameter("@Size", size),
+                new SqlParameter("@Thickness", thickness),
+                new SqlParameter("@warrinty", warrinty)
+            };
+            return await CRUD.UpdateAsync("SP_UpdateProduct", parameters);
+        }
+
+        public static async Task<bool> UpdateAsync(int? productID, int? productTypeId, int? companyId, int? sizeId, int? thicknessId, int? warrintyId)
         {
             SqlParameter[] parameters =
             {
-                new SqlParameter("@TypeID", TypeID),
-                new SqlParameter("@CompanyID", CompanyID),
-                new SqlParameter("@DetailsID", DetailsID)
+                new SqlParameter("@ProductID", productID),
+                new SqlParameter("@TypeID", productTypeId),
+                new SqlParameter("@CompanyID", companyId),
+                new SqlParameter("@SizeID", sizeId),
+                new SqlParameter("@ThicknessID", thicknessId),
+                new SqlParameter("@WarrintyID", warrintyId)
             };
             return await CRUD.UpdateAsync("SP_UpdateProduct", parameters);
+
         }
 
     }
