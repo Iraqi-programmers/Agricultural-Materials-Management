@@ -70,9 +70,9 @@ namespace BLL.Product
                 (int)dict["ProductID"],
                 new clsCompany((int)dict["CompanyID"], (string)dict["CompanyName"]),
                 new clsProductType((int)dict["TypeID"], (string)dict["TypeName"]),
-                dict.ContainsKey("SizeID") ? new clsSize((int)dict["SizeID"], (double)dict["Size"]) : null,
-                dict.ContainsKey("ThicknessID") ? new clsThickness((int)dict["ThicknessID"], (double)dict["Thickness"]) : null,
-                dict.ContainsKey("WarrintyID") ? new clsWarrinty((int)dict["WarrintyID"], (int)dict["Period"]) : null
+                dict.ContainsValue("SizeID") ? new clsSize((int)dict["SizeID"], (double)dict["Size"]) : null,
+                dict.ContainsValue("ThicknessID") ? new clsThickness((int)dict["ThicknessID"], (double)dict["Thickness"]) : null,
+                dict.ContainsValue("WarrintyID") ? new clsWarrinty((int)dict["WarrintyID"], (int)dict["Period"]) : null
             );
         }
     }

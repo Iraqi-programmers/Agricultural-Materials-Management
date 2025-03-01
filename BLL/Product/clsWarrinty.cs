@@ -1,6 +1,5 @@
-﻿using DAL;
-using Microsoft.Data.SqlClient;
-using System.Data;
+﻿using System.Data;
+using DAL;
 
 namespace BLL.Product
 {
@@ -9,7 +8,6 @@ namespace BLL.Product
     //updated ByYousif
     public class clsWarrinty : absClassesHelperBasc
     {
-
         public int Period { get; set; }
 
         public clsWarrinty(int period)
@@ -29,7 +27,6 @@ namespace BLL.Product
             return Id.HasValue;
         }
 
-        private async Task<bool> __UpdateAsync() => await clsWarrintyData.UpdateAsync(Id, Period);
 
         public async Task<bool> SaveAsync()
         {
@@ -37,6 +34,7 @@ namespace BLL.Product
                 return await __AddNewAsync();
             return await __UpdateAsync();
         }
+        private async Task<bool> __UpdateAsync() => await clsWarrintyData.UpdateAsync(Id, Period);
 
         public static async Task<bool> DeleteAsync(int warrintyId) => await clsWarrintyData.DeleteAsync(warrintyId);
 

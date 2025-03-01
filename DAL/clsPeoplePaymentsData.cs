@@ -6,7 +6,7 @@ namespace DAL
 {
     public class clsPeoplePaymentsData
     {
-        public static async Task<int?> AddAsync(double amount, int userId, int saleId)
+        public static async Task<int?> AddAsync(double amount, int? userId, int? saleId)
         {
             SqlParameter[] parameters =
             {
@@ -21,7 +21,7 @@ namespace DAL
 
         public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllPayment");
 
-        public static async Task<bool> UpdateAsync(int paymentId, double amount, int userId)
+        public static async Task<bool> UpdateAsync(int? paymentId, double amount, int? userId)
         {
             SqlParameter[] parameters =
             {
