@@ -13,11 +13,14 @@ namespace DAL
                 new SqlParameter("@Amount", amount),
                 new SqlParameter("@SupplierID", supplierId),
                 new SqlParameter("@PaymentDate", pymentDate),
-                new SqlParameter("@PurchaseID",purchaseId),
+                new SqlParameter("@PurchaseID", purchaseId),
                 new SqlParameter("@UserID", userId)
             };
             return await CRUD.AddAsync("SP_AddSupplierPayment", parameters);
         }
+
+        public static async Task<Dictionary<string, object>?> GetByIdAsync(int supplierId)
+            => await CRUD.GetByColumnValueAsync("SP_GetSupplierPaymentsBySupplier", "@SupplierID", supplierId);
 
         public static async Task<bool> UpdateAsync(int? supplierPaymentId, decimal amount, DateTime pymentDate, int purchaseId, int? userId)
         {
@@ -32,13 +35,8 @@ namespace DAL
             return await CRUD.UpdateAsync("SP_UpdateSupplierPayment", parameters);
         }
 
-        public static async Task<DataTable?> GetAllAsync()
-            =>await CRUD.GetAllAsDataTableAsync("SP_GetAllSupplierPayments");
+        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllSupplierPayments");
 
-        public static async Task<bool> DeleteAsync(int supplierPaymentId)
-            => await CRUD.DeleteAsync("SP_DeleteSupplierPayment", "@SupplierPaymentID", supplierPaymentId);
-
-        public static async Task<Dictionary<string, object>?> GetBySupplierIdAsync(int supplierId)
-            =>await CRUD.GetByColumnValueAsync("SP_GetSupplierPaymentsBySupplier","@SupplierID", supplierId);
+        public static async Task<bool> DeleteAsync(int supplierPaymentId) => await CRUD.DeleteAsync("SP_DeleteSupplierPayment", "@SupplierPaymentID", supplierPaymentId);
     }
 }
