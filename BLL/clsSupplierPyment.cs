@@ -31,7 +31,7 @@ namespace BLL
             UserInfo = userInfo;
         }
 
-        public async Task<bool> SaveA()
+        public async Task<bool> SaveAsync()
         {
             if (!Id.HasValue)
                 return await __AddAsync();
