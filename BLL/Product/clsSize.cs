@@ -22,32 +22,30 @@ namespace BLL.Product
 
         public static async Task<DataTable?> GetAllAsync()
         {
-            return await clsSizeData.getAllAsDatatableAsync();
+            return await clsSizeData.GetAllAsDatatableAsync();
         }
 
-        public static async Task<clsSize?> FindByIDAsync(int SizeID)
+        public static async Task<clsSize?> FindByIdAsync(int sizeId)
         {
-            var data = await clsSizeData.findByIDAsync(SizeID);
+            var data = await clsSizeData.FindByIDAsync(sizeId);
 
-            return new clsSize(SizeID, data?[1] as double? ?? 0.0) ?? null;
+            return new clsSize(sizeId, data?[1] as double? ?? 0.0) ?? null;
         }
 
-        private async Task<int?> __AddAsync()
+        private async Task<bool> __AddAsync()
         {
-            return await clsSizeData.addAsync(Size);
+            Id =  await clsSizeData.AddAsync(Size);
+            return Id.HasValue;
         }
 
         private async Task<bool> __UpdateAsync()
         {
-            return await clsSizeData.updateAsync(this.Id, Size);
+            return await clsSizeData.UpdateAsync(this.Id, Size);
         }
-        public async Task<bool> aveAsync()
+        public async Task<bool> SaveAsync()
         {
-            if(Id == null)
-            {
-                Id = await __AddAsync();
-                return true;
-            }
+            if(!Id.HasValue)
+                return await __AddAsync();
             return await __UpdateAsync();
         }
 

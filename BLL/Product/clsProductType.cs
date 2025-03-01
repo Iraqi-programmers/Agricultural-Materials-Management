@@ -6,48 +6,43 @@ namespace BLL.Product
 {
     public class clsProductType :absClassesHelperBasc
     {
-        string typeName { set; get; }
-        public clsProductType(string TypeName)
+        public string typeName { set; get; }
+        public clsProductType(string typeName)
         {
             Id = null;
-            this.typeName = TypeName;
+            this.typeName = typeName;
         }
-        private clsProductType(int TypeID,  string TypeName)
+        private clsProductType(int typeId,  string typeName)
         {
-            this.Id = TypeID;
-            this.typeName = TypeName;
+            this.Id = typeId;
+            this.typeName = typeName;
         }
         public static async Task<DataTable?> getAllAsDataTableAsync()
         {
-            return await clsProductTypeData.getAllAsDatatableAsync();
+            return await clsProductTypeData.GetAllAsync();
         }
-        public static async Task<clsProductType?> findTypeAsync(int TypeID)
+        public static async Task<clsProductType?> findTypeAsync(int typeId)
         {
-            var data = await clsProductTypeData.findByIDAsync(TypeID);
+            var data = await clsProductTypeData.FindByIdAsync(typeId);
+            if (data == null)
+                return null;
+            string typeName = (string)data["TypeName"];
 
-            return new clsProductType(TypeID, (string)data[1]) ?? null;
+            return new clsProductType(typeId, typeName);
         }
-        private  async Task<int?> __addAsync()
+        private async Task<bool> __AddAsync()
         {
-            return await clsProductTypeData.addAsync(typeName);
+            Id = await clsProductTypeData.AddAsync(typeName);
+            return Id.HasValue;
         }
-        private async Task<bool> __update()
-        {
-            return await clsProductTypeData.updateAsync(Id, typeName);
-        }
-
+        private async Task<bool> __UpdateAsync()
+            =>await clsProductTypeData.UpdateAsync(Id, typeName);
         public async Task<bool> saveAsync()
         {
-            if(Id == null)
-            {
-                Id = await __addAsync();
-                return Id != null;
-            }
-            return await __update();
+            if (!Id.HasValue)
+                return await __AddAsync();
+            return await __UpdateAsync();
                 
         }
-
-        
-
     }
 }

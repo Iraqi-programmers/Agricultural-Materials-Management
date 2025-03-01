@@ -10,37 +10,29 @@ namespace DAL.Product
 {
     public static class clsProductData
     {
+        
+        public static async Task<DataTable?> GetAllAsync()
+             => await CRUD.GetAllAsDataTableAsync("SP_GetAllProducts");
+       
+        public static async Task<bool> DeleteAsync(int productId)
+            => await CRUD.DeleteAsync("SP_DeleteProduct", "ProductID", productId);
 
-        public static async Task<DataTable?> getAllAsync()
-        {
-            return await CRUD.GetAllAsDataTableAsync("SP_GetAllProducts");
+       
 
-        }
+        public static async Task<Dictionary<string, object>?> FindByIDAsync(int productId)
+            => await CRUD.GetByColumnValueAsync("SP_GetProductByID", "ProductID", productId);
+        
 
-        public static async Task<bool> deleteAsync(int productID)
-        {
+        public static async Task<object?> FindByCompanyIDAsync(int companyId)
+            =>await CRUD.GetByColumnValueAsync("SP_GetProductByCompanyID", "CompanyID", companyId);
 
-            return await CRUD.DeleteAsync("SP_DeleteProduct", "ProductID", productID);
+       
 
-        }
+        public static async Task<object?> FindByTypeIdAsync(int typeId)
+            => await CRUD.GetByColumnValueAsync("SP_GetProductByTypeID", "TypeID", typeId);
+        
 
-        public static async Task<object?> findByIDAsync(int productID)
-        {
-            return await CRUD.GetByColumnValueAsync("SP_GetProductByID", "ProductID", productID);
-        }
-
-        public static async Task<object?> findByCompanyIDAsync(int CompanyID)
-        {
-            return await CRUD.GetByColumnValueAsync("SP_GetProductByCompanyID", "CompanyID", CompanyID);
-
-        }
-
-        public static async Task<object?> findByTypeIDAsync(int TypeID)
-        {
-            return await CRUD.GetByColumnValueAsync("SP_GetProductByTypeID", "TypeID", TypeID);
-        }
-
-        public static async Task<int?> addProductWithAllDetailsAsync(string TypeName, string CompanyName, float Size, float Thickness)
+        public static async Task<int?> AddProductWithAllDetailsAsync(string TypeName, string CompanyName, float Size, float Thickness)
         {
             SqlParameter[] parameters =
 {
@@ -54,7 +46,7 @@ namespace DAL.Product
 
         }
 
-        public static async Task<bool?> updateAsync(int productID, int TypeID, int CompanyID, int DetailsID)
+        public static async Task<bool?> UpdateAsync(int productID, int TypeID, int CompanyID, int DetailsID)
         {
             SqlParameter[] parameters =
             {
