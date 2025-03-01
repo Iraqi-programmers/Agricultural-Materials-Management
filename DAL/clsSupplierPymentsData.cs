@@ -13,7 +13,7 @@ namespace DAL
                 new SqlParameter("@Amount", amount),
                 new SqlParameter("@SupplierID", supplierId),
                 new SqlParameter("@PaymentDate", pymentDate),
-                new SqlParameter("@PurchaseID",purchaseId),
+                new SqlParameter("@PurchaseID", purchaseId),
                 new SqlParameter("@UserID", userId)
             };
             return await CRUD.AddAsync("SP_AddSupplierPayment", parameters);
