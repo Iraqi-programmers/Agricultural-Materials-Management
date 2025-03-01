@@ -1,96 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using DAL;
 
 namespace BLL
 {
-    public class clsSupplierPyment
+    public class clsSupplierPyment : absClassesHelperBasc
     {
-        public enum enMode { AddNew = 0, Update = 1 };
-        public enMode _Mode = enMode.AddNew;
-
-        public int SupplierPymentID { get; set; }
         public decimal Amount { get; set; }
-        public int SupplierID { get; set; }
         public DateTime PymentDate { get; set; }
-        public int PurchaseID { get; set; }
-        public int UserID { get; set; }
+        public int PurchaseId { get; set; }
 
-        private clsSupplierPyment(int supplierPymentID, decimal amount, int supplierID, DateTime pymentDate, int purchaseID, int userID)
+        public clsSupplier SupplierInfo { get; set; }
+
+        public clsUsers UserInfo { get; private set; }
+
+        public clsSupplierPyment(clsSupplier supplier, decimal amount, DateTime pymentDate, int purchaseId, clsUsers userInfo)
         {
-            SupplierPymentID = supplierPymentID;
+            SupplierInfo = supplier;
             Amount = amount;
-            SupplierID = supplierID;
             PymentDate = pymentDate;
-            PurchaseID = purchaseID;
-            UserID = userID;
-            _Mode = enMode.Update;
+            PurchaseId = purchaseId;
+            UserInfo = userInfo;
         }
 
-        public clsSupplierPyment()
+        private clsSupplierPyment(int? supplierPymentId, clsSupplier supplier, decimal amount, DateTime pymentDate, int purchaseId, clsUsers userInfo)
         {
-            SupplierPymentID = -1;
-            Amount =0;
-            SupplierID =-1;
-            PymentDate =DateTime.Now;
-            PurchaseID = -1;
-            UserID = -1;
-            _Mode = enMode.AddNew;  
+            Id = supplierPymentId;
+            SupplierInfo = supplier;
+            Amount = amount;
+            PymentDate = pymentDate;
+            PurchaseId = purchaseId;
+            UserInfo = userInfo;
         }
 
-        private async Task<bool> _AddNewSupplierPyment()
+        private async Task<bool> __AddAsync()
         {
-            this.SupplierPymentID = (int)await clsSupplierPymentsData.AddSupplierPyment(this.Amount, this.SupplierID, this.PymentDate,this.PurchaseID,this.UserID);
-            return this.SupplierPymentID != -1;
+            Id = await clsSupplierPymentsData.AddAsync(Amount, SupplierInfo.Id, PymentDate, PurchaseId, UserInfo.Id);
+            if (!Id.HasValue) return false;
+            return await __UpdateAsync();
         }
 
-        private async Task<bool> _UpdateSupplierPyments()
-        {
-            return await clsSupplierPymentsData.UpdateSupplierPyment(this.SupplierPymentID,this.Amount,this.PymentDate,this.PurchaseID,this.UserID) ;
-        }
+        private async Task<bool> __UpdateAsync()
+            => await clsSupplierPymentsData.UpdateAsync(Id, Amount, PymentDate, PurchaseId, UserInfo.Id) ;
 
         public async Task<bool> Save()
         {
-            switch (_Mode)
-            {
-                case enMode.AddNew:
-                    {
-                        if (await _AddNewSupplierPyment())
-                        {
-                            _Mode = enMode.Update;
-                            return true;
-                        }
-                        else
-                        { return false; }
-
-                    }
-                case enMode.Update:
-                    {
-                        return await _UpdateSupplierPyments();
-                    }
-
-            }
-            return false;
-
+            if (!Id.HasValue) 
+                return await __AddAsync();
+            return await __UpdateAsync();
         }
 
         public static async Task<DataTable?> GetAllSupplierPyments()
-        {
-            return await clsSupplierPymentsData.GetAllSupplierPayments();
-        }
+            => await clsSupplierPymentsData.GetAllAsync();
 
         public static async Task<bool> DeleteSupplierPymentByID(int id)
-        {
-            return await clsSupplierPymentsData.DeleteSupplierPyment(id);
-        }
+            => await clsSupplierPymentsData.DeleteAsync(id);
 
-        public async Task<object[]?> Find(int id)
-        {
-            return await clsSupplierPymentsData.GetSupplierPymentBySupplierID(id);
-        }
+        public async Task<Dictionary<string, object>?> Find(int id)
+            => await clsSupplierPymentsData.GetBySupplierIdAsync(id);
     }
 }

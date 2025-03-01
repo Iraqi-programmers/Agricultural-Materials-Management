@@ -6,9 +6,9 @@ namespace BLL
     // Create By Abu Sanad
     public class clsUsers : absClassesHelperBasc
     {
-        public string UserName { get; set; }
+        public string UserName { get; set; } = "";
         public string Password { get; set; } = "";
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public clsPerson Person { get; private set; }
 
@@ -28,6 +28,8 @@ namespace BLL
             Person = person;
         }
 
+        internal clsUsers() { }
+
         public async Task<bool> SaveAsync()
         {
             if (!Id.HasValue) 
@@ -37,11 +39,11 @@ namespace BLL
 
         private async Task<bool> __AddAsync()
         {
-            Id = await clsUsersData.AddAsync(UserName, Password, Person.Id);
+            Id = await clsUsersData.AddAsync(UserName, Password, Person?.Id);
             return Id.HasValue;
         }
 
-        public static async Task<clsUsers?> GetByUserNameAndPasswordAsync(string userName, string password)
+        public static async Task<clsUsers?> GetAsync(string userName, string password)
         {
             var dict = await clsUsersData.GetByUserNameAndPasswordAsync(userName, password);
             if (dict == null) return null;

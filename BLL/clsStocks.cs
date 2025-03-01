@@ -30,14 +30,14 @@ namespace BLL
             this.ProductInfo = productInfo;
         }
 
-        public static async Task<clsStocks?> GetByIDAsync(int stockId)
+        public static async Task<clsStocks?> GetByIdAsync(int stockId)
         {
-            var obj = await clsStocksData.GetStockByID(stockId);
+            var obj = await clsStocksData.GetByStockIdAsync(stockId);
             if (obj == null) return null;
             return FetchStockData(ref obj);
         }
 
-        public static async Task<DataTable?> GetAllAsync() => await clsStocksData.GetAllStocks();
+        public static async Task<DataTable?> GetAllAsync() => await clsStocksData.GetAllAsync();
 
         //private static async Task<bool> __UpdateAsync(int stockId, int quantity) => await clsStocksData.UpdateStockQuantity(stockId, quantity);
 
@@ -50,7 +50,7 @@ namespace BLL
         //public async Task<bool> UpdateAsync()
         //    => await clsStocksData.UpdateStock(Id, ProductInfo.Id ?? null, this.Quantity, this.Status, this.Price);
 
-        public static async Task<bool> DeleteAsync(int stockId) => await clsStocksData.DeleteStock(stockId);
+        public static async Task<bool> DeleteAsync(int stockId) => await clsStocksData.DeleteAsync(stockId);
 
         //التعديل هنا بعد اكتمال كلاس البرودكت
         internal static clsStocks FetchStockData(ref Dictionary<string, object> dict)

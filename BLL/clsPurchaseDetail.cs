@@ -22,7 +22,7 @@ namespace BLL
             WarrantyDate = warrantyDate;
         }
 
-        private clsPurchaseDetail(int purchaseId, clsProduct product, double price, string status, int quantity, DateTime warrantyDate)
+        internal clsPurchaseDetail(int purchaseId, clsProduct product, double price, string status, int quantity, DateTime warrantyDate)
         {
             PurchaseId = purchaseId;
             Product = product;
@@ -32,52 +32,12 @@ namespace BLL
             WarrantyDate = warrantyDate;
         }
 
-        public static async Task<clsPurchaseDetail?> GetByIdAsync(int purchaseDetailId)
+        public static async Task<clsPurchaseDetail?> GetByIdAsync(int purchaseId)
         {
-            Id = await clsPurchaseDetailData.GetByIdAsync(purchaseDetailId);
+            var dict = await clsPurchasesDetailsData.GetByIdAsync(purchaseId);
+            if (dict == null) return null;
+            return FetchPurchaseDetailData(ref dict);
         }
-
-        //internal clsPurchaseDetail(int? purchaseDetailId, int purchaseId, clsProduct product, double price, string status, int quantity, DateTime warrantyDate)
-        //{
-        //    Id = purchaseDetailId;
-        //    PurchaseId = purchaseId;
-        //    Product = product;
-        //    Price = price;
-        //    Status = status;
-        //    Quantity = quantity;
-        //    WarrantyDate = warrantyDate;
-        //}
-
-        //public bool UpdatePurchaseDetail(int purchaseDetailID, double? price = null, string? status = null, int? quantity = null, DateTime? warrantyDate = null)
-        //{
-        //    var detail = PurchaseDetailsList.FirstOrDefault(d => d.Id == purchaseDetailID);
-        //    if (detail != null)
-        //    {
-        //        detail.Price = price ?? detail.Price;
-        //        detail.Status = status ?? detail.Status;
-        //        detail.Quantity = quantity ?? detail.Quantity;
-        //        detail.WarrantyDate = warrantyDate ?? detail.WarrantyDate;
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
-        //public bool RemovePurchaseDetailFromList(int purchaseDetailID)
-        //{
-        //    var detail = PurchaseDetailsList.FirstOrDefault(d => d.Id == purchaseDetailID);
-        //    if (detail != null)
-        //    {
-        //        PurchaseDetailsList.Remove(detail);
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
-        //public static bool ClearPurchaseDetailsList()
-        //{
-        //    PurchaseDetailsList.Clear();
-        //    return PurchaseDetailsList.Count == 0;
-        //}
 
         public static async Task<DataTable?> GetAllAsync() => await clsPurchasesDetailsData.GetAllAsync();
 

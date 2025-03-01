@@ -26,7 +26,7 @@ namespace DAL
             return await CRUD.AddAsync("SP_AddStock", parameters);
         }
 
-        public static async Task<bool> UpdateStock(int? stockId, int? productId, int quantity, string status, decimal price)
+        public static async Task<bool> UpdateAsync(int? stockId, int? productId, int quantity, string status, decimal price)
         {
             SqlParameter[] parameters =
             {
@@ -39,7 +39,7 @@ namespace DAL
             return await CRUD.UpdateAsync("SP_UpdateStock", parameters);
         }
 
-        public static async Task<bool> UpdateStockQuantity(int stockId, int quantity)
+        public static async Task<bool> UpdateAsync(int stockId, int quantity)
         {
             SqlParameter[] parameters =
             {
@@ -49,19 +49,19 @@ namespace DAL
             return await CRUD.UpdateAsync("SP_UpdateStockQuantity", parameters);
         }
 
-        public static async Task<bool> DeleteStock(int stockId)
+        public static async Task<bool> DeleteAsync(int stockId)
             => await CRUD.DeleteAsync("SP_DeleteStock", "StockID", stockId);
         
-        public static async Task<Dictionary<string, object>?> GetStockByID(int stockId)
+        public static async Task<Dictionary<string, object>?> GetByStockIdAsync(int stockId)
             => await CRUD.GetByColumnValueAsync("SP_GetStockByID", "StockID", stockId);
         
-        public static async Task<DataTable?> GetAllStocks() 
+        public static async Task<DataTable?> GetAllAsync() 
             => await CRUD.GetAllAsDataTableAsync("SP_GetAllStocks");
-        
-        public static async Task<Dictionary<string, object>?> GetStockByProductID(int productId)    
+
+        public static async Task<Dictionary<string, object>?> GetByProductIdAsync(int productId)
             => await CRUD.GetByColumnValueAsync("SP_GetStockByProductID", "ProductID", productId);
-       
-        public static async Task<DataTable?> GetAllStockByProductID(int productId)
+
+        public static async Task<DataTable?> GetAllStockByProductIdAsync(int productId)
         {
             SqlParameter[] parameters =
             {
@@ -70,7 +70,7 @@ namespace DAL
             return await CRUD.GetAllAsDataTableAsync("SP_GetStockByProductID", parameters);
         }
 
-        public static async Task<DataTable?> GetProductByStatus(string status)
+        public static async Task<DataTable?> GetAllProductsByStatusAsync(string status)
         {
             SqlParameter[] parameters =
             {
