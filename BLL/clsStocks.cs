@@ -67,7 +67,7 @@ namespace BLL
                 (int)dict["Quantity"],
                 (string)dict["Status"],
                 (decimal)dict["Price"], 
-                 clsProduct.FetchProductDataAsync(ref dict) 
+                 clsProduct.FetchProductData(ref dict) 
             );
         }
     }
