@@ -6,39 +6,28 @@ namespace DAL.Product
 {
     public static class clsSizeData
     {
-        public static async Task<DataTable?> getAllAsDatatableAsync()
-        {
-            return await CRUD.GetAllAsDataTableAsync("SP_GetAllSizes");
-
-        }
-        public static async Task<bool> deleteAsync(int SizeID)
-        {
-
-            return await CRUD.DeleteAsync("SP_DeleteType", "SizeID", SizeID);
-
-        }
-
-        public static async Task<object[]?> findByIDAsync(int SizeID)
-        {
-            return await CRUD.GetByColumnValueAsync("SP_GetSizeByID", "SizeID", SizeID);
-        }
-
-        public static async Task<int?> addAsync(double Size)
+        public static async Task<DataTable?> GetAllAsDatatableAsync()
+             => await CRUD.GetAllAsDataTableAsync("SP_GetAllSizes");
+        public static async Task<bool> DeleteAsync(int sizeID)
+         =>await CRUD.DeleteAsync("SP_DeleteType", "SizeID", sizeID);
+        public static async Task<Dictionary<string, object>?> FindByIDAsync(int sizeID)
+         => await CRUD.GetByColumnValueAsync("SP_GetSizeByID", "SizeID", sizeID);
+        public static async Task<int?> AddAsync(double size)
         {
             SqlParameter[] sqlParameter =
             {
-                new SqlParameter("@Size", Size)
+                new SqlParameter("@Size", size)
                
             };
             return await CRUD.AddAsync("SP_AddSize", sqlParameter);
 
         }
-        public static async Task<bool> updateAsync(int? SizeID, double Size)
+        public static async Task<bool> UpdateAsync(int? sizeId, double size)
         {
             SqlParameter[] parameters =
             {
-                new SqlParameter("@SizeID", SizeID),
-                new SqlParameter("@Size", Size),
+                new SqlParameter("@SizeID", sizeId),
+                new SqlParameter("@Size", size),
             };
             return await CRUD.UpdateAsync("SP_UpdateSiz", parameters);
         }

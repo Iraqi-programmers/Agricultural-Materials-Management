@@ -37,7 +37,7 @@ namespace BLL.Product
             return await __UpdateAsync();
         }
 
-        public async Task<bool> Delete()
+        public async Task<bool> DeleteAsync()
         {
             if (Id == null)
                 throw new ArgumentException("WarrantyID غير موجود للحذف!");
@@ -45,7 +45,7 @@ namespace BLL.Product
             return await clsWarrintyData.DeleteAsync(Id.Value);
         }
 
-        public static async Task<clsWarrinty?> GetByID(int warrantyId)
+        public static async Task<clsWarrinty?> GetByIDAsync(int warrantyId)
         {
             var result = await clsWarrintyData.GetByIdAsync(warrantyId);
             if (result == null) return null;
@@ -53,7 +53,7 @@ namespace BLL.Product
             return new clsWarrinty(warrantyId, period);
         }
 
-        public static async Task<DataTable?> GetAll() => await clsWarrintyData.GetAllAsync();
+        public static async Task<DataTable?> GetAllAsync() => await clsWarrintyData.GetAllAsync();
 
 
         public ushort CalculateTotalDays(byte years = 0, byte months = 0, byte days = 0)

@@ -22,35 +22,33 @@ namespace BLL.Product
             this.CompanyName = companyName;
         }
 
-        public static async Task<DataTable?> GetAllAsync()
-        {
-            return await clsCompanyData.getAllAsDatatableAsync();
-        }
+        public static async Task<DataTable?> GetAllAsync()  
+            => await clsCompanyData.GetAllAsync();
+        
 
         public static async Task<clsCompany?> FindByIDAsync(int companyID)
         {
             var data = await clsCompanyData.FindByIDAsync(companyID);
-            
+            if (data == null)
+                return null;
 
-            return new clsCompany(companyID, data?[1] as string) ?? null;
+            string? companyName = (string)data["CompanyName"];
+            return new clsCompany(companyID, companyName) ?? null;
         }
 
-        private async Task<int?> __AddAsync()
+        private async Task<bool> __AddAsync()
         {
-            return await clsCompanyData.addAsync(CompanyName);
+            Id = await clsCompanyData.AddAsync(CompanyName);
+            return Id.HasValue;
         }
-        private async Task<bool> __Update()
-        {
-            return await clsCompanyData.updateAsync(Id, CompanyName);
-        }
+        private async Task<bool> __UpdateAsync()
+            =>await clsCompanyData.UpdateAsync(Id, CompanyName);
+       
         public async Task<bool> SaveAsync()
         {
-            if(Id == null)
-            {
-                Id = await __AddAsync();
-                return Id != null;
-            }
-            return await __Update();
+            if(!Id.HasValue)
+                return await __AddAsync();
+            return await __UpdateAsync();
         }
 
 
