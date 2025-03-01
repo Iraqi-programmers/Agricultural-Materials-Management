@@ -17,17 +17,15 @@ namespace BLL
         public clsSupplier SupplierInfo { get; set; }
         public clsUsers UserInfo { get; set; }
         
-
         public clsReturnedStocks(int quantity, clsSalesDetails salesDetal, clsSupplier supplier, clsUsers users)
         {
-            Id = null;
             this.Quantity = quantity;
             this.SalesInfo = salesDetal;
             this.SupplierInfo = supplier;
             this.UserInfo = users;
         }
 
-        private clsReturnedStocks(int returnedStocks,int quantity, clsSalesDetails salesDetal, clsSupplier supplier, clsUsers users)
+        internal clsReturnedStocks(int returnedStocks,int quantity, clsSalesDetails salesDetal, clsSupplier supplier, clsUsers users)
         {
             Id = returnedStocks;
             this.Quantity = quantity;
@@ -36,34 +34,25 @@ namespace BLL
             this.UserInfo = users;
         }
 
-
-        public async Task<bool> AddNew()
+        private async Task<bool> __AddAsync()
         {
             Id = await clsReturnedStocksData.AddNew(SalesInfo.Id, Quantity, SupplierInfo.Id, UserInfo.Id);
             return Id != null;
         }
 
-        public async Task<bool> Update()  => await clsReturnedStocksData.Update(SalesInfo.Id, Quantity, SupplierInfo.Id, UserInfo.Id);
+        public async Task<bool> __UpdateAsync()  => await clsReturnedStocksData.Update(SalesInfo.Id, Quantity, SupplierInfo.Id, UserInfo.Id);
            
-        
+        public static async Task<bool> DeleteAsync(int returnedStocksId) => await clsReturnedStocksData.Delete(returnedStocksId);
 
-        public static async Task<bool> Delete(int ReturnedStocksID)
-        {
-            return await clsReturnedStocksData.Delete(ReturnedStocksID);
-        }
-
-        public static async Task<clsReturnedStocks?> GetByID(int ReturnedStocksID)
+        public static async Task<clsReturnedStocks?> GetByIdAsync(int ReturnedStocksID)
         {
             var data = await clsReturnedStocksData.GetByIDAsync(ReturnedStocksID);
             if (data == null) return null;
-
-            return __FetchReturnedStocksData(ref data);
-                
+            return FetchReturnedStocksData(ref data);
         }
 
         public static async Task<DataTable?> GetAll() => await clsReturnedStocksData.GetAllAsync();
         
-
         //public static async Task<List<object[]>?> GetReturnedProductsByProductID(int productId)
         //{
         //    return await clsReturnedStocksData.GetReturnedProductsByProductIDAsync(productId);
@@ -79,7 +68,6 @@ namespace BLL
         //    return await clsReturnedStocksData.GetReturnedProductsBySupplierIDAsync(SupplierID);
         //}
 
-
         internal static clsReturnedStocks FetchReturnedStocksData(ref Dictionary<string, object> dict)
         {
             return new clsReturnedStocks(
@@ -88,9 +76,7 @@ namespace BLL
                 clsSalesDetails.FetchSalesDetailsData(ref dict),
                 clsSupplier.FetchSupplierData(ref dict),
                 clsUsers.FetchUserData(ref dict)
-               
             );
         }
-
     }
 }

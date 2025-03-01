@@ -12,7 +12,7 @@ namespace BLL.Product
             Id = null;
             this.TypeName = typeName;
         }
-        private clsProductType(int typeId,  string typeName)
+        internal clsProductType(int typeId,  string typeName)
         {
             this.Id = typeId;
             this.TypeName = typeName;

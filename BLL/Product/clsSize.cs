@@ -14,7 +14,7 @@ namespace BLL.Product
             Size = size;
         }
 
-        private clsSize(int sizeID, double size)
+        internal clsSize(int sizeID, double size)
         {
             Id = sizeID;
             Size = size;

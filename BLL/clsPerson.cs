@@ -83,9 +83,9 @@ namespace BLL
             return new clsPerson(
                 (int)dict["PersonID"],
                 (string)dict["FullName"],
-                dict["NationalNum"] != DBNull.Value ? Convert.ToString(dict["NationalNum"]) : null,
-                dict["PhoneNumber"] != DBNull.Value ? Convert.ToString(dict["PhoneNumber"]) : null,
-                dict["Address"] != DBNull.Value ? Convert.ToString(dict["Address"]) : null
+                dict.ContainsKey("NationalNum") ? Convert.ToString(dict["NationalNum"]) : null,
+                dict.ContainsKey("PhoneNumber") ? Convert.ToString(dict["PhoneNumber"]) : null,
+                dict.ContainsKey("Address") ? Convert.ToString(dict["Address"]) : null
             );
         }
     }

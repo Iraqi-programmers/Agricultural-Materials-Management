@@ -14,7 +14,7 @@ namespace BLL.Product
             this.Thickness = thickness;
         }
 
-        private clsThickness(int thicknessId, double thickness)
+        internal clsThickness(int thicknessId, double thickness)
         {
             Id = thicknessId;
             Thickness = thickness;

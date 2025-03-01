@@ -17,7 +17,7 @@ namespace BLL.Product
             Period = period;
         }
 
-        private clsWarrinty(int warrintyId, int period)
+        internal clsWarrinty(int warrintyId, int period)
         {
             Id = warrintyId;
             this.Period = period;
@@ -38,13 +38,7 @@ namespace BLL.Product
             return await __UpdateAsync();
         }
 
-        public async Task<bool> DeleteAsync()
-        {
-            if (Id == null)
-                throw new ArgumentException("WarrantyID غير موجود للحذف!");
-
-            return await clsWarrintyData.DeleteAsync(Id.Value);
-        }
+        public static async Task<bool> DeleteAsync(int warrintyId) => await clsWarrintyData.DeleteAsync(warrintyId);
 
         public static async Task<clsWarrinty?> GetByIDAsync(int warrantyId)
         {
@@ -56,14 +50,7 @@ namespace BLL.Product
 
         public static async Task<DataTable?> GetAllAsync() => await clsWarrintyData.GetAllAsync();
 
-
         public ushort CalculateTotalDays(byte years = 0, byte months = 0, byte days = 0)
         => (ushort)((years > 0 ? years * 365 : 0) + (months > 0 ? months * 30 : 0) + days);
-
-
-
-
-
     }
-
 }

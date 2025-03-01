@@ -16,7 +16,7 @@ namespace BLL.Product
             this.CompanyName =companyName;
         }
 
-        private clsCompany(int companyID, string companyName)
+        internal clsCompany(int companyID, string companyName)
         {
             Id = companyID;
             this.CompanyName = companyName;
