@@ -41,14 +41,13 @@
 
                     <StackPanel Grid.Row="1">
                         <RadioButton x:Name="rdHome" Content="{DynamicResource rdHome}" Style="{DynamicResource MenuRadioButtonStyle}" Tag="{DynamicResource home}" Margin="0 30 0 0" Click="rdHome_Click"/>
-                        <RadioButton x:Name="rdAnalytics" Content="{DynamicResource rdAnalytics}" Style="{DynamicResource MenuRadioButtonStyle}" Tag="{DynamicResource analytics}" Margin="0 1 0 1" Click="rdAnalytics_Click"/>
-                        <RadioButton x:Name="rdMessages" Content="{DynamicResource rdMessages}" Style="{DynamicResource MenuRadioButtonStyle}" Tag="{DynamicResource messages}" Click="rdMessages_Click"/>
-                        <RadioButton x:Name="rdCollections" Content="{DynamicResource rdCollections}" Style="{DynamicResource MenuRadioButtonStyle}" Tag="{DynamicResource collections}" Margin="0 1 0 1" Click="rdCollections_Click"/>
-                        <RadioButton x:Name="rdUsers" Content="{DynamicResource rdUsers}" Style="{DynamicResource MenuRadioButtonStyle}" Tag="{DynamicResource users}" Click="rdUsers_Click"/>
+                        <RadioButton x:Name="rdStorage" Content="{DynamicResource rdStorage}" Style="{DynamicResource MenuRadioButtonStyle}" Tag="{DynamicResource Storage}" Margin="0 1 0 1" Click="rdStorage_Click" />
+                        <RadioButton x:Name="rdLegder" Content="{DynamicResource rdLedger}" Style="{DynamicResource MenuRadioButtonStyle}" Tag="{DynamicResource Ledger}" Click="rdLegder_Click" />
+                        <RadioButton x:Name="rdInventory" Content="{DynamicResource rdInventory}" Style="{DynamicResource MenuRadioButtonStyle}" Tag="{DynamicResource Inventory}" Margin="0 1 0 1" Click="rdInventory_Click"/>
+                       
 
-
-                        <RadioButton x:Name="rdNotifications" Content="{DynamicResource rdNotifications}" Style="{DynamicResource MenuRadioButtonStyle}" Tag="{DynamicResource notifications}" Margin="0 1 0 1"/>
-                        <Separator Margin="20 20,0,40" Background="{DynamicResource TertiaryBackgroundColor}"/>
+                        <RadioButton x:Name="rdNotifications" Content="{DynamicResource rdNotifications}" Style="{DynamicResource MenuRadioButtonStyle}" Tag="{DynamicResource notifications}" Margin="0 1 0 1" Click="rdNotifications_Click"/>
+                        <Separator Margin="20 20,0,90" Background="{DynamicResource TertiaryBackgroundColor}"/>
                         <RadioButton x:Name="rdSettings" Content="{DynamicResource rdSetting}" Style="{DynamicResource MenuRadioButtonStyle}" Tag="{DynamicResource settings}" Click="rdSettings_Click"/>
 
                     </StackPanel>

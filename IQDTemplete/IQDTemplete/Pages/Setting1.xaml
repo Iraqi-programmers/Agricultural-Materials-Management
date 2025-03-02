@@ -15,9 +15,15 @@
     <Grid>
         <Border CornerRadius="8" Background="{DynamicResource SecundaryBackgroundColor}">
             <StackPanel>
-                <Label Margin="10" Content="{DynamicResource lbLanguage}"  FontSize="30" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Left" />
+                <Label Margin="10" Content="{DynamicResource lbLanguage}"  FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Left" />
                 <Button Background="{DynamicResource SecundaryBackgroundColor}" Margin="5,8,0,0" Content="{DynamicResource rdEnglish}" Foreground="{DynamicResource PrimaryTextColor}" Click="Button_Click" />
                 <Button Background="{DynamicResource SecundaryBackgroundColor}" Margin="5,8,0,0" Content="{DynamicResource rdArabic}" Foreground="{DynamicResource PrimaryTextColor}"  Click="Button_Click_1" />
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10">
+                    <TextBlock Text="Theme" FontSize="16" Margin="0,0,0,10" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}"/>
+                    <RadioButton  Content="Light" GroupName="Theme" Margin="0,5" Foreground="{DynamicResource PrimaryTextColor}" />
+                    <RadioButton  Content="Dark" GroupName="Theme" Margin="0,5" Foreground="{DynamicResource PrimaryTextColor}"/>
+                    
+                </StackPanel>
             </StackPanel>
         </Border>
     </Grid>

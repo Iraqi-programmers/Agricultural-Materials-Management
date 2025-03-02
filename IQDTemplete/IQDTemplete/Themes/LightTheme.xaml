@@ -51,6 +51,11 @@
     <SolidColorBrush x:Key="PrimaryBlackColor" Color="#0E1A32"/>
     <SolidColorBrush x:Key="SecundaryBlackColor" Color="#102341"/>
     <SolidColorBrush x:Key="TertiaryBlackColor" Color="#1C3254"/>
-    
+    <!-- NEW -->
+    <SolidColorBrush x:Key="ThemeBackColor" Color="#C0C9EA"/>
+    <!-- ألوان الثيم الفاتح -->
+    <Color x:Key="RDBackgroundColor">#FFFFFFFF</Color>
+    <Color x:Key="RDForegroundColor">#FF000000</Color>
+    <Color x:Key="RDPrimaryColor">#FF007ACC</Color>
 
 </ResourceDictionary>
