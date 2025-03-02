@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace IQDTemplete.Pages
+namespace Interface.Pages
 {
     /// <summary>
-    /// Interaction logic for Analytics1.xaml
+    /// Interaction logic for Storage.xaml
     /// </summary>
-    public partial class Analytics1 : Page
+    public partial class Storage : Page
     {
-        public Analytics1()
+        public Storage()
         {
             InitializeComponent();
         }

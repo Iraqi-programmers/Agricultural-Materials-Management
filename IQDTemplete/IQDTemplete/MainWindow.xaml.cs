@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Interface.Pages;
 using IQDTemplete.Languages;
 using IQDTemplete.Pages;
 using IQDTemplete.Themes;
@@ -45,25 +46,30 @@ namespace IQDTemplete
             frameContent.Navigate(new Home1());
         }
 
-        private void rdAnalytics_Click(object sender, RoutedEventArgs e)
+      
+
+        private void rdStorage_Click(object sender, RoutedEventArgs e)
         {
-            frameContent.Navigate(new Analytics1());
+            frameContent.Navigate(new Storage());
         }
 
-        private void rdMessages_Click(object sender, RoutedEventArgs e)
+        private void rdInventory_Click(object sender, RoutedEventArgs e)
         {
-           
+            frameContent.Navigate(new Inventory());
         }
 
-        private void rdCollections_Click(object sender, RoutedEventArgs e)
+        private void rdNotifications_Click(object sender, RoutedEventArgs e)
         {
-            frameContent.Navigate(new Collections1());
+            frameContent.Navigate(new Notifications());
         }
 
-        private void rdUsers_Click(object sender, RoutedEventArgs e)
+
+        private void rdLegder_Click(object sender, RoutedEventArgs e)
         {
-          
+            frameContent.Navigate(new Ledger());
         }
+
+
 
         private void rdSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -82,5 +88,7 @@ namespace IQDTemplete
         {
             LanguageControler.SetLanguage(LanguageControler.enLanguage.English);
         }
+
+       
     }
 }

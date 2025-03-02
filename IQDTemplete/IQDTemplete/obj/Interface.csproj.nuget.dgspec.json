@@ -1,23 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\TraderMaster\\IQDTemplete\\IQDTemplete\\Interface.csproj": {}
+    "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\IQDTemplete\\IQDTemplete\\Interface.csproj": {}
   },
   "projects": {
-    "D:\\TraderMaster\\BLL\\BLL.csproj": {
+    "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\BLL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TraderMaster\\BLL\\BLL.csproj",
+        "projectUniqueName": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\BLL.csproj",
         "projectName": "BLL",
-        "projectPath": "D:\\TraderMaster\\BLL\\BLL.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "D:\\TraderMaster\\BLL\\obj\\",
+        "projectPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\BLL.csproj",
+        "packagesPath": "C:\\Users\\Abu_Sanad\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Abu_Sanad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,14 +28,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\DevExpress 24.1\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\TraderMaster\\DAL\\DAL.csproj": {
-                "projectPath": "D:\\TraderMaster\\DAL\\DAL.csproj"
+              "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\DAL.csproj": {
+                "projectPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\DAL.csproj"
               }
             }
           }
@@ -48,7 +51,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -69,24 +72,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\TraderMaster\\DAL\\DAL.csproj": {
+    "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TraderMaster\\DAL\\DAL.csproj",
+        "projectUniqueName": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\DAL.csproj",
         "projectName": "DAL",
-        "projectPath": "D:\\TraderMaster\\DAL\\DAL.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "D:\\TraderMaster\\DAL\\obj\\",
+        "projectPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\Abu_Sanad\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Abu_Sanad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -95,16 +100,13 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\DevExpress 24.1\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {
-              "D:\\TraderMaster\\MyLib\\MyLib.csproj": {
-                "projectPath": "D:\\TraderMaster\\MyLib\\MyLib.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {
@@ -117,7 +119,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -127,10 +129,6 @@
               "target": "Package",
               "version": "[6.0.1, )"
             },
-            "Microsoft.Extensions.Configuration": {
-              "target": "Package",
-              "version": "[9.0.2, )"
-            },
             "Microsoft.Extensions.Configuration.Json": {
               "target": "Package",
               "version": "[9.0.2, )"
@@ -138,10 +136,6 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
-            },
-            "System.Configuration.ConfigurationManager": {
-              "target": "Package",
-              "version": "[9.0.2, )"
             }
           },
           "imports": [
@@ -160,24 +154,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\TraderMaster\\IQDTemplete\\IQDTemplete\\Interface.csproj": {
+    "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\IQDTemplete\\IQDTemplete\\Interface.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TraderMaster\\IQDTemplete\\IQDTemplete\\Interface.csproj",
+        "projectUniqueName": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\IQDTemplete\\IQDTemplete\\Interface.csproj",
         "projectName": "Interface",
-        "projectPath": "D:\\TraderMaster\\IQDTemplete\\IQDTemplete\\Interface.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "D:\\TraderMaster\\IQDTemplete\\IQDTemplete\\obj\\",
+        "projectPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\IQDTemplete\\IQDTemplete\\Interface.csproj",
+        "packagesPath": "C:\\Users\\Abu_Sanad\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\IQDTemplete\\IQDTemplete\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Abu_Sanad\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -186,14 +182,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\DevExpress 24.1\\Components\\System\\Components\\Packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0-windows7.0": {
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "D:\\TraderMaster\\BLL\\BLL.csproj": {
-                "projectPath": "D:\\TraderMaster\\BLL\\BLL.csproj"
+              "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\BLL.csproj": {
+                "projectPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\BLL.csproj"
               }
             }
           }
@@ -208,7 +205,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0-windows7.0": {
@@ -232,7 +229,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

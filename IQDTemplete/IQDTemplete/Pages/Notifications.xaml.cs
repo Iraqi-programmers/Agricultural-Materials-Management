@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace IQDTemplete.Pages
+namespace Interface.Pages
 {
     /// <summary>
-    /// Interaction logic for Collections1.xaml
+    /// Interaction logic for Notifications.xaml
     /// </summary>
-    public partial class Collections1 : Page
+    public partial class Notifications : Page
     {
-        public Collections1()
+        public Notifications()
         {
             InitializeComponent();
         }

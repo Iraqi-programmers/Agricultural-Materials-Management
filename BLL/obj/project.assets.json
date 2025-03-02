@@ -2183,25 +2183,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Yousif\\.nuget\\packages\\": {},
+    "C:\\Users\\Abu_Sanad\\.nuget\\packages\\": {},
     "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Yousif\\Desktop\\Main\\BLL\\BLL.csproj",
+      "projectUniqueName": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\BLL.csproj",
       "projectName": "BLL",
-      "projectPath": "C:\\Users\\Yousif\\Desktop\\Main\\BLL\\BLL.csproj",
-      "packagesPath": "C:\\Users\\Yousif\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Yousif\\Desktop\\Main\\BLL\\obj\\",
+      "projectPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\BLL.csproj",
+      "packagesPath": "C:\\Users\\Abu_Sanad\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\DevExpress 24.1\\Components\\Offline Packages",
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Yousif\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Abu_Sanad\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.1.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -2218,8 +2218,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Yousif\\Desktop\\Main\\DAL\\DAL.csproj": {
-              "projectPath": "C:\\Users\\Yousif\\Desktop\\Main\\DAL\\DAL.csproj"
+            "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\DAL.csproj": {
+              "projectPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\DAL\\DAL.csproj"
             }
           }
         }
@@ -2234,7 +2234,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.100"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -2255,7 +2255,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
