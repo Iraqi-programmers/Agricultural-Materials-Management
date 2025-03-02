@@ -7,30 +7,27 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="LoginWindow.xaml.cs">
+    <Compile Update="Pages\Analytics1.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Collections1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Home1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\Inventory.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\Ledger.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\Notifications.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Pages\Setting1.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\Storage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Analytics1.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Collections1.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Home1.xaml">
