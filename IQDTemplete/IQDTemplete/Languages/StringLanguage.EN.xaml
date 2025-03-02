@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    
-                     xmlns:local="clr-namespace:WPFUIKitProfessional"
+                     xmlns:local="clr-namespace:IQDTemplete"
  xmlns:system="clr-namespace:System;assembly=mscorlib">
     
     <FlowDirection x:Key="AppFlowDirection">LeftToRight</FlowDirection>
@@ -10,11 +10,14 @@
     <system:String x:Key="rdSetting">Setting</system:String>
     <system:String x:Key="rdNotifications">Notifications</system:String>
     <system:String x:Key="rdUsers">Users</system:String>
-    <system:String x:Key="rdCollections">Collections</system:String>
-    <system:String x:Key="rdMessages">Messages</system:String>
-    <system:String x:Key="rdAnalytics">Analytics</system:String>
+    <system:String x:Key="rdInventory">Inventory</system:String>
+    <system:String x:Key="rdLedger">Ledger</system:String>
+    <system:String x:Key="rdStorage">Storage</system:String>
     <system:String x:Key="rdHome">Home</system:String>
     <system:String x:Key="lbLanguage">Language</system:String>
     <system:String x:Key="rdEnglish">English</system:String>
     <system:String x:Key="rdArabic">Arabic</system:String>
+    <system:String x:Key="UserName">UserName</system:String>
+    <system:String x:Key="Pasword">Password</system:String>
+    <system:String x:Key="company">Yoseffffff company</system:String>
 </ResourceDictionary>
