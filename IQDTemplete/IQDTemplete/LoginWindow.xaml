@@ -38,7 +38,7 @@ ResizeMode="NoResize" WindowState="Normal" FontFamily="Poppins"
 
                     <StackPanel Margin="50">
                         <StackPanel.Background  >
-                            <ImageBrush Opacity="50" ImageSource="D:\OneDrive\Desktop\IQDTemplete44\IQDTemplete\IQDTemplete\Assets\Logo.png" Stretch="Fill" />
+                            <ImageBrush Opacity="50" ImageSource="/Assets/Logo.png" Stretch="Fill" />
 
 
                         </StackPanel.Background>
