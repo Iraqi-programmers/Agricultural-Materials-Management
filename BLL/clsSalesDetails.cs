@@ -3,7 +3,7 @@ using DAL;
 
 namespace BLL
 {
-    public class clsSalesDetails : absClassesHelperBasc
+    public class clsSalesDetails : absBaseEntity
     {
         public int SaleId { get; set; }
         public clsStocks Stock { get; private set; }

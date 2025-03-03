@@ -1,70 +1,64 @@
-﻿using BLL.Product;
+﻿using System.Data;
 using DAL;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL
 {
-    //Create By Abu Sanad
-    public class clsWarrintyReturnesToPeople :absClassesHelperBasc
+    public class clsWarrintyReturnesToPeople : absBaseEntity
     {
-        public clsReturnedStocks Stockinfo { get; set; }
-        public  clsUsers UserInfo { get; set; }
+        public clsReturnedStocks Stockinfo { get; private set; }
+        public clsUsers UserInfo { get; private set; }
+        public clsPerson PersonInfo { get; private set; }
 
-        public clsWarrintyReturnesToPeople(clsReturnedStocks stockInfo, clsUsers userInfo)
+        public clsWarrintyReturnesToPeople(clsReturnedStocks stockInfo, clsPerson person, clsUsers userInfo)
         {
-            Id = null;
-            this.Stockinfo = stockInfo;
+            Stockinfo = stockInfo;
+            PersonInfo = person;
             UserInfo = userInfo;
         }
 
-        private clsWarrintyReturnesToPeople(int warrantyRetID, clsReturnedStocks stockInfo, clsUsers userInfo)
+        private clsWarrintyReturnesToPeople(int warrantyRetId, clsReturnedStocks stockInfo, clsPerson person, clsUsers userInfo)
         {
-             Id = warrantyRetID;
-            this.Stockinfo = stockInfo;
-            this.UserInfo = userInfo;
+            Id = warrantyRetId;
+            Stockinfo = stockInfo;
+            PersonInfo = person;
+            UserInfo = userInfo;
         }
 
-
-        public static async Task<clsWarrintyReturnesToPeople?> GetByID(int warrintyReturnesID)
+        public async Task<bool> SaveAsync()
         {
-            var obj = await clsWarrintyReturnesToPeopleData.GetByID(warrintyReturnesID);
-            if (obj == null) return null;
-            return __FetchWarrintyReturnesData(ref obj);
+            if (!Id.HasValue)
+                return await __AddAsync();
+            return await __UpdateAsync();
         }
 
-        public static async Task<bool> DeleteAsync(int warrintyReturnesID) => await clsWarrintyReturnesToPeopleData.Delete(warrintyReturnesID);
-
-        public  async Task<bool> UpdateAsync(int warrantyReturnedID) => await clsWarrintyReturnesToPeopleData.Update(warrantyReturnedID, UserInfo.Person.Id, UserInfo.Id);
-
-        public static async Task<DataTable?> GetAllAsync() => await clsWarrintyReturnesToPeopleData.GetAll();
-
-        public async Task<bool> AddAsync()
+        private async Task<bool> __AddAsync()
         {
-            var Dic = await clsWarrintyReturnesToPeopleData.AddNew(Stockinfo.Id, UserInfo.Person.Id, UserInfo.Id);
-            if (Dic == null) return false;
-            else
-            {
-                Id = (int)Dic["warrantyReturnedID"];
-               
-               
-            }
-            return true;
+            Id = await clsWarrintyReturnesToPeopleData.AddAsync(Stockinfo.Id, UserInfo.Person.Id, UserInfo.Id);
+            return Id.HasValue;
         }
-        public async Task<bool> UpdateAsync()
-        => await clsWarrintyReturnesToPeopleData.Update(Id,UserInfo.Person.Id,UserInfo.Id);
 
-        internal static clsWarrintyReturnesToPeople __FetchWarrintyReturnesData(ref Dictionary<string, object> dict)
+        public static async Task<clsWarrintyReturnesToPeople?> GetByIdAsync(int warrintyReturnesId)
+        {
+            var dict = await clsWarrintyReturnesToPeopleData.GetByIdAsync(warrintyReturnesId);
+            if (dict == null) return null;
+            return FetchWarrintyReturnesData(ref dict);
+        }
+
+        public static async Task<DataTable?> GetAllAsync() => await clsWarrintyReturnesToPeopleData.GetAllAsync();
+
+        public  async Task<bool> UpdateAsync(int warrantyReturnedId) => await clsWarrintyReturnesToPeopleData.UpdateAsync(warrantyReturnedId, UserInfo.Person.Id, UserInfo.Id);
+
+        private async Task<bool> __UpdateAsync() => await clsWarrintyReturnesToPeopleData.UpdateAsync(Id, UserInfo.Person.Id, UserInfo.Id);
+
+        public static async Task<bool> DeleteAsync(int warrintyReturnesId) => await clsWarrintyReturnesToPeopleData.DeleteAsync(warrintyReturnesId);
+
+        internal static clsWarrintyReturnesToPeople FetchWarrintyReturnesData(ref Dictionary<string, object> dict)
         {
             return new clsWarrintyReturnesToPeople(
                 (int)dict["WarrantyReturnedID"],
                 clsReturnedStocks.FetchReturnedStocksData(ref dict),
-                  clsUsers.FetchUserData(ref dict)
-
+                clsPerson.FetchPersonData(ref dict),
+                clsUsers.FetchUserData(ref dict)
             );
         }
     }

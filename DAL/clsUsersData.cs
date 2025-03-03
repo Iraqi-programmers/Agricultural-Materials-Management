@@ -4,8 +4,6 @@ using MyLib_DotNet.DatabaseExecutor;
 
 namespace DAL
 {
-    //add PROCEDURE by(zaiun) اجتاج شرح عليه بعد مافهمته كله صح
-    //Create By Abu Sanad
     public class clsUsersData
     {
         public static async Task<int?> AddAsync(string userName, string password, int? personId)
@@ -37,8 +35,6 @@ namespace DAL
 
         public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllUsers");
 
-        
-        // انشاء ستورد بروسيجر يعدل بيانات البيرسن فقط الي بيهن قييم واليوزر
         public static async Task<bool> UpdateAsync(int? userId, string userName, string? password, bool isActive, string? fullName = null, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
             SqlParameter[] prameters =
@@ -60,3 +56,87 @@ namespace DAL
     }
 
 }
+
+/*
+
+-- إجراء مخزن للإضافة
+CREATE PROCEDURE AddUser
+    @UserName NVARCHAR(255),
+    @Password NVARCHAR(255),
+    @PersonID INT
+AS
+BEGIN
+    INSERT INTO Users (UserName, Password, IsActive, PersonID)
+    VALUES (@UserName, @Password, 1, @PersonID);
+    
+    SELECT SCOPE_IDENTITY() AS NewUserID;
+END;
+
+-- إجراء مخزن للتحديث
+CREATE PROCEDURE UpdateUser
+    @UserID INT,
+    @UserName NVARCHAR(255),
+    @Password NVARCHAR(255),
+    @IsActive BIT,
+    @FullName NVARCHAR(255),
+    @NationalNum NVARCHAR(50) = NULL,
+    @PhoneNumber NVARCHAR(50) = NULL,
+    @Address NVARCHAR(255) = NULL
+AS
+BEGIN
+    UPDATE Users
+    SET UserName = @UserName,
+        Password = @Password,
+        IsActive = @IsActive
+    WHERE UserID = @UserID;
+
+    -- تحديث بيانات الشخص المرتبط
+    UPDATE Persons
+    SET FullName = @FullName,
+        NationalNum = @NationalNum,
+        PhoneNumber = @PhoneNumber,
+        Address = @Address
+    WHERE PersonID = (SELECT PersonID FROM Users WHERE UserID = @UserID);
+END;
+
+-- إجراء مخزن للحذف باستخدام ID
+CREATE PROCEDURE DeleteUserById
+    @UserID INT
+AS
+BEGIN
+    DELETE FROM Users WHERE UserID = @UserID;
+END;
+
+-- إجراء مخزن لاسترجاع بيانات مستخدم حسب ID
+CREATE PROCEDURE GetUserById
+    @UserID INT
+AS
+BEGIN
+    SELECT U.*, P.*
+    FROM Users U
+    JOIN Persons P ON U.PersonID = P.PersonID
+    WHERE U.UserID = @UserID;
+END;
+
+-- إجراء مخزن لاسترجاع بيانات مستخدم حسب اسم المستخدم وكلمة المرور
+CREATE PROCEDURE GetUserByUserNameAndPassword
+    @UserName NVARCHAR(255),
+    @Password NVARCHAR(255)
+AS
+BEGIN
+    SELECT U.*, P.*
+    FROM Users U
+    JOIN Persons P ON U.PersonID = P.PersonID
+    WHERE U.UserName = @UserName AND U.Password = @Password;
+END;
+
+-- إجراء مخزن لاسترجاع جميع المستخدمين
+CREATE PROCEDURE GetAllUsers
+AS
+BEGIN
+    SELECT U.*, P.*
+    FROM Users U
+    JOIN Persons P ON U.PersonID = P.PersonID;
+END;
+
+ */

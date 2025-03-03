@@ -44,3 +44,84 @@ namespace DAL
         }
     }
 }
+/*
+
+-- إنشاء جدول الموردين إذا لم يكن موجودًا
+CREATE TABLE Suppliers (
+    SupplierID INT IDENTITY(1,1) PRIMARY KEY,
+    SupplierName NVARCHAR(100) NOT NULL,
+    Phone NVARCHAR(20) NOT NULL UNIQUE,
+    IsPerson BIT NOT NULL,
+    Address NVARCHAR(255) NULL
+);
+
+-- إضافة مورد جديد
+CREATE PROCEDURE sp_AddSupplier
+    @SupplierName NVARCHAR(100),
+    @Phone NVARCHAR(20),
+    @IsPerson BIT,
+    @Address NVARCHAR(255)
+AS
+BEGIN
+    INSERT INTO Suppliers (SupplierName, Phone, IsPerson, Address)
+    VALUES (@SupplierName, @Phone, @IsPerson, @Address);
+    SELECT SCOPE_IDENTITY() AS SupplierID;
+END;
+
+-- تحديث بيانات مورد
+CREATE PROCEDURE sp_UpdateSupplier
+    @SupplierId INT,
+    @SupplierName NVARCHAR(100),
+    @Phone NVARCHAR(20),
+    @IsPerson BIT,
+    @Address NVARCHAR(255)
+AS
+BEGIN
+    UPDATE Suppliers
+    SET SupplierName = @SupplierName, 
+        Phone = @Phone, 
+        IsPerson = @IsPerson, 
+        Address = @Address
+    WHERE SupplierID = @SupplierId;
+END;
+
+-- حذف مورد
+CREATE PROCEDURE sp_DeleteSupplier
+    @SupplierId INT
+AS
+BEGIN
+    DELETE FROM Suppliers WHERE SupplierID = @SupplierId;
+END;
+
+-- جلب بيانات مورد حسب المعرف
+CREATE PROCEDURE sp_GetSupplierById
+    @SupplierId INT
+AS
+BEGIN
+    SELECT * FROM Suppliers WHERE SupplierID = @SupplierId;
+END;
+
+-- جلب بيانات مورد حسب الاسم
+CREATE PROCEDURE sp_GetSupplierByName
+    @SupplierName NVARCHAR(100)
+AS
+BEGIN
+    SELECT * FROM Suppliers WHERE SupplierName = @SupplierName;
+END;
+
+-- جلب بيانات مورد حسب رقم الهاتف
+CREATE PROCEDURE sp_GetSupplierByPhone
+    @Phone NVARCHAR(20)
+AS
+BEGIN
+    SELECT * FROM Suppliers WHERE Phone = @Phone;
+END;
+
+-- جلب جميع الموردين
+CREATE PROCEDURE sp_GetAllSuppliers
+AS
+BEGIN
+    SELECT * FROM Suppliers;
+END;
+
+ */

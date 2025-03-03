@@ -3,7 +3,7 @@ using DAL;
 
 namespace BLL
 {
-    public class clsPerson : absClassesHelperBasc
+    public class clsPerson : absBaseEntity
     {
         public string FullName { get; set; }
         public string? NationalNum { get; set; }
@@ -59,16 +59,16 @@ namespace BLL
             return FetchPersonData(ref data);
         }
 
-        public static async Task<Dictionary<string, object>?> GetFullDataByIdAsync(int personId) => await clsPersonData.GetFullDataByIdAsync(personId);
-        public static async Task<Dictionary<string, object>?> GetFullDataByFullNameAsync(string fullName) => await clsPersonData.GetFullDataByFullNameAsync(fullName);
-        public static async Task<Dictionary<string, object>?> GetFullDataPhoneNumAsync(string phoneNum) => await clsPersonData.GetFullDataPhoneNumAsync(phoneNum);
+        //public static async Task<Dictionary<string, object>?> GetFullDataByIdAsync(int personId) => await clsPersonData.GetFullDataByIdAsync(personId);
+        //public static async Task<Dictionary<string, object>?> GetFullDataByFullNameAsync(string fullName) => await clsPersonData.GetFullDataByFullNameAsync(fullName);
+        //public static async Task<Dictionary<string, object>?> GetFullDataPhoneNumAsync(string phoneNum) => await clsPersonData.GetFullDataPhoneNumAsync(phoneNum);
 
         public static async Task<DataTable?> GetAllAsDataTableAsync() => await clsPersonData.GetAllAsDataTableAsync();
-        public static async Task<List<Dictionary<string, object>>?> GetAllAsListAsync() => await clsPersonData.GetAllAsListAsync();
+        //public static async Task<List<Dictionary<string, object>>?> GetAllAsListAsync() => await clsPersonData.GetAllAsListAsync();
 
-        public static async Task<bool> IsExistByIdAsync(int personId) => await clsPersonData.IsExistAsync(personId);
-        public static async Task<bool> IsExistByFullNameAsync(string fullName) => await clsPersonData.IsExistByFullNameAsync(fullName);
-        public static async Task<bool> IsExistByNationalNumAsync(string nationalNum) => await clsPersonData.IsExistByNationalNumAsync(nationalNum);
+        //public static async Task<bool> IsExistByIdAsync(int personId) => await clsPersonData.IsExistAsync(personId);
+        //public static async Task<bool> IsExistByFullNameAsync(string fullName) => await clsPersonData.IsExistByFullNameAsync(fullName);
+        //public static async Task<bool> IsExistByNationalNumAsync(string nationalNum) => await clsPersonData.IsExistByNationalNumAsync(nationalNum);
 
         private async Task<bool> __UpdateAsync() => await clsPersonData.UpdateAsync(Id, FullName, NationalNum, PhoneNumber, Address);
 
@@ -83,9 +83,9 @@ namespace BLL
             return new clsPerson(
                 (int)dict["PersonID"],
                 (string)dict["FullName"],
-                dict.ContainsKey("NationalNum") ? Convert.ToString(dict["NationalNum"]) : null,
-                dict.ContainsKey("PhoneNumber") ? Convert.ToString(dict["PhoneNumber"]) : null,
-                dict.ContainsKey("Address") ? Convert.ToString(dict["Address"]) : null
+                dict.ContainsValue("NationalNum") ? (string)dict["NationalNum"] : null,
+                dict.ContainsValue("PhoneNumber") ? (string)dict["PhoneNumber"] : null,
+                dict.ContainsValue("Address") ? (string)dict["Address"] : null
             );
         }
     }

@@ -3,7 +3,7 @@ using DAL;
 
 namespace BLL
 {
-    public class clsSupplier : absClassesHelperBasc
+    public class clsSupplier : absBaseEntity
     {
         public string SupplierName { get; set; } = "";
         public string Phone { get; set; } = "";
@@ -48,12 +48,14 @@ namespace BLL
             if (data == null) return null;
             return FetchSupplierData(ref data);
         }
+
         public static async Task<clsSupplier?> GetByNameAsync(string supplierName)
         {
             var data = await clsSupplierData.GetByNameAsync(supplierName);
             if (data == null) return null;
             return FetchSupplierData(ref data);
         }
+
         public static async Task<clsSupplier?> GetByPhoneAsync(string phone)
         {
             var data = await clsSupplierData.GetByPhoneAsync(phone);
@@ -61,7 +63,7 @@ namespace BLL
             return FetchSupplierData(ref data);
         }
 
-        public static async Task<DataTable?> GetAllSuppliersAsync() => await clsSupplierData.GetAllAsync();
+        public static async Task<DataTable?> GetAllAsync() => await clsSupplierData.GetAllAsync();
 
         private async Task<bool> __UpdateAsync() => await clsSupplierData.UpdateAsync(Id, SupplierName, Phone, IsPerson, Address);
 

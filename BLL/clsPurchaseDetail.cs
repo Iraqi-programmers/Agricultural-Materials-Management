@@ -4,7 +4,7 @@ using DAL;
 
 namespace BLL
 {
-    public class clsPurchaseDetail : absClassesHelperBasc
+    public class clsPurchaseDetail : absBaseEntity
     {
         public int PurchaseId { get; set; }
         public clsProduct Product { get; set; }
@@ -46,7 +46,7 @@ namespace BLL
             clsProduct product = new();
 
             if (dict.ContainsKey("ProductData") && dict["ProductData"] is Dictionary<string, object> productData)
-                product = clsProduct.FetchProductData(ref productData);
+                product = clsProduct.FetchProductData(productData);
 
             return new clsPurchaseDetail(
                 (int)dict["PurchaseID"],

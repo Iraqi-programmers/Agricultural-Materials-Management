@@ -1,26 +1,21 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using DAL;
 using Newtonsoft.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BLL
 {
-    public class clsSales : absClassesHelperBasc
+    public class clsSales : absTransaction
     {
-        public DateTime Date { get; private set; }
         public clsPerson? Person { get; set; }
-        public clsUsers User { get; private set; }
         public double SaleTotalCost { get; set; }
-        public double? PaidAmount {  get; set; }
+        public double? PaidAmount { get; set; }
         public bool IsDebt { get; set; }
-        
         public List<clsSalesDetails> SalesDetailsList { get; set; }
 
         public clsSales(List<clsSalesDetails> salesDetailsList, clsUsers user, double saleTotalCost, bool isDebt, double? paidAmount = null, clsPerson? person = null)
         {
             Person = person;
-            User = user;
+            UserInfo = user;
             SaleTotalCost = saleTotalCost;
             SalesDetailsList = salesDetailsList;
             PaidAmount = paidAmount;
@@ -32,7 +27,7 @@ namespace BLL
             Id = selesId;
             Date = date;
             Person = person;
-            User = user;
+            UserInfo = user;
             SaleTotalCost = saleTotalCost;
             PaidAmount = paidAmount;
             IsDebt = isDebt;
@@ -48,7 +43,7 @@ namespace BLL
 
         private async Task<bool> __AddAsync()
         {
-            Id = await clsSalesData.AddAsync(JsonConvert.SerializeObject(SalesDetailsList), User.Id, SaleTotalCost, PaidAmount, Person?.Id);
+            Id = await clsSalesData.AddAsync(JsonConvert.SerializeObject(SalesDetailsList), UserInfo?.Id, SaleTotalCost, PaidAmount, Person?.Id);
             return Id.HasValue;
         }
 
@@ -61,14 +56,14 @@ namespace BLL
 
         public static async Task<DataTable?> GetAllAsync() => await clsSalesData.GetAllAsync();       
 
-        private async Task<bool> __UpdateAsync() => await clsSalesData.UpdateAsync(User.Id, JsonConvert.SerializeObject(SalesDetailsList), SaleTotalCost);
+        private async Task<bool> __UpdateAsync() => await clsSalesData.UpdateAsync(UserInfo?.Id, JsonConvert.SerializeObject(SalesDetailsList), SaleTotalCost);
 
         public static async Task<bool> DeleteAsync(int? saleId, int? userId, bool returnToStock = false) => await clsSalesData.DeleteAsync(saleId, userId, returnToStock);
 
-        public async Task<bool> DeleteAsync(bool returnToStock = false) => await DeleteAsync(Id, User.Id, returnToStock);
+        public async Task<bool> DeleteAsync(bool returnToStock = false) => await DeleteAsync(Id, UserInfo?.Id, returnToStock);
 
         internal static clsSales FetchSaleData(ref Dictionary<string, object> dict)
-        { 
+        {
             int id = (int)dict["SaleID"];
 
             List<clsSalesDetails> salesDetailsList = new();
@@ -78,25 +73,24 @@ namespace BLL
                 foreach (var detail in detailsList)
                 {
                     salesDetailsList.Add(new clsSalesDetails(
-                        (int)detail["DetailID"],
-                        id,
-                        clsStocks.FetchStockData(ref dict),
-                        (double)detail["Price"],
-                        (int)detail["Quantity"],
-                        (double)detail["TotalCost"],
-                        detail["WarrantyDate"] != DBNull.Value ? Convert.ToDateTime(detail["WarrantyDate"]) : null
+                        (int)detail["DetailID"], 
+                        id, 
+                        clsStocks.FetchStockData(ref dict), 
+                        (double)detail["Price"], 
+                        (int)detail["Quantity"], 
+                        (double)detail["TotalCost"], 
+                        detail.ContainsValue("WarrantyDate") ? (DateTime)detail["WarrantyDate"] : null
                     ));
                 }
             }
-
             return new clsSales(
-                id,
+                id, 
                 salesDetailsList,
-                clsUsers.FetchUserData(ref dict),
-                (DateTime)dict["Date"],
-                (double)dict["SaleTotalCost"],
-                (bool)dict["IsDebt"],
-                dict["PaidAmount"] != DBNull.Value ? Convert.ToDouble(dict["PaidAmount"]) : (double?)null,
+                clsUsers.FetchUserData(ref dict), 
+                (DateTime)dict["Date"], 
+                (double)dict["SaleTotalCost"], 
+                (bool)dict["IsDebt"], 
+                dict.ContainsValue("PaidAmount") ? (double)dict["PaidAmount"] : null,
                 clsPerson.FetchPersonData(ref dict)
             );
         }

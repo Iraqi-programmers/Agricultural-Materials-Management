@@ -45,3 +45,74 @@ namespace DAL
         public static async Task<bool> DeleteAsync(int purchaseId) => await CRUD.DeleteAsync("SP_", "@PurchaseID", purchaseId);
     }
 }
+
+/*
+
+-- إنشاء جدول تفاصيل المشتريات إذا لم يكن موجودًا
+CREATE TABLE PurchaseDetails (
+    PurchaseID INT IDENTITY(1,1) PRIMARY KEY,
+    ProductID INT NOT NULL,
+    Price DECIMAL(18,2) NOT NULL,
+    Status NVARCHAR(50) NOT NULL,
+    Quantity INT NOT NULL,
+    WarrantyDate DATETIME NOT NULL,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+-- إضافة تفاصيل شراء جديدة
+CREATE PROCEDURE sp_AddPurchaseDetail
+    @ProductID INT,
+    @Price DECIMAL(18,2),
+    @Status NVARCHAR(50),
+    @Quantity INT,
+    @WarrantyDate DATETIME
+AS
+BEGIN
+    INSERT INTO PurchaseDetails (ProductID, Price, Status, Quantity, WarrantyDate)
+    VALUES (@ProductID, @Price, @Status, @Quantity, @WarrantyDate);
+    SELECT SCOPE_IDENTITY() AS PurchaseID;
+END;
+
+-- تحديث تفاصيل شراء
+CREATE PROCEDURE sp_UpdatePurchaseDetail
+    @PurchaseID INT,
+    @ProductID INT,
+    @Price DECIMAL(18,2),
+    @Status NVARCHAR(50),
+    @Quantity INT,
+    @WarrantyDate DATETIME
+AS
+BEGIN
+    UPDATE PurchaseDetails
+    SET ProductID = @ProductID,
+        Price = @Price,
+        Status = @Status,
+        Quantity = @Quantity,
+        WarrantyDate = @WarrantyDate
+    WHERE PurchaseID = @PurchaseID;
+END;
+
+-- حذف تفاصيل شراء
+CREATE PROCEDURE sp_DeletePurchaseDetail
+    @PurchaseID INT
+AS
+BEGIN
+    DELETE FROM PurchaseDetails WHERE PurchaseID = @PurchaseID;
+END;
+
+-- جلب تفاصيل شراء حسب المعرف
+CREATE PROCEDURE sp_GetPurchaseDetailById
+    @PurchaseID INT
+AS
+BEGIN
+    SELECT * FROM PurchaseDetails WHERE PurchaseID = @PurchaseID;
+END;
+
+-- جلب جميع تفاصيل المشتريات
+CREATE PROCEDURE sp_GetAllPurchaseDetails
+AS
+BEGIN
+    SELECT * FROM PurchaseDetails;
+END;
+
+ */

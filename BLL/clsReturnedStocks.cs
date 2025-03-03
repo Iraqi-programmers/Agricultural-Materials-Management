@@ -1,16 +1,9 @@
-﻿using BLL.Product;
+﻿using System.Data;
 using DAL;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL
 {
-    //Create By Abu Sanad
-    public class clsReturnedStocks : absClassesHelperBasc
+    public class clsReturnedStocks : absBaseEntity
     {
         public int Quantity { get; set; }
         public clsSalesDetails SalesInfo { get; set; }
@@ -19,25 +12,32 @@ namespace BLL
         
         public clsReturnedStocks(int quantity, clsSalesDetails salesDetal, clsSupplier supplier, clsUsers users)
         {
-            this.Quantity = quantity;
-            this.SalesInfo = salesDetal;
-            this.SupplierInfo = supplier;
-            this.UserInfo = users;
+            Quantity = quantity;
+            SalesInfo = salesDetal;
+            SupplierInfo = supplier;
+            UserInfo = users;
         }
 
         internal clsReturnedStocks(int returnedStocks,int quantity, clsSalesDetails salesDetal, clsSupplier supplier, clsUsers users)
         {
             Id = returnedStocks;
-            this.Quantity = quantity;
-            this.SalesInfo = salesDetal;
-            this.SupplierInfo = supplier;
-            this.UserInfo = users;
+            Quantity = quantity;
+            SalesInfo = salesDetal;
+            SupplierInfo = supplier;
+            UserInfo = users;
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            if (!Id.HasValue)
+                return await __AddAsync();
+            return await __UpdateAsync();
         }
 
         private async Task<bool> __AddAsync()
         {
             Id = await clsReturnedStocksData.AddNew(SalesInfo.Id, Quantity, SupplierInfo.Id, UserInfo.Id);
-            return Id != null;
+            return Id.HasValue;
         }
 
         public async Task<bool> __UpdateAsync()  => await clsReturnedStocksData.Update(SalesInfo.Id, Quantity, SupplierInfo.Id, UserInfo.Id);
@@ -46,28 +46,13 @@ namespace BLL
 
         public static async Task<clsReturnedStocks?> GetByIdAsync(int ReturnedStocksID)
         {
-            var data = await clsReturnedStocksData.GetByIDAsync(ReturnedStocksID);
+            var data = await clsReturnedStocksData.GetByIdAsync(ReturnedStocksID);
             if (data == null) return null;
             return FetchReturnedStocksData(ref data);
         }
 
         public static async Task<DataTable?> GetAll() => await clsReturnedStocksData.GetAllAsync();
         
-        //public static async Task<List<object[]>?> GetReturnedProductsByProductID(int productId)
-        //{
-        //    return await clsReturnedStocksData.GetReturnedProductsByProductIDAsync(productId);
-        //}
-
-        //public static async Task<List<object[]>?> GetReturnedProductsByDetailID(int DetailID)
-        //{
-        //    return await clsReturnedStocksData.GetReturnedProductsByDetailIDAsync(DetailID);
-        //}
-
-        //public static async Task<List<object[]>?> GetReturnedProductsBySupplierID(int SupplierID)
-        //{
-        //    return await clsReturnedStocksData.GetReturnedProductsBySupplierIDAsync(SupplierID);
-        //}
-
         internal static clsReturnedStocks FetchReturnedStocksData(ref Dictionary<string, object> dict)
         {
             return new clsReturnedStocks(

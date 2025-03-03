@@ -3,14 +3,13 @@ using DAL;
 
 namespace BLL
 {
-    // Create By Abu Sanad
-    public class clsUsers : absClassesHelperBasc
+    public class clsUsers : absBaseEntity
     {
         public string UserName { get; set; } = "";
         public string Password { get; set; } = "";
         public bool IsActive { get; set; } = true;
 
-        public clsPerson Person { get; private set; }
+        public clsPerson? Person { get; private set; } 
 
         public clsUsers(string userName, string password, clsPerson person)
         {
@@ -59,7 +58,7 @@ namespace BLL
 
         public static async Task<DataTable?> GetAllAsync() => await clsUsersData.GetAllAsync();
 
-        public async Task<bool> __UpdateAsync() => await clsUsersData.UpdateAsync(Id, UserName, Password, IsActive, Person.FullName, Person.NationalNum, Person.PhoneNumber, Person.Address);
+        public async Task<bool> __UpdateAsync() => await clsUsersData.UpdateAsync(Id, UserName, Password, IsActive, Person?.FullName, Person?.NationalNum, Person?.PhoneNumber, Person?.Address);
         
         public static async Task<bool> DeleteAsync(int userId) => await clsUsersData.DeleteByIdAsync(userId);
 

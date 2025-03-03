@@ -34,5 +34,59 @@ namespace DAL
 
         public static async Task<bool> DeleteAsync(int paymentId) => await CRUD.DeleteAsync("SP_DeletePaymentByID", "PaymentID", paymentId);
     }
-
 }
+
+/*
+
+CREATE PROCEDURE sp_AddPeoplePayment
+    @Amount DECIMAL(18,2),
+    @UserID INT,
+    @SaleID INT
+AS
+BEGIN
+    INSERT INTO PeoplePayments (Amount, UserID, SaleID, Date)
+    VALUES (@Amount, @UserID, @SaleID, GETDATE());
+
+    SELECT SCOPE_IDENTITY() AS PaymentID;
+END;
+
+CREATE PROCEDURE sp_GetPeoplePaymentById
+    @PaymentID INT
+AS
+BEGIN
+    SELECT pp.PaymentID, pp.Amount, pp.Date, u.UserID, u.UserName, s.SaleID
+    FROM PeoplePayments pp
+    JOIN Users u ON pp.UserID = u.UserID
+    JOIN Sales s ON pp.SaleID = s.SaleID
+    WHERE pp.PaymentID = @PaymentID;
+END;
+
+CREATE PROCEDURE sp_GetAllPeoplePayments
+AS
+BEGIN
+    SELECT pp.PaymentID, pp.Amount, pp.Date, u.UserID, u.UserName, s.SaleID
+    FROM PeoplePayments pp
+    JOIN Users u ON pp.UserID = u.UserID
+    JOIN Sales s ON pp.SaleID = s.SaleID;
+END;
+
+CREATE PROCEDURE sp_UpdatePeoplePayment
+    @PaymentID INT,
+    @Amount DECIMAL(18,2),
+    @UserID INT
+AS
+BEGIN
+    UPDATE PeoplePayments
+    SET Amount = @Amount,
+        UserID = @UserID
+    WHERE PaymentID = @PaymentID;
+END;
+
+CREATE PROCEDURE sp_DeletePeoplePayment
+    @PaymentID INT
+AS
+BEGIN
+    DELETE FROM PeoplePayments WHERE PaymentID = @PaymentID;
+END;
+ 
+ */

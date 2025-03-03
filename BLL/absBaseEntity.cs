@@ -1,6 +1,6 @@
 ﻿namespace BLL
 {
-    public abstract class absClassesHelperBasc 
+    public abstract class absBaseEntity 
     {
         public int? Id { get; set; }
     }

@@ -7,8 +7,6 @@ namespace DAL
 {
     public class clsSalesData
     {
-        // هاي نلغي اضافة الشخص من داخلها افضل تبقى بس تاخذ ايدي شخص او لا 
-        // يعني اذا نحتاج نضيف بيانات شخص لازم نضيفه من الواجه بالبداية او نمرر ايديه او نختار ايدي الشخص اذا جان اله بيانات بالسستم 
         /*
         CREATE PROCEDURE SP_AddSaleWithDetails
             @UserID INT,
@@ -96,7 +94,6 @@ namespace DAL
                 new SqlParameter("@SaleTotalCost", saleTotalCost),
                 new SqlParameter("@PaidAmount", paidAmount)
             };
-
             if (personId.HasValue) 
                 parameters.Append(new SqlParameter("@PersonID", personId));
 
@@ -104,49 +101,128 @@ namespace DAL
         }
 
         /*
-        CREATE PROCEDURE SP_GetSaleWithDetailsById
-            @SaleID INT
-        AS
-        BEGIN
-            SET NOCOUNT ON;
+         
+CREATE PROCEDURE sp_GetSalesById
+    @SalesID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
 
-            -- جلب بيانات المبيعات
-            SELECT 
-                S.SaleID,
-                S.UserID,
-                S.Date,
-                S.SaleTotalCost,
-                S.IsDebt,
-                S.PaidAmount,
-                S.PersonID,
-                (
-                    SELECT 
-                        SD.DetailID,
-                        SD.StockID,
-                        SD.WarrantyDate,
-                        SD.Price,
-                        SD.Quantity
-                    FROM SalesDetails SD
-                    WHERE SD.SaleID = S.SaleID
-                    FOR JSON PATH
-                ) AS SalesDetailsJson
-            FROM Sales S
-            WHERE S.SaleID = @SaleID;
-        END
+    -- التحقق من وجود بيانات للمبيعات
+    IF NOT EXISTS (SELECT 1 FROM Sales WHERE SalesID = @SalesID)
+    BEGIN
+        SELECT NULL AS SalesID;
+        RETURN;
+    END
+
+    -- استرجاع بيانات عملية المبيعات الأساسية
+    DECLARE @SalesData NVARCHAR(MAX);
+    SELECT @SalesData = (
+        SELECT 
+            S.SalesID,
+            S.Date,
+            S.SaleTotalCost,
+            S.PaidAmount,
+            S.IsDebt,
+            S.UserID,
+            -- بيانات الشخص إن وجدت
+            P.PersonID,
+            P.FullName AS PersonFullName,
+            P.NationalNum AS PersonNationalNum,
+            P.PhoneNumber AS PersonPhoneNumber,
+            P.Address AS PersonAddress
+        FROM Sales S
+        LEFT JOIN Persons P ON S.PersonID = P.PersonID
+        WHERE S.SalesID = @SalesID
+        FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+    );
+
+    -- استرجاع تفاصيل المبيعات
+    DECLARE @SalesDetailsData NVARCHAR(MAX);
+    SELECT @SalesDetailsData = (
+        SELECT 
+            SD.SalesDetailID,
+            SD.SalesID,
+            SD.ProductID,
+            SD.Price,
+            SD.Status,
+            SD.Quantity,
+            SD.TotalCost,
+            SD.WarrantyDate
+        FROM SalesDetails SD
+        WHERE SD.SalesID = @SalesID
+        FOR JSON PATH
+    );
+
+    -- استرجاع المدفوعات المرتبطة بعملية المبيعات (إن وجدت)
+    DECLARE @PaymentData NVARCHAR(MAX);
+    SELECT @PaymentData = (
+        SELECT 
+            SP.PaymentID,
+            SP.SalesID,
+            SP.AmountPaid,
+            SP.PaymentDate,
+            SP.PaymentMethod
+        FROM SalesPayments SP
+        WHERE SP.SalesID = @SalesID
+        FOR JSON PATH
+    );
+
+    -- استرجاع بيانات اليوزر المرتبط بعملية المبيعات
+    DECLARE @UserData NVARCHAR(MAX);
+    SELECT @UserData = (
+        SELECT 
+            U.UserID,
+            U.UserName,
+            U.IsActive,
+            P.FullName AS UserFullName,
+            P.NationalNum AS UserNationalNum,
+            P.PhoneNumber AS UserPhoneNumber,
+            P.Address AS UserAddress
+        FROM Users U
+        LEFT JOIN Persons P ON U.PersonID = P.PersonID
+        WHERE U.UserID = (SELECT UserID FROM Sales WHERE SalesID = @SalesID)
+        FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+    );
+
+    -- تجميع جميع البيانات في JSON واحد
+    SELECT 
+        @SalesData AS SalesJson,
+        @SalesDetailsData AS SalesDetailsJson,
+        @PaymentData AS PaymentsJson,
+        @UserData AS UserJson
+    FOR JSON PATH, WITHOUT_ARRAY_WRAPPER;
+END;
+
          */
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int saleId)
         {
-            // dict لازم يحتوي على بيانات اليوزر كاملة
-            // وبيانات البيرسن الزبون ايظا اذا كانت موجودة
-            // وبيانات السيل مع جميع الريكوردز الي تمثل المنجات الموجودة بالقائمة
-            var dict = await CRUD.GetByColumnValueAsync("SP_GetSaleWithDetailsById", "SaleID", saleId);
+            var dict = await CRUD.GetByColumnValueAsync("SP_GetSalesById", "SalesID", saleId);
 
             if (dict == null) return null;
+
+            if (dict.ContainsKey("SalesJson") && dict["SalesJson"] != DBNull.Value)
+            {
+                string salesJson = dict["SalesJson"].ToString()!;
+                dict["SalesData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(salesJson) ?? new Dictionary<string, object>();
+            }
 
             if (dict.ContainsKey("SalesDetailsJson") && dict["SalesDetailsJson"] != DBNull.Value)
             {
                 string detailsJson = dict["SalesDetailsJson"].ToString()!;
                 dict["SalesDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
+            }
+
+            if (dict.ContainsKey("PaymentsJson") && dict["PaymentsJson"] != DBNull.Value)
+            {
+                string paymentsJson = dict["PaymentsJson"].ToString()!;
+                dict["PaymentsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(paymentsJson) ?? new List<Dictionary<string, object>>();
+            }
+
+            if (dict.ContainsKey("UserJson") && dict["UserJson"] != DBNull.Value)
+            {
+                string userJson = dict["UserJson"].ToString()!;
+                dict["UserData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(userJson) ?? new Dictionary<string, object>();
             }
             return dict;
         }
@@ -154,165 +230,161 @@ namespace DAL
         public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_");
 
         /*
-        CREATE PROCEDURE SP_UpdateSaleDetails
-            @SaleID INT,
-            @SaleTotalCost DOUBLE(10,2),
-            @Details NVARCHAR(MAX)
-        AS
+
+CREATE PROCEDURE SP_UpdateSaleDetails
+    @SaleID INT,
+    @SaleTotalCost DOUBLE PRECISION,
+    @Details NVARCHAR(MAX)
+AS
+BEGIN
+    DECLARE @SaleDetailID INT;
+    DECLARE @OldQuantity INT;
+    DECLARE @NewQuantity INT;
+    DECLARE @OldWarrintyDate DATETIME;
+    DECLARE @NewWarrintyDate DATETIME;
+    DECLARE @StockID INT;
+    DECLARE @OldPrice DOUBLE PRECISION;
+    DECLARE @NewPrice DOUBLE PRECISION;
+    DECLARE @OldTotaCost DOUBLE PRECISION;
+    DECLARE @NewTotaCost DOUBLE PRECISION;
+    DECLARE @Result BIT = 1;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- تحديث المبلغ الكلي للقائمة
+        UPDATE Sales
+        SET SaleTotalCost = @SaleTotalCost
+        WHERE SaleID = @SaleID;
+
+        -- جدول مؤقت لتخزين البيانات الجديدة من JSON
+        DECLARE @SalesDetails TABLE (SaleDetailID INT NULL, StockID INT, WarrintyDate DATETIME, Price DOUBLE PRECISION, Quantity INT, TotaCost DOUBLE PRECISION);
+
+        INSERT INTO @SalesDetails (SaleDetailID, StockID, WarrintyDate, Price, Quantity, TotaCost)
+        SELECT SaleDetailID, StockID, WarrintyDate, Price, Quantity, TotaCost
+        FROM OPENJSON(@Details)
+        WITH (
+            SaleDetailID INT,
+            StockID INT,
+            WarrintyDate DATETIME,
+            Price DOUBLE PRECISION,
+            Quantity INT,
+            TotaCost DOUBLE PRECISION
+        );
+
+        -- التعامل مع المنتجات الموجودة بالفعل
+        DECLARE product_cursor CURSOR FOR
+        SELECT sd.SaleDetailID, sd.StockID, sd.WarrintyDate, sd.Price, sd.Quantity, sd.TotaCost
+        FROM @SalesDetails sd
+        WHERE sd.SaleDetailID IS NOT NULL; 
+
+        OPEN product_cursor;
+        FETCH NEXT FROM product_cursor INTO @SaleDetailID, @StockID, @NewWarrintyDate, @NewPrice, @NewQuantity, @NewTotaCost;
+
+        WHILE @@FETCH_STATUS = 0
         BEGIN
-            DECLARE @SaleDetailID INT;
-            DECLARE @OldQuantity INT;
-            DECLARE @NewQuantity INT;
-            DECLARE @OldWarrintyDate DATETIME;
-            DECLARE @NewWarrintyDate DATETIME;
-            DECLARE @StockID INT;
-            DECLARE @OldPrice DECIMAL(10,2);
-            DECLARE @NewPrice DECIMAL(10,2);
-            DECLARE @OldTotaCost DECIMAL(10,2);
-            DECLARE @NewTotaCost DECIMAL(10,2);
-            DECLARE @Result BIT = 1;
-        
-            BEGIN TRY
-                BEGIN TRANSACTION;
+            -- جلب الكمية والسعر القديمة
+            SELECT @OldWarrintyDate = WarrintyDate, @OldPrice = Price, @OldQuantity = Quantity, @OldTotaCost = TotaCost
+            FROM SalesDetails
+            WHERE SaleDetailID = @SaleDetailID;
 
-                -- نحدث المبلغ الكلي للقائمة ككل
-                UPDATE Sales
-                SET SaleTotalCost = SaleTotalCost
-        
-                -- جدول مؤقت لتخزين البيانات الجديدة من جيسن
-                DECLARE @SalesDetails TABLE (SaleDetailID INT NULL, StockID INT, WarrintyDate DATETIME, Price DECIMAL(10,2), Quantity INT, TotaCost DECIMAL(10,2));
-        
-                INSERT INTO @SalesDetails (SaleDetailID, StockID, WarrintyDate, Price, Quantity, TotaCost)
-                SELECT SaleDetailID, StockID, WarrintyDate, Price, Quantity, TotaCost
-                FROM OPENJSON(@Details)
-                WITH (
-                    SaleDetailID INT,
-                    StockID INT,
-                    WarrintyDate DATETIME,
-                    Price DECIMAL(10,2),
-                    Quantity INT,
-                    TotaCost DECIMAL(10,2)
-                );
-        
-                -- التعامل مع المنتجات الموجودة بالفعل
-                DECLARE product_cursor CURSOR FOR
-                SELECT sd.SaleDetailID, sd.StockID, sd.WarrintyDate, sd.Price, sd.Quantity, sd.TotaCost
-                FROM @SalesDetails sd
-                WHERE sd.SaleDetailID IS NOT NULL; 
-        
-                OPEN product_cursor;
-                FETCH NEXT FROM product_cursor INTO @SaleDetailID, @StockID, @NewWarrintyDate, @NewPrice, @NewQuantity, @NewTotaCost;
-        
-                WHILE @@FETCH_STATUS = 0
-                BEGIN
-                    -- جلب الكمية والسعر القديمة من SaleDetails
-                    SELECT @OldWarrintyDate = WarrintyDate, @OldPrice = Price, @OldQuantity = Quantity, @OldTotaCost = TotaCost FROM SalesDetails
-                    WHERE SaleDetailID = @SaleDetailID;
-        
-                    IF @NewQuantity > @OldQuantity
-                    BEGIN
-                        -- نقلل من المخزن
-                        UPDATE Stock
-                        SET Quantity = Quantity - (@NewQuantity - @OldQuantity)
-                        WHERE StockID = @StockID;
-                    END
-                    ELSE IF @NewQuantity < @OldQuantity
-                    BEGIN
-                        -- نرجع الزايد للمخزن
-                        UPDATE Stock
-                        SET Quantity = Quantity + (@OldQuantity - @NewQuantity)
-                        WHERE StockID = @StockID;
-                    END
-        
-                    -- تحديث تفاصيل البيع فقط إذا تغيرت أي قيمة
-                    IF @NewPrice <> @OldPrice 
-                    BEGIN
-                        UPDATE SalesDetails
-                        SET Price = @NewPrice
-                        WHERE SaleDetailID = @SaleDetailID;
-                    END
-                    
-                    IF @NewQuantity <> @OldQuantity 
-                    BEGIN
-                        UPDATE SalesDetails
-                        SET Quantity = @NewQuantity
-                        WHERE SaleDetailID = @SaleDetailID;
-                    END
-                    
-                    IF @NewTotaCost <> @OldTotaCost
-                    BEGIN
-                        UPDATE SalesDetails
-                        SET TotaCost = @NewTotaCost
-                        WHERE SaleDetailID = @SaleDetailID;
-                    END
+            IF @NewQuantity > @OldQuantity
+            BEGIN
+                UPDATE Stock
+                SET Quantity = Quantity - (@NewQuantity - @OldQuantity)
+                WHERE StockID = @StockID;
+            END
+            ELSE IF @NewQuantity < @OldQuantity
+            BEGIN
+                UPDATE Stock
+                SET Quantity = Quantity + (@OldQuantity - @NewQuantity)
+                WHERE StockID = @StockID;
+            END
 
-                    IF @NewWarrintyDate <> @OldWarrintyDate 
-                    BEGIN
-                        UPDATE SalesDetails
-                        SET WarrintyDate = @NewWarrintyDate
-                        WHERE SaleDetailID = @SaleDetailID;
-                    END
-        
-                    FETCH NEXT FROM product_cursor INTO @SaleDetailID, @StockID, @NewWarrintyDate, @NewPrice, @NewQuantity, @NewTotaCost;
-                END
-        
-                CLOSE product_cursor;
-                DEALLOCATE product_cursor;
-        
-                -- نضيف المنتجات الجديدة بالقائمة في حال توجد منتجات مضافة على القائمة
-                INSERT INTO SalesDetails (SaleID, StockID, WarrintyDate, Price, Quantity, TotaCost)
-                SELECT @SaleID, StockID, WarrintyDate, Price, Quantity, TotaCost FROM @SalesDetails
-                WHERE SaleDetailID IS NULL;
-        
-                -- انقص المنتجات المضافة للقائمة من المخزن
-                UPDATE Stock
-                SET Quantity = s.Quantity - d.Quantity
-                FROM Stock s
-                INNER JOIN @SalesDetails d ON s.StockID = d.StockID
-                WHERE d.SaleDetailID IS NULL; 
-        
-                -- نحذف المنتجات الي تم الغائها من القائمة
-                DELETE FROM SalesDetails
-                OUTPUT deleted.StockID, deleted.Quantity
-                INTO #DeletedStock (StockID, Quantity)
-                WHERE SaleDetailID NOT IN (SELECT SaleDetailID FROM @SalesDetails)
-                AND SaleID = @SaleID;
-        
-                -- نرجع الكمية المحذوفة للمخزن
-                UPDATE Stock
-                SET Quantity = s.Quantity + d.Quantity
-                FROM Stock s
-                INNER JOIN #DeletedStock d ON s.StockID = d.StockID;
-        
-                DROP TABLE #DeletedStock;
-        
-                -- إنهاء المعاملة بنجاح
-                COMMIT TRANSACTION;
-        
-                -- إرجاع النجاح
-                SELECT @Result = 1;
-            END TRY
-            BEGIN CATCH
-                -- في حالة حدوث أي خطأ، يتم التراجع عن جميع العمليات
-                IF @@TRANCOUNT > 0
-                    ROLLBACK TRANSACTION;
-        
-                -- إرجاع الفشل
-                SELECT @Result = 0;
-            END CATCH;
-        
-            -- إرجاع النتيجة
-            SELECT @Result;
-        END;
+            -- تحديث تفاصيل البيع إذا تغيرت أي قيمة
+            IF @NewPrice <> @OldPrice
+            BEGIN
+                UPDATE SalesDetails
+                SET Price = @NewPrice
+                WHERE SaleDetailID = @SaleDetailID;
+            END
+            
+            IF @NewQuantity <> @OldQuantity
+            BEGIN
+                UPDATE SalesDetails
+                SET Quantity = @NewQuantity
+                WHERE SaleDetailID = @SaleDetailID;
+            END
+            
+            IF @NewTotaCost <> @OldTotaCost
+            BEGIN
+                UPDATE SalesDetails
+                SET TotaCost = @NewTotaCost
+                WHERE SaleDetailID = @SaleDetailID;
+            END
+
+            IF @NewWarrintyDate <> @OldWarrintyDate
+            BEGIN
+                UPDATE SalesDetails
+                SET WarrintyDate = @NewWarrintyDate
+                WHERE SaleDetailID = @SaleDetailID;
+            END
+
+            FETCH NEXT FROM product_cursor INTO @SaleDetailID, @StockID, @NewWarrintyDate, @NewPrice, @NewQuantity, @NewTotaCost;
+        END
+
+        CLOSE product_cursor;
+        DEALLOCATE product_cursor;
+
+        -- إضافة المنتجات الجديدة
+        INSERT INTO SalesDetails (SaleID, StockID, WarrintyDate, Price, Quantity, TotaCost)
+        SELECT @SaleID, StockID, WarrintyDate, Price, Quantity, TotaCost FROM @SalesDetails
+        WHERE SaleDetailID IS NULL;
+
+        -- إنقاص المنتجات الجديدة من المخزن
+        UPDATE Stock
+        SET Quantity = s.Quantity - d.Quantity
+        FROM Stock s
+        INNER JOIN @SalesDetails d ON s.StockID = d.StockID
+        WHERE d.SaleDetailID IS NULL;
+
+        -- حذف المنتجات الملغاة
+        DELETE FROM SalesDetails
+        OUTPUT deleted.StockID, deleted.Quantity
+        INTO #DeletedStock (StockID, Quantity)
+        WHERE SaleDetailID NOT IN (SELECT SaleDetailID FROM @SalesDetails)
+        AND SaleID = @SaleID;
+
+        -- إعادة الكمية المحذوفة إلى المخزن
+        UPDATE Stock
+        SET Quantity = s.Quantity + d.Quantity
+        FROM Stock s
+        INNER JOIN #DeletedStock d ON s.StockID = d.StockID;
+
+        DROP TABLE #DeletedStock;
+
+        COMMIT TRANSACTION;
+
+        SELECT @Result = 1;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
+
+        SELECT @Result = 0;
+    END CATCH;
+
+    SELECT @Result;
+END;
 
          */
         public static async Task<bool> UpdateAsync(int? saleId, string details, double SaleTotalCost, double? paidAmount = null)
         {
             var parameters = new SqlParameter[]
             {
+                new SqlParameter("@SaleID", saleId),
                 new SqlParameter("@Details", details),
-                new SqlParameter("@SaleTotalCost", SaleTotalCost),
-                new SqlParameter("@SaleID", saleId)
+                new SqlParameter("@SaleTotalCost", SaleTotalCost)
             };
             if (paidAmount != null)
                 parameters.Append(new SqlParameter("@PaidAmount", paidAmount));
@@ -377,8 +449,8 @@ namespace DAL
         {
             SqlParameter[] parameters =
             {
-                new SqlParameter("@UserID", userId),
                 new SqlParameter("@SaleID", saleId),
+                new SqlParameter("@UserID", userId),
                 new SqlParameter("@returnToStock", returnToStock)
             };
             return await CRUD.DeleteAsync("SP_DeleteSaleByID", parameters);

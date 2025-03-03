@@ -3,7 +3,7 @@ using DAL;
 
 namespace BLL
 {
-    public class clsPeoplePayment : absClassesHelperBasc
+    public class clsPeoplePayment : absBaseEntity
     {
         public double Amount { get; set; }
         public DateTime Date { get; set; }
