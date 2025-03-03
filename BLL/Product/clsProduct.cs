@@ -3,7 +3,7 @@ using DAL.Product;
 
 namespace BLL.Product
 {
-    public class clsProduct : absClassesHelperBasc
+    public class clsProduct : absBaseEntity
     {
         public clsCompany Company { get; set; } 
         public clsProductType ProductType { get; set; }

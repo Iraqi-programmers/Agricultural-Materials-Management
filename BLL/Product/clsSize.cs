@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 //yousif
 namespace BLL.Product
 {
-    public class clsSize: absClassesHelperBasc
+    public class clsSize: absBaseEntity
     {
         public double Size { set; get; }
 

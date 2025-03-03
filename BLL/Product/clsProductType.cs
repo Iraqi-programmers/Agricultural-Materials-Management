@@ -4,7 +4,7 @@ using System.Data;
 //Yousif 
 namespace BLL.Product
 {
-    public class clsProductType :absClassesHelperBasc
+    public class clsProductType :absBaseEntity
     {
         public string TypeName { set; get; }
         public clsProductType(string typeName)

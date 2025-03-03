@@ -6,7 +6,7 @@ namespace BLL.Product
     //Create By Abu Sanad
 
     //updated ByYousif
-    public class clsWarrinty : absClassesHelperBasc
+    public class clsWarrinty : absBaseEntity
     {
         public int Period { get; set; }
 

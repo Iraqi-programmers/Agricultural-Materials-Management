@@ -4,7 +4,7 @@ using System.Data;
 //Yousif
 namespace BLL.Product
 {
-    public class clsThickness : absClassesHelperBasc
+    public class clsThickness : absBaseEntity
     {
         public double Thickness { set; get; }
 

@@ -6,7 +6,7 @@ using System.Data;
 namespace BLL.Product
 {
 
-    public class clsCompany : absClassesHelperBasc
+    public class clsCompany : absBaseEntity
     {
         public string CompanyName { set; get; }
 
