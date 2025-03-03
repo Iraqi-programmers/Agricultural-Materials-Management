@@ -5,11 +5,11 @@ namespace BLL.Product
 {
     public class clsProduct : absBaseEntity
     {
-        public clsCompany Company { get; set; } 
+        public clsCompany Company { get; set; }
         public clsProductType ProductType { get; set; }
         public clsSize? Size { get; set; }
-        public clsThickness? Thickness { get; set; } 
-        public clsWarrinty? Warrinty { get; set; } 
+        public clsThickness? Thickness { get; set; }
+        public clsWarrinty? Warrinty { get; set; }
 
         public clsProduct(clsCompany company, clsProductType productType, clsSize? size, clsThickness? thickness, clsWarrinty? warrinty)
         {
@@ -40,7 +40,7 @@ namespace BLL.Product
         }
 
         public static async Task<int?> AddWithAllProductDataAsync(string productName, string companyName, double size, double thickness, int warrinty)
-            => await clsProductData.AddProductWithAllDetailsAsync(productName, companyName, size, thickness, warrinty);
+            => await clsProductData.AddAsync(productName, companyName, size, thickness, warrinty);
 
         private async Task<bool> __AddAsync()
         {
@@ -50,9 +50,9 @@ namespace BLL.Product
 
         public async static Task<clsProduct?> GetByIdAsync(int productId)
         {
-            var dict = await clsProductData.FindByIDAsync(productId);
+            var dict = await clsProductData.GetByIdAsync(productId);
             if (dict == null) return null;
-            return FetchProductData(ref dict);
+            return FetchProductData(dict);
         }
 
         public static async Task<DataTable?> GetAllAsync() => await clsProductData.GetAllAsync();
@@ -60,19 +60,19 @@ namespace BLL.Product
         private async Task<bool> __UpdateAsync() => await clsProductData.UpdateAsync(Id, ProductType.Id, Company.Id, Size?.Id, Thickness?.Id, Warrinty?.Id);
 
         public static async Task<bool> UpdateAllProductData(int productId, string companyName, string typeName, double size, double thickness, int warrinty)
-            => await clsProductData.UpdateAllProductDataAsync(productId, typeName, companyName, size, thickness, warrinty);
+            => await clsProductData.UpdateAsync(productId, typeName, companyName, size, thickness, warrinty);
 
-        public async Task<bool> DeleteAsync(int id) => await clsProductData.DeleteAsync(id);   
+        public async Task<bool> DeleteAsync(int ProductId) => await clsProductData.DeleteAsync(ProductId);   
         
-        internal static clsProduct FetchProductData(ref Dictionary<string, object> dict)
+        internal static clsProduct FetchProductData(Dictionary<string, object> dict)
         {
             return new clsProduct(
                 (int)dict["ProductID"],
-                new clsCompany((int)dict["CompanyID"], (string)dict["CompanyName"]),
-                new clsProductType((int)dict["TypeID"], (string)dict["TypeName"]),
-                dict.ContainsValue("SizeID") ? new clsSize((int)dict["SizeID"], (double)dict["Size"]) : null,
-                dict.ContainsValue("ThicknessID") ? new clsThickness((int)dict["ThicknessID"], (double)dict["Thickness"]) : null,
-                dict.ContainsValue("WarrintyID") ? new clsWarrinty((int)dict["WarrintyID"], (int)dict["Period"]) : null
+                clsCompany.FetchCompanyData(dict),
+                clsProductType.FetchProductTypeData(dict),
+                dict.ContainsValue("SizeID") ? clsSize.FetchSizeData(dict) : null,
+                dict.ContainsValue("ThicknessID") ? clsThickness.FetchThicknessData(dict) : null,
+                dict.ContainsValue("WarrintyID") ? clsWarrinty.FetchWarrintyData(dict) : null
             );
         }
     }

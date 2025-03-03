@@ -1,58 +1,55 @@
 ﻿using DAL.Product;
 using System.Data;
 
-
-//yousif
 namespace BLL.Product
 {
-
     public class clsCompany : absBaseEntity
     {
-        public string CompanyName { set; get; }
+        public string CompanyName { set; get; } = "";
 
         public clsCompany(string companyName)
         {
-            Id = null;
-            this.CompanyName =companyName;
+            CompanyName =companyName;
         }
 
-        internal clsCompany(int companyID, string companyName)
+        internal clsCompany(int companyId, string companyName)
         {
-            Id = companyID;
-            this.CompanyName = companyName;
+            Id = companyId;
+            CompanyName = companyName;
         }
 
-        public static async Task<DataTable?> GetAllAsync()
-        {
-            return await clsCompanyData.GetAllAsync();
-        }
+        internal clsCompany() { }
 
-        public static async Task<clsCompany?> FindByIDAsync(int companyID)
-        {
-            var data = await clsCompanyData.FindByIDAsync(companyID);
-            if (data == null)
-                return null;
-            return new clsCompany(companyID, (string)data["CompanyName"]);
-        }
-
-        private async Task<int?> __AddAsync()
-        {
-            return await clsCompanyData.AddAsync(CompanyName);
-        }
-        private async Task<bool> __Update()
-        {
-            return await clsCompanyData.updateAsync(Id, CompanyName);
-        }
         public async Task<bool> SaveAsync()
         {
-            if(Id == null)
-            {
-                Id = await __AddAsync();
-                return Id != null;
-            }
+            if (!Id.HasValue)
+                return await __AddAsync();
             return await __Update();
         }
 
+        private async Task<bool> __AddAsync()
+        {
+            Id = await clsCompanyData.AddAsync(CompanyName);
+            return Id.HasValue;
+        } 
 
+        public static async Task<DataTable?> GetAllAsync() => await clsCompanyData.GetAllAsync();
+
+        public static async Task<clsCompany?> GetByIdAsync(int companyId)
+        {
+            var dict = await clsCompanyData.GetByIdAsync(companyId);
+            if (dict == null) return null;
+            return FetchCompanyData(dict);
+        }
+        
+        private async Task<bool> __Update() => await clsCompanyData.UpdateAsync(Id, CompanyName);
+
+        internal static clsCompany FetchCompanyData(Dictionary<string, object> dict)
+        {
+            return new clsCompany(
+                (int)dict["CompanyID"],
+                (string)dict["CompanyName"]
+            );
+        }
     }
 }

@@ -1,7 +1,6 @@
-﻿using DAL.Product;
-using Microsoft.Identity.Client;
-using System.Data;
-//Yousif
+﻿using System.Data;
+using DAL.Product;
+
 namespace BLL.Product
 {
     public class clsThickness : absBaseEntity
@@ -10,8 +9,7 @@ namespace BLL.Product
 
         public clsThickness(double thickness)
         {
-            Id = null;
-            this.Thickness = thickness;
+            Thickness = thickness;
         }
 
         internal clsThickness(int thicknessId, double thickness)
@@ -20,20 +18,6 @@ namespace BLL.Product
             Thickness = thickness;
         }
 
-        public static async Task<DataTable?> GetAllAsync()
-         => await clsThicknessData.GetAllAsDataTableAsync();
-        
-        
-        private  async Task<bool> __AddAsync()
-        {
-            Id = await clsThicknessData.AddAsync(Thickness);
-            return Id.HasValue;
-        }
-
-        private  async Task<bool> __UpdateAsync()
-            => await clsThicknessData.UpdateAsync(this.Id, Thickness);
-        
-
         public async Task<bool> SaveAsync()
         {
             if (!Id.HasValue)
@@ -41,17 +25,29 @@ namespace BLL.Product
             return await __UpdateAsync();
         }
 
-        
-
-        public static async Task<clsThickness?> FindByIdAsync(int thicknessId)
+        private  async Task<bool> __AddAsync()
         {
-            var data = await clsThicknessData.FindByIDAsync(thicknessId);
-            if (data == null)
-                return null;
-            return new clsThickness(thicknessId, (double)data["Thickness"]);
+            Id = await clsThicknessData.AddAsync(Thickness);
+            return Id.HasValue;
         }
 
+        public static async Task<clsThickness?> GetByIdAsync(int thicknessId)
+        {
+            var dict = await clsThicknessData.FindByIDAsync(thicknessId);
+            if (dict == null) return null;
+            return FetchThicknessData(dict);
+        }
 
+        public static async Task<DataTable?> GetAllAsync() => await clsThicknessData.GetAllAsDataTableAsync();
 
+        private async Task<bool> __UpdateAsync() => await clsThicknessData.UpdateAsync(Id, Thickness);
+
+        internal static clsThickness FetchThicknessData(Dictionary<string, object> dict)
+        {
+            return new clsThickness(
+                (int)dict["ThicknessID"],
+                (double)dict["Thickness"]
+            );
+        }
     }
 }

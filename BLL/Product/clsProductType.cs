@@ -1,45 +1,55 @@
 ﻿using DAL.Product;
 using System.Data;
 
-//Yousif 
 namespace BLL.Product
 {
-    public class clsProductType :absBaseEntity
+    public class clsProductType : absBaseEntity
     {
-        public string TypeName { set; get; }
+        public string TypeName { set; get; } = "";
+
         public clsProductType(string typeName)
         {
-            Id = null;
-            this.TypeName = typeName;
+            TypeName = typeName;
         }
+
         internal clsProductType(int typeId,  string typeName)
         {
-            this.Id = typeId;
-            this.TypeName = typeName;
+            Id = typeId;
+            TypeName = typeName;
         }
-        public static async Task<DataTable?> GetAllAsync()
-            => await clsProductTypeData.GetAllAsync();
-        
-        public static async Task<clsProductType?> FindTypeAsync(int typeId)
-        {
-            var data = await clsProductTypeData.FindByIdAsync(typeId);
-            if (data == null)
-                return null;
-            return new clsProductType(typeId, (string)data["TypeName"]);
-        }
-        private async Task<bool> __AddAsync()
-        {
-            Id = await clsProductTypeData.AddAsync(TypeName);
-            return Id.HasValue;
-        }
-        private async Task<bool> __UpdateAsync()
-            =>await clsProductTypeData.UpdateAsync(Id, TypeName);
+
+        internal clsProductType() { }
+
         public async Task<bool> SaveAsync()
         {
             if (!Id.HasValue)
                 return await __AddAsync();
             return await __UpdateAsync();
-                
+        }
+
+        private async Task<bool> __AddAsync()
+        {
+            Id = await clsProductTypeData.AddAsync(TypeName);
+            return Id.HasValue;
+        }
+
+        public static async Task<clsProductType?> GetByIdAsync(int typeId)
+        {
+            var dict = await clsProductTypeData.GetByIdAsync(typeId);
+            if (dict == null) return null;
+            return FetchProductTypeData(dict);
+        }
+
+        public static async Task<DataTable?> GetAllAsync() => await clsProductTypeData.GetAllAsync();
+
+        private async Task<bool> __UpdateAsync() => await clsProductTypeData.UpdateAsync(Id, TypeName);
+        
+        internal static clsProductType FetchProductTypeData(Dictionary<string, object> dict)
+        {
+            return new clsProductType(
+                (int)dict["TypeID"],
+                (string)dict["TypeName"]
+            );
         }
     }
 }
