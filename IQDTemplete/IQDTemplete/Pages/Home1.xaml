@@ -10,9 +10,141 @@
  Width="1220"
       Title="Home" FontFamily="Poppins">
 
-    <Border CornerRadius="8" Background="{DynamicResource SecundaryBackgroundColor}">
+    <Grid  Background="{DynamicResource SecundaryBackgroundColor}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition  Width="*"/>
+            <ColumnDefinition  Width="*"/>
 
-        <!--<Label Content="Home" FontSize="50" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+        </Grid.ColumnDefinitions>
+        <Border  Grid.Row="0"
+         Grid.Column="0"
+         CornerRadius="20"
+         Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch">
 
-    </Border>
+            <Border.Background>
+
+                <LinearGradientBrush StartPoint="0.75,0"
+                              EndPoint="0,1">
+
+                    <GradientStop Color="#06A4FB"
+                           Offset="0.1" />
+
+                    <GradientStop Color="#B84EEB"
+                           Offset="0.8" />
+
+                </LinearGradientBrush>
+
+            </Border.Background>
+
+            <Grid>
+
+                <Border Background="#FFFFFF"
+                 Height="125"
+                 Width="180"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 CornerRadius="20"
+                 Opacity="0.3"
+                 Margin="10,10,0,0" />
+
+                <TextBlock Text="REVENUE &#x0a;GROWTH &#x0a;$62.8K"
+                    Foreground="#FFFFFF"
+                    FontFamily="Oswald"
+                    FontSize="32"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Left"
+                    Margin="30,20,0,0" />
+
+            </Grid>
+
+        </Border>
+        <Border  Grid.Row="1"
+Grid.Column="1"
+CornerRadius="20"
+Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+
+            <Border.Background>
+
+                <LinearGradientBrush StartPoint="0.75,0"
+                     EndPoint="0,1">
+
+                    <GradientStop Color="#06A4FB"
+                  Offset="0.1" />
+
+                    <GradientStop Color="#B84EEB"
+                  Offset="0.8" />
+
+                </LinearGradientBrush>
+
+            </Border.Background>
+
+            <Grid>
+
+                <Border Background="#FFFFFF"
+        Height="125"
+        Width="180"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        CornerRadius="20"
+        Opacity="0.3"
+        Margin="10,10,0,0" />
+
+                <TextBlock Text="REVENUE &#x0a;GROWTH &#x0a;$62.8K"
+           Foreground="#FFFFFF"
+           FontFamily="Oswald"
+           FontSize="32"
+           VerticalAlignment="Top"
+           HorizontalAlignment="Left"
+           Margin="30,20,0,0" />
+
+            </Grid>
+
+        </Border>
+        <Border  Grid.Row="2"
+Grid.Column="4"
+CornerRadius="20"
+Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+
+            <Border.Background>
+
+                <LinearGradientBrush StartPoint="0.75,0"
+                     EndPoint="0,1">
+
+                    <GradientStop Color="#06A4FB"
+                  Offset="0.1" />
+
+                    <GradientStop Color="#B84EEB"
+                  Offset="0.8" />
+
+                </LinearGradientBrush>
+
+            </Border.Background>
+
+            <Grid>
+
+                <Border Background="#FFFFFF"
+        Height="125"
+        Width="180"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        CornerRadius="20"
+        Opacity="0.3"
+        Margin="10,10,0,0" />
+
+                <TextBlock Text="REVENUE &#x0a;GROWTH &#x0a;$62.8K"
+           Foreground="#FFFFFF"
+           FontFamily="Oswald"
+           FontSize="32"
+           VerticalAlignment="Top"
+           HorizontalAlignment="Left"
+           Margin="30,20,0,0" />
+
+            </Grid>
+
+        </Border>
+
+
+
+    </Grid>
 </Page>
