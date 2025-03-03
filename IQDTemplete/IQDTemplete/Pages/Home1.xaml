@@ -6,8 +6,7 @@
       xmlns:local="clr-namespace:IQDTemplete.Pages"
        FlowDirection="{DynamicResource AppFlowDirection}"
       mc:Ignorable="d" 
-      Height="740"
- Width="1220"
+      
       Title="Home" FontFamily="Poppins">
 
     <Grid  Background="{DynamicResource SecundaryBackgroundColor}">
