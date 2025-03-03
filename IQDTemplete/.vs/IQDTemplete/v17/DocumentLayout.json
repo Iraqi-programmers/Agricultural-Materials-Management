@@ -3,7 +3,13 @@
   "WorkspaceRootPath": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\IQDTemplete\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7E145D1E-1465-4BC9-B6E2-56BBEAD7104C}|..\\BLL\\BLL.csproj|c:\\users\\abu_sanad\\documents\\github\\agricultural-materials-management\\bll\\clspurchasedetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7E145D1E-1465-4BC9-B6E2-56BBEAD7104C}|..\\BLL\\BLL.csproj|c:\\users\\abu_sanad\\documents\\github\\agricultural-materials-management\\bll\\product\\clscompany.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E145D1E-1465-4BC9-B6E2-56BBEAD7104C}|..\\BLL\\BLL.csproj|c:\\users\\abu_sanad\\documents\\github\\agricultural-materials-management\\bll\\product\\clsproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E145D1E-1465-4BC9-B6E2-56BBEAD7104C}|..\\BLL\\BLL.csproj|c:\\users\\abu_sanad\\documents\\github\\agricultural-materials-management\\bll\\product\\clsproducttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -13,7 +19,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -25,15 +31,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "clsPurchaseDetail.cs",
-              "DocumentMoniker": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\clsPurchaseDetail.cs",
-              "RelativeDocumentMoniker": "..\\BLL\\clsPurchaseDetail.cs",
-              "ToolTip": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\clsPurchaseDetail.cs",
-              "RelativeToolTip": "..\\BLL\\clsPurchaseDetail.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAowAkAAAAvAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "clsProductType.cs",
+              "DocumentMoniker": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\Product\\clsProductType.cs",
+              "RelativeDocumentMoniker": "..\\BLL\\Product\\clsProductType.cs",
+              "ToolTip": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\Product\\clsProductType.cs",
+              "RelativeToolTip": "..\\BLL\\Product\\clsProductType.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAQwCUAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-02T19:35:07.542Z",
+              "WhenOpened": "2025-03-03T19:20:54.456Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "clsProduct.cs",
+              "DocumentMoniker": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\Product\\clsProduct.cs",
+              "RelativeDocumentMoniker": "..\\BLL\\Product\\clsProduct.cs",
+              "ToolTip": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\Product\\clsProduct.cs",
+              "RelativeToolTip": "..\\BLL\\Product\\clsProduct.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAACwAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-03T19:20:35.855Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "clsCompany.cs",
+              "DocumentMoniker": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\Product\\clsCompany.cs",
+              "RelativeDocumentMoniker": "..\\BLL\\Product\\clsCompany.cs",
+              "ToolTip": "C:\\Users\\Abu_Sanad\\Documents\\GitHub\\Agricultural-Materials-Management\\BLL\\Product\\clsCompany.cs",
+              "RelativeToolTip": "..\\BLL\\Product\\clsCompany.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAywCcAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-03T19:20:18.693Z",
               "EditorCaption": ""
             }
           ]

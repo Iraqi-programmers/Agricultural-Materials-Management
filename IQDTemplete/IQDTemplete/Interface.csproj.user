@@ -7,12 +7,6 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Pages\Analytics1.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\Collections1.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Pages\Home1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -22,12 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Pages\Analytics1.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Pages\Collections1.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Home1.xaml">

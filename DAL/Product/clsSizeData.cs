@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using MyLib_DotNet.DatabaseExecutor;
 using System.Data;
-//Yousif
+
 namespace DAL.Product
 {
     public static class clsSizeData
@@ -32,3 +32,42 @@ namespace DAL.Product
         }
     }
 }
+/*
+ 
+-- إضافة إجراء مخزن لإضافة حجم
+CREATE PROCEDURE AddSize
+    @Size FLOAT
+AS
+BEGIN
+    INSERT INTO Sizes (Size)
+    VALUES (@Size);
+    SELECT SCOPE_IDENTITY();
+END;
+
+-- إجراء مخزن لاسترجاع جميع الأحجام
+CREATE PROCEDURE GetAllSizes
+AS
+BEGIN
+    SELECT * FROM Sizes;
+END;
+
+-- إجراء مخزن لاسترجاع حجم حسب المعرف
+CREATE PROCEDURE FindSizeByID
+    @SizeID INT
+AS
+BEGIN
+    SELECT * FROM Sizes WHERE SizeID = @SizeID;
+END;
+
+-- إجراء مخزن لتحديث بيانات الحجم
+CREATE PROCEDURE UpdateSize
+    @SizeID INT,
+    @Size FLOAT
+AS
+BEGIN
+    UPDATE Sizes
+    SET Size = @Size
+    WHERE SizeID = @SizeID;
+END;
+
+ */
