@@ -4,7 +4,7 @@ using DAL;
 
 namespace BLL
 {
-    public class clsPurchaseDetail : absBaseEntity
+    public class clsPurchaseDetails : absBaseEntity
     {
         public int PurchaseId { get; set; }
         public clsProduct Product { get; set; }
@@ -13,7 +13,7 @@ namespace BLL
         public int Quantity { get; set; }
         public DateTime WarrantyDate { get; set; }
 
-        public clsPurchaseDetail(clsProduct product, double price, string status, int quantity, DateTime warrantyDate)
+        public clsPurchaseDetails(clsProduct product, double price, string status, int quantity, DateTime warrantyDate)
         {
             Product = product;
             Price = price;
@@ -22,7 +22,7 @@ namespace BLL
             WarrantyDate = warrantyDate;
         }
 
-        internal clsPurchaseDetail(int purchaseId, clsProduct product, double price, string status, int quantity, DateTime warrantyDate)
+        internal clsPurchaseDetails(int purchaseId, clsProduct product, double price, string status, int quantity, DateTime warrantyDate)
         {
             PurchaseId = purchaseId;
             Product = product;
@@ -32,7 +32,7 @@ namespace BLL
             WarrantyDate = warrantyDate;
         }
 
-        public static async Task<clsPurchaseDetail?> GetByIdAsync(int purchaseId)
+        public static async Task<clsPurchaseDetails?> GetByIdAsync(int purchaseId)
         {
             var dict = await clsPurchasesDetailsData.GetByIdAsync(purchaseId);
             if (dict == null) return null;
@@ -41,14 +41,14 @@ namespace BLL
 
         public static async Task<DataTable?> GetAllAsync() => await clsPurchasesDetailsData.GetAllAsync();
 
-        internal static clsPurchaseDetail FetchPurchaseDetailData(ref Dictionary<string, object> dict)
+        internal static clsPurchaseDetails FetchPurchaseDetailData(ref Dictionary<string, object> dict)
         {
             clsProduct product = new();
 
             if (dict.ContainsKey("ProductData") && dict["ProductData"] is Dictionary<string, object> productData)
                 product = clsProduct.FetchProductData(productData);
 
-            return new clsPurchaseDetail(
+            return new clsPurchaseDetails(
                 (int)dict["PurchaseID"],
                 product,
                 (double)dict["Price"],

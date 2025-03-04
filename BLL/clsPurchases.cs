@@ -11,9 +11,9 @@ namespace BLL
         public double? TotalPaid { get; set; }
         public bool IsDebt { get; set; }
         public clsSupplier SupplierInfo { get; private set; }
-        public List<clsPurchaseDetail> PurchaseDetailsList { get; private set; }
+        public List<clsPurchaseDetails> PurchaseDetailsList { get; private set; }
 
-        public clsPurchases(List<clsPurchaseDetail> purchaseDetailsList, clsSupplier supplier, DateTime date, double totalPrice, double? totalPaid, clsUsers user)
+        public clsPurchases(List<clsPurchaseDetails> purchaseDetailsList, clsSupplier supplier, DateTime date, double totalPrice, double? totalPaid, clsUsers user)
         {
             SupplierInfo = supplier;
             Date = date;
@@ -24,7 +24,7 @@ namespace BLL
             UserInfo = user;
         }
 
-        private clsPurchases(int purchasesId, List<clsPurchaseDetail> purchaseDetailsList, ref clsSupplier supplier, DateTime date, double totalPrice, bool isDebt, double? totalPaid, ref clsUsers user)
+        private clsPurchases(int purchasesId, List<clsPurchaseDetails> purchaseDetailsList, ref clsSupplier supplier, DateTime date, double totalPrice, bool isDebt, double? totalPaid, ref clsUsers user)
         {
             Id = purchasesId;
             SupplierInfo = supplier;
@@ -79,12 +79,12 @@ namespace BLL
                 if (dict.ContainsKey("UserData") && dict["UserData"] is Dictionary<string, object> userData)
                     user = clsUsers.FetchUserData(ref userData);
 
-                List<clsPurchaseDetail> purchaseDetailsList = new();
+                List<clsPurchaseDetails> purchaseDetailsList = new();
                 if (dict.ContainsKey("PurchaseDetailsData") && dict["PurchaseDetailsData"] is List<Dictionary<string, object>> detailsList)
                 {
                     foreach (var detail in detailsList)
                     {
-                        purchaseDetailsList.Add(new clsPurchaseDetail(
+                        purchaseDetailsList.Add(new clsPurchaseDetails(
                             id,
                             clsProduct.FetchProductData(detail),
                             (double)detail["Price"],
