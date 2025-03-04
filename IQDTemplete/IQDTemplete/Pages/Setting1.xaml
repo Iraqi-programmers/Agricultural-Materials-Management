@@ -9,21 +9,36 @@
      FlowDirection="{DynamicResource AppFlowDirection}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Setting"
+      Title="Setting" Loaded="Page_Loaded"
       >
 
     <Grid>
         <Border CornerRadius="8" Background="{DynamicResource SecundaryBackgroundColor}">
             <StackPanel>
-                <Label Margin="10" Content="{DynamicResource lbLanguage}"  FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Left" />
-                <Button Background="{DynamicResource SecundaryBackgroundColor}" Margin="5,8,0,0" Content="{DynamicResource rdEnglish}" Foreground="{DynamicResource PrimaryTextColor}" Click="Button_Click" />
-                <Button Background="{DynamicResource SecundaryBackgroundColor}" Margin="5,8,0,0" Content="{DynamicResource rdArabic}" Foreground="{DynamicResource PrimaryTextColor}"  Click="Button_Click_1" />
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10">
-                    <TextBlock Text="Theme" FontSize="16" Margin="0,0,0,10" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}"/>
-                    <RadioButton  Content="Light" GroupName="Theme" Margin="0,5" Foreground="{DynamicResource PrimaryTextColor}" />
-                    <RadioButton  Content="Dark" GroupName="Theme" Margin="0,5" Foreground="{DynamicResource PrimaryTextColor}"/>
-                    
-                </StackPanel>
+
+                <GroupBox  Padding="0,12,0,0" BorderThickness="0.4" BorderBrush="{DynamicResource Coboxborder}" Height="90" Margin="8" FontWeight="Bold" FontSize="14">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate >
+                            <TextBlock Text="{DynamicResource ThemeTitle}" Foreground="{DynamicResource PrimaryTextColor}"/>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <StackPanel>
+                        <RadioButton Name="rdLight"   Margin="0,0,0,8" Checked="rdLight_Checked" Content="{DynamicResource rdLight}" GroupName="Theme"  Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal" />
+                        <RadioButton Name="rdDark"  Checked="rdDark_Checked"  Content="{DynamicResource rdDark}" GroupName="Theme" Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal"/>
+                    </StackPanel>
+                </GroupBox>
+                
+                <GroupBox Padding="0,12,0,0" BorderThickness="0.4" BorderBrush="{DynamicResource Coboxborder}" Height="90" Margin="8" FontWeight="Bold" FontSize="14">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate >
+                            <TextBlock Text="{DynamicResource LanguageTitle}" Foreground="{DynamicResource PrimaryTextColor}"/>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <StackPanel>
+                        <RadioButton Margin="0,0,0,8" Name="rdEnglish" Checked="rdEnglish_Checked"  Content="{DynamicResource rdEnglish}" GroupName="Language"  Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal" />
+                        <RadioButton Name="rdArabic" Checked="rdArabic_Checked" Content="{DynamicResource rdArabic}" GroupName="Language" Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal"/>
+                    </StackPanel>
+                </GroupBox>
             </StackPanel>
         </Border>
     </Grid>
