@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using Interface.Pages;
 using IQDTemplete.Languages;
 using IQDTemplete.Pages;
@@ -10,9 +11,12 @@ namespace IQDTemplete
 
     public partial class MainWindow : Window
     {
+        public static Frame MainFrameInstance { get; private set; }
         public MainWindow()
         {
             InitializeComponent();
+            MainFrameInstance = frameContent;
+            frameContent.Content = new Home1();
         }
 
         private void Themes_Click(object sender, RoutedEventArgs e)

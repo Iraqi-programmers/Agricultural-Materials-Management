@@ -15,9 +15,13 @@
     <system:String x:Key="rdStorage">المخزن</system:String>
     <system:String x:Key="rdHome">الرئيسية</system:String>
     <system:String x:Key="lbLanguage">اللغة</system:String>
-    <system:String x:Key="rdEnglish">الانكليزية</system:String>
-    <system:String x:Key="rdArabic">العربية</system:String>
     <system:String x:Key="UserName">اسم المستخدم</system:String>
     <system:String x:Key="Pasword">كلمة السر</system:String>
     <system:String x:Key="company">شركة يووووووسف</system:String>
+    <system:String x:Key="ThemeTitle">الثيم</system:String>
+    <system:String x:Key="LanguageTitle">اللغة</system:String>
+    <system:String x:Key="rdDark">ليلي</system:String>
+    <system:String x:Key="rdLight">نهاري</system:String>
+    <system:String x:Key="rdArabic">العربية</system:String>
+    <system:String x:Key="rdEnglish">الانكليزية</system:String>
 </ResourceDictionary>

@@ -15,9 +15,13 @@
     <system:String x:Key="rdStorage">Storage</system:String>
     <system:String x:Key="rdHome">Home</system:String>
     <system:String x:Key="lbLanguage">Language</system:String>
-    <system:String x:Key="rdEnglish">English</system:String>
-    <system:String x:Key="rdArabic">Arabic</system:String>
     <system:String x:Key="UserName">UserName</system:String>
     <system:String x:Key="Pasword">Password</system:String>
     <system:String x:Key="company">Yoseffffff company</system:String>
+    <system:String x:Key="ThemeTitle">Theme</system:String>
+    <system:String x:Key="LanguageTitle">Language</system:String>
+    <system:String x:Key="rdDark">Dark</system:String>
+    <system:String x:Key="rdLight">Light</system:String>
+    <system:String x:Key="rdArabic">Arabic</system:String>
+    <system:String x:Key="rdEnglish">English</system:String>
 </ResourceDictionary>
