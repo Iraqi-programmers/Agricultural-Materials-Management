@@ -8,23 +8,26 @@ namespace BLL
     {
         public int Quantity { get; set; }
         public string Status { get; set; }
-        public double Price { get; set; }
+        public double PurchasePrice { get; set; } //
+        public double SellingPrice { get; set; } // 
         public clsProduct ProductInfo { get; set; }
 
-        public clsStocks(clsProduct productedInfo, int quantity, string status, double price)
+        public clsStocks(clsProduct productedInfo, int quantity, string status, double purchasePrice, double sellingPrice)
         {
             ProductInfo = productedInfo;
             Quantity = quantity;
             Status = status;
-            Price = price;
+            PurchasePrice = purchasePrice;
+            SellingPrice = sellingPrice;
         }
 
-        private clsStocks(int stockId, int quantity, string status, double price, clsProduct productInfo)
+        private clsStocks(int stockId, int quantity, string status, double purchasePrice, double sellingPrice, clsProduct productInfo)
         {
             Id = stockId;
             Quantity = quantity;
             Status = status;
-            Price = price;
+            PurchasePrice = purchasePrice;
+            SellingPrice = sellingPrice;
             ProductInfo = productInfo;
         }
 
@@ -37,7 +40,7 @@ namespace BLL
 
         private async Task<bool> __AddAsync()
         {
-            Id = await clsStocksData.AddAsync(ProductInfo.Id, Quantity, Status, Price);
+            Id = await clsStocksData.AddAsync(ProductInfo.Id, Quantity, Status, SellingPrice);
             return Id != null;
         }
 
@@ -52,7 +55,7 @@ namespace BLL
 
         //private static async Task<bool> __UpdateAsync(int stockId, int quantity) => await clsStocksData.UpdateStockQuantity(stockId, quantity);
 
-        private async Task<bool> __UpdateAsync() => await clsStocksData.UpdateAsync(Id, ProductInfo.Id, Quantity, Status, Price);
+        private async Task<bool> __UpdateAsync() => await clsStocksData.UpdateAsync(Id, ProductInfo.Id, Quantity, Status, SellingPrice);
 
         public static async Task<bool> DeleteAsync(int stockId) => await clsStocksData.DeleteAsync(stockId);
 
@@ -62,7 +65,8 @@ namespace BLL
                 (int)dict["StiockID"],
                 (int)dict["Quantity"],
                 (string)dict["Status"],
-                (double)dict["Price"], 
+                (double)dict["PurchasePrice"],
+                (double)dict["SellingPrice"],
                 clsProduct.FetchProductData(dict) 
             );
         }

@@ -19,7 +19,7 @@ namespace DAL
                 new SqlParameter("@IsDebt", isDebt),
                 new SqlParameter("@UserID", userId)
             };
-            return await CRUD.AddAsync("SP_AddPurchaseWithDetails", parameters);
+            return await CRUD.AddAsync("AddPurchase", parameters);
         }
 
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int purchaseId)
@@ -78,7 +78,7 @@ namespace DAL
             return await CRUD.GetAllAsDataTableAsync("SP_GetPurchasesByDateRange", parameters);
         }
 
-        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchases");
+        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("GetAllPurchases");
 
         public static async Task<bool> UpdateAsync(string details, DateTime purchaseDate, int? purchaseId, int? supplierId, double totalPrice, double? totalPaid, bool isDebt, int? userId)
         {

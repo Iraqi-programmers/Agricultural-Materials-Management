@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using DAL;
+using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 
 namespace BLL
@@ -10,9 +11,10 @@ namespace BLL
         public double SaleTotalCost { get; set; }
         public double? PaidAmount { get; set; }
         public bool IsDebt { get; set; }
+        public double TotalProfit { get; set; } //
         public List<clsSalesDetails> SalesDetailsList { get; set; }
 
-        public clsSales(List<clsSalesDetails> salesDetailsList, clsUsers user, double saleTotalCost, bool isDebt, double? paidAmount = null, clsPerson? person = null)
+        public clsSales(List<clsSalesDetails> salesDetailsList, clsUsers user, double saleTotalCost, bool isDebt, double totalProfit, double? paidAmount = null, clsPerson? person = null)
         {
             Person = person;
             UserInfo = user;
@@ -20,9 +22,10 @@ namespace BLL
             SalesDetailsList = salesDetailsList;
             PaidAmount = paidAmount;
             IsDebt = isDebt;
+            TotalProfit = totalProfit;
         }
 
-        private clsSales(int selesId, List<clsSalesDetails> salesDetailsList, clsUsers user, DateTime date, double saleTotalCost, bool isDebt, double? paidAmount = null, clsPerson? person = null)
+        private clsSales(int selesId, List<clsSalesDetails> salesDetailsList, clsUsers user, DateTime date, double saleTotalCost, bool isDebt, double totalProfit, double? paidAmount = null, clsPerson? person = null)
         {
             Id = selesId;
             Date = date;
@@ -31,6 +34,7 @@ namespace BLL
             SaleTotalCost = saleTotalCost;
             PaidAmount = paidAmount;
             IsDebt = isDebt;
+            TotalProfit = totalProfit;
             SalesDetailsList = salesDetailsList;
         }
 
@@ -76,9 +80,10 @@ namespace BLL
                         (int)detail["DetailID"], 
                         id, 
                         clsStocks.FetchStockData(ref dict), 
-                        (double)detail["Price"], 
+                        (double)detail["Price"],
                         (int)detail["Quantity"], 
                         (double)detail["TotalCost"], 
+                        (double)detail["Profit"],
                         detail.ContainsValue("WarrantyDate") ? (DateTime)detail["WarrantyDate"] : null
                     ));
                 }
@@ -89,7 +94,8 @@ namespace BLL
                 clsUsers.FetchUserData(ref dict), 
                 (DateTime)dict["Date"], 
                 (double)dict["SaleTotalCost"], 
-                (bool)dict["IsDebt"], 
+                (bool)dict["IsDebt"],
+                (double)dict["TotalProfit"],
                 dict.ContainsValue("PaidAmount") ? (double)dict["PaidAmount"] : null,
                 clsPerson.FetchPersonData(ref dict)
             );

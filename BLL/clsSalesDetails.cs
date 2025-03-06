@@ -11,17 +11,20 @@ namespace BLL
         public double Price { get; set; }
         public int Quantity { get; set; }
         public double TotalCost { get; set; }
+        public double Profit { get; set; } //
 
-        public clsSalesDetails(clsStocks stock, double price, int quantity, double totalCost, uint period = 0)
+
+        public clsSalesDetails(clsStocks stock, double price, int quantity, double totalCost, double profit, uint period = 0)
         {
             Stock = stock;
             WarrantyDate = period > 0 ? GetDateAfterDays(period) : null;
             Price = price;
             Quantity = quantity;
             TotalCost = totalCost;
+            Profit = profit;
         }
 
-        internal clsSalesDetails(int? detailId, int saleId, clsStocks stock, double price, int quantity, double totalCost, DateTime? warrantyDate)
+        internal clsSalesDetails(int? detailId, int saleId, clsStocks stock, double price, int quantity, double totalCost, double profit, DateTime? warrantyDate)
         {
             Id = detailId;
             SaleId = saleId;
@@ -29,6 +32,7 @@ namespace BLL
             Price = price;
             Quantity = quantity;
             TotalCost = totalCost;
+            Profit = profit;
             WarrantyDate = warrantyDate;
         }
 
@@ -52,6 +56,7 @@ namespace BLL
                 (double)dict["Price"],
                 (int)dict["Quantity"],
                 (double)dict["TotalCost"],
+                (double)dict["Profit"],
                 (DateTime)dict["Date"]
             );
         }
