@@ -8,13 +8,22 @@ namespace BLL
         public double Amount { get; set; }
         public DateTime Date { get; set; }
         public clsUsers UserInfo { get; private set; }
-        public clsSales SaleInfo { get; private set; }
+        public clsSales? SaleInfo { get; private set; }
 
-        public clsPeoplePayment(double amount, clsUsers userInfo, clsSales saleInfo)
+        public List<int>? SaleIds { get; private set; }
+
+        //public clsPeoplePayment(double amount, clsUsers userInfo, clsSales saleInfo)
+        //{
+        //    Amount = amount;
+        //    UserInfo = userInfo;
+        //    SaleInfo = saleInfo;
+        //}
+
+        public clsPeoplePayment(double amount, clsUsers userInfo, List<int> saleIds)
         {
             Amount = amount;
             UserInfo = userInfo;
-            SaleInfo = saleInfo;
+            SaleIds = saleIds;
         }
 
         private clsPeoplePayment(int paymentId, double amount, DateTime date, clsUsers userInfo, clsSales saleInfo)
@@ -33,11 +42,7 @@ namespace BLL
             return await __UpdateAsync();
         }
 
-        private async Task<bool> __AddAsync()
-        {
-            Id = await clsPeoplePaymentsData.AddAsync(Amount, UserInfo.Id, SaleInfo.Id);
-            return Id.HasValue;
-        }
+        private async Task<bool> __AddAsync() => await clsPeoplePaymentsData.AddAsync(Amount, UserInfo.Id, SaleIds);
 
         public static async Task<DataTable?> GetAllAsync() => await clsPeoplePaymentsData.GetAllAsync();
 
