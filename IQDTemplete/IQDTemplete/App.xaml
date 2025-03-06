@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:IQDTemplete"
              StartupUri="LoginWindow.xaml">
     <Application.Resources>
+        
+        
+        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                
@@ -21,8 +24,7 @@
 
             </ResourceDictionary.MergedDictionaries>
 
-
-
+           
         </ResourceDictionary>
 
 
