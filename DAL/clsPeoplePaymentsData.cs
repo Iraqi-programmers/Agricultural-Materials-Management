@@ -8,14 +8,17 @@ namespace DAL
     {
         public static async Task<bool> AddAsync(double amount, int? userId, List<int>? saleIds)
         {
+            string saleIdsString = string.Join(",", saleIds!);
+
             SqlParameter[] parameters =
             {
                 new SqlParameter("@Amount", amount),
                 new SqlParameter("@UserID", userId),
-                new SqlParameter("@SaleIDs", saleIds)
+                new SqlParameter("@SaleIDs", saleIdsString)
             };
-            return await CRUD.UpdateAsync("SP_AddPeoplePayment", parameters);
+            return await CRUD.UpdateAsync("sp_UpdateSalesPayment", parameters);
         }
+
 
         public static async Task<Dictionary<string, object>?> GetAsync(int paymentId) => await CRUD.GetByColumnValueAsync("SP_GetPaymentByID", "PaymentID", paymentId);
 
