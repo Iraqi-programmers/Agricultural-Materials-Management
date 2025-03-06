@@ -14,7 +14,7 @@ namespace DAL
                 new SqlParameter("@Password", password),
                 new SqlParameter("@PersonID", personId)
             };
-            return await CRUD.AddAsync("SP_", prameters);
+            return await CRUD.AddAsync("SP_AddUsers", prameters);
         }
 
         public static async Task<Dictionary<string, object>?> GetByUserNameAndPasswordAsync(string userName, string password)
@@ -24,14 +24,14 @@ namespace DAL
                 new SqlParameter("@UserName", userName),
                 new SqlParameter("@Password", password)
             };
-            return await CRUD.GetAsync("SP_", prameters);
+            return await CRUD.GetAsync("SP_GetAllUsers", prameters);
         }
 
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int userId)
-            => await CRUD.GetByColumnValueAsync("SP_", "UserID", userId);
+            => await CRUD.GetByColumnValueAsync("SP_GetAllUsers", "UserID", userId);
 
         public static async Task<Dictionary<string, object>?> GetByUserNameAsync(string userName) 
-            => await CRUD.GetByColumnValueAsync("SP_GetUsersByUserName", "UserName", userName);
+            => await CRUD.GetByColumnValueAsync("SP_GetAllUsers", "UserName", userName);
 
         public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllUsers");
 
