@@ -6,15 +6,15 @@ namespace DAL
 {
     public class clsPeoplePaymentsData
     {
-        public static async Task<int?> AddAsync(double amount, int? userId, int? saleId)
+        public static async Task<bool> AddAsync(double amount, int? userId, List<int>? saleIds)
         {
             SqlParameter[] parameters =
             {
                 new SqlParameter("@Amount", amount),
                 new SqlParameter("@UserID", userId),
-                new SqlParameter("@SaleID", saleId)
+                new SqlParameter("@SaleIDs", saleIds)
             };
-            return await CRUD.AddAsync("SP_AddPeoplePayment", parameters);
+            return await CRUD.UpdateAsync("SP_AddPeoplePayment", parameters);
         }
 
         public static async Task<Dictionary<string, object>?> GetAsync(int paymentId) => await CRUD.GetByColumnValueAsync("SP_GetPaymentByID", "PaymentID", paymentId);
@@ -45,58 +45,67 @@ CREATE PROCEDURE sp_UpdateSalesPayment
 AS
 BEGIN
     SET NOCOUNT ON;
-
     DECLARE @SaleID INT, @DebtAmount DECIMAL(18,2), @Paid DECIMAL(18,2);
     DECLARE @SaleTable TABLE (SaleID INT);
-    DECLARE @InsertedPayments TABLE (PaymentID INT);
+    DECLARE @Success BIT = 0;  -- متغير لتحديد نجاح العملية
 
-    -- تحويل القائمة النصية إلى جدول
-    INSERT INTO @SaleTable (SaleID)
-    SELECT value FROM STRING_SPLIT(@SaleIDs, ',');
+    BEGIN TRANSACTION;  -- بدء المعاملة
 
-    -- البدء بمعالجة كل مبيع حسب الترتيب
-    DECLARE cur CURSOR FOR 
-    SELECT SaleID FROM @SaleTable ORDER BY SaleID;
+    BEGIN TRY
+        -- تحويل القائمة النصية إلى جدول
+        INSERT INTO @SaleTable (SaleID)
+        SELECT value FROM STRING_SPLIT(@SaleIDs, ',');
 
-    OPEN cur;
-    FETCH NEXT FROM cur INTO @SaleID;
+        -- البدء بمعالجة كل مبيع حسب الترتيب
+        DECLARE cur CURSOR FOR 
+        SELECT SaleID FROM @SaleTable ORDER BY SaleID;
 
-    WHILE @@FETCH_STATUS = 0 AND @Amount > 0
-    BEGIN
-        -- جلب المبلغ المتبقي للدين لهذا المبيع
-        SELECT @DebtAmount = SaleTotalCost - ISNULL(PaidAmount, 0)
-        FROM SalesTable WHERE SaleID = @SaleID;
-
-        -- تحديد المبلغ الذي سيتم دفعه لهذا السجل
-        SET @Paid = CASE 
-                        WHEN @Amount >= @DebtAmount THEN @DebtAmount
-                        ELSE @Amount 
-                    END;
-
-        -- تحديث بيانات المبيع
-        UPDATE SalesTable
-        SET PaidAmount = ISNULL(PaidAmount, 0) + @Paid,
-            IsDebt = CASE WHEN @Paid = @DebtAmount THEN 0 ELSE IsDebt END
-        WHERE SaleID = @SaleID;
-
-        -- إدراج سجل الدفع
-        INSERT INTO PeoplePayments (Amount, UserID, SaleID, Date)
-        OUTPUT INSERTED.PaymentID INTO @InsertedPayments  -- حفظ معرفات المدفوعات
-        VALUES (@Paid, @UserID, @SaleID, GETDATE());
-
-        -- خصم المبلغ المدفوع من الإجمالي المتاح
-        SET @Amount = @Amount - @Paid;
-
+        OPEN cur;
         FETCH NEXT FROM cur INTO @SaleID;
-    END
 
-    CLOSE cur;
-    DEALLOCATE cur;
+        WHILE @@FETCH_STATUS = 0 AND @Amount > 0
+        BEGIN
+            -- جلب المبلغ المتبقي للدين لهذا المبيع
+            SELECT @DebtAmount = SaleTotalCost - ISNULL(PaidAmount, 0)
+            FROM SalesTable WHERE SaleID = @SaleID;
 
-    -- إرجاع جميع معرفات المدفوعات التي تم إدراجها
-    SELECT * FROM @InsertedPayments;
+            -- تحديد المبلغ الذي سيتم دفعه لهذا السجل
+            SET @Paid = CASE 
+                            WHEN @Amount >= @DebtAmount THEN @DebtAmount
+                            ELSE @Amount 
+                        END;
+
+            -- تحديث بيانات المبيع
+            UPDATE SalesTable
+            SET PaidAmount = ISNULL(PaidAmount, 0) + @Paid,
+                IsDebt = CASE WHEN @Paid = @DebtAmount THEN 0 ELSE IsDebt END
+            WHERE SaleID = @SaleID;
+
+            -- إدراج سجل الدفع
+            INSERT INTO PeoplePayments (Amount, UserID, SaleID, Date)
+            VALUES (@Paid, @UserID, @SaleID, GETDATE());
+
+            -- خصم المبلغ المدفوع من الإجمالي المتاح
+            SET @Amount = @Amount - @Paid;
+
+            FETCH NEXT FROM cur INTO @SaleID;
+        END
+
+        CLOSE cur;
+        DEALLOCATE cur;
+
+        COMMIT TRANSACTION;  -- تأكيد جميع العمليات
+        SET @Success = 1;  -- تعيين القيمة إلى TRUE
+
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;  -- إلغاء جميع العمليات عند حدوث خطأ
+        SET @Success = 0;  -- تعيين القيمة إلى FALSE
+    END CATCH
+
+    -- إرجاع نجاح أو فشل العملية
+    SELECT @Success AS IsSuccess;
 END;
-
 
 
 CREATE PROCEDURE sp_GetPeoplePaymentById
