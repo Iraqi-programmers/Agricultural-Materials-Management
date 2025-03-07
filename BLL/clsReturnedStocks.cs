@@ -40,7 +40,7 @@ namespace BLL
             return Id.HasValue;
         }
 
-        public async Task<bool> __UpdateAsync()  => await clsReturnedStocksData.Update(SalesInfo.Id, Quantity, SupplierInfo.Id, UserInfo.Id);
+        public async Task<bool> __UpdateAsync()  => await clsReturnedStocksData.Update(Id,SalesInfo.Id, Quantity, SupplierInfo.Id, UserInfo.Id);
            
         public static async Task<bool> DeleteAsync(int returnedStocksId) => await clsReturnedStocksData.Delete(returnedStocksId);
 

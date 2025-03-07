@@ -45,5 +45,10 @@ namespace Interface.Pages
         {
 
         }
+
+        private void BorderAnimation_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("هلوووو");
+        }
     }
 }

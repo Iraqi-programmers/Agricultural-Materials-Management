@@ -3,11 +3,10 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Interface.Pages"
+      xmlns:local="clr-namespace:Interface.Pages.UserControl"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Ledger"
-        FlowDirection="{DynamicResource AppFlowDirection}"
         FontFamily="Poppins">
 
     <!-- تعريف الانيميشن كموارد -->
@@ -50,209 +49,101 @@
         </Grid.RowDefinitions>
 
         <!--المشتريات-->
-        <Border  Grid.Row="0"
+        <Border
+         Name="Purchases"
          Grid.Column="0"
          CornerRadius="20"
-                 Name="Purchases"
-                 MouseDown="Purchases_MouseDown"
-              Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="{DynamicResource TertiaryBackgroundColor}">
-
+         Margin="7,4,7,0"
+         Height="150"
+         VerticalAlignment="Top"
+         Background="{DynamicResource TertiaryBackgroundColor}"
+         Grid.Row="0"
+         Grid.RowSpan="1">
 
             <Grid>
-                <!-- Border الخارجي -->
-                <Border 
-       Background="Transparent"
-       Height="125"
-       Width="180"
-       HorizontalAlignment="Right"
-       VerticalAlignment="Center"
-       CornerRadius="20"
-       Opacity="0.9"
-       Margin="10"
-       Cursor="Hand"
-       RenderTransformOrigin="1, 0.5">
-
-
-                    <Border.RenderTransform>
-                        <ScaleTransform />
-                    </Border.RenderTransform>
-                    <Border.Triggers>
-                        <!-- تنشيط الانيميشن عند دخول الماوس -->
-                        <EventTrigger RoutedEvent="MouseEnter">
-                            <BeginStoryboard Storyboard="{StaticResource MouseEnterAnimation}" />
-                        </EventTrigger>
-                        <!-- تنشيط الانيميشن عند مغادرة الماوس -->
-                        <EventTrigger RoutedEvent="MouseLeave">
-                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveAnimation}" />
-                        </EventTrigger>
-                    </Border.Triggers>
-
-                    <TextBlock Text="المشتريات"
-              Foreground="{DynamicResource TertiaryTextColor}"
-              FontWeight="ExtraLight"
-              FontSize="35"
-              HorizontalAlignment="Right"
-              VerticalAlignment="Center" />
-                </Border>
-
+                <local:BorderAnimation Text="المشتريات"
+                                     TextColor="{DynamicResource TertiaryTextColor}"
+                                     BackgroundColor="Transparent"
+                                     IconSource="/Assets/R.jpg"
+                                     Margin="0,0,0,0"
+                                       
+                                       />
 
             </Grid>
-
         </Border>
 
         <!--المبيعات-->
-        <Border  Grid.Row="0"
-                 Grid.Column="1"
-                 CornerRadius="20"
-                 Name="SalesBorder"
-                 MouseDown="SalesBorder_MouseDown"
-              Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="{DynamicResource TertiaryBackgroundColor}">
+        <Border
+         Name="Sales"
+         Grid.Column="1"
+         CornerRadius="20"
+         Margin="7,4,7,0"
+         Height="150"
+         VerticalAlignment="Top"
+         Background="{DynamicResource TertiaryBackgroundColor}"
+         Grid.Row="0"
+         Grid.RowSpan="1">
 
             <Grid>
-                <!-- Border الخارجي -->
-                <Border 
-                Background="Transparent"
-                Height="125"
-                Width="180"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                CornerRadius="20"
-                Opacity="0.9"
-                Margin="10"
-                Cursor="Hand"
-                RenderTransformOrigin="1, 0.5">
-
-
-                    <Border.RenderTransform>
-                        <ScaleTransform />
-                    </Border.RenderTransform>
-                    <Border.Triggers>
-                        <!-- تنشيط الانيميشن عند دخول الماوس -->
-                        <EventTrigger RoutedEvent="MouseEnter">
-                            <BeginStoryboard Storyboard="{StaticResource MouseEnterAnimation}" />
-                        </EventTrigger>
-                        <!-- تنشيط الانيميشن عند مغادرة الماوس -->
-                        <EventTrigger RoutedEvent="MouseLeave">
-                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveAnimation}" />
-                        </EventTrigger>
-                    </Border.Triggers>
-
-                    <TextBlock Text="المبيعات"
-                       Foreground="{DynamicResource TertiaryTextColor}"
-                       FontWeight="ExtraLight"
-                       FontSize="35"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Center" />
-                </Border>
-
+                <local:BorderAnimation Text="المبيعات"
+                                     TextColor="{DynamicResource TertiaryTextColor}"
+                                     BackgroundColor="Transparent"
+                                     IconSource="/Assets/R.jpg"
+                                     Margin="0,0,0,0"
+                                       
+                                       />
 
             </Grid>
-
-
-
         </Border>
+
 
         <!--الديون-->
-        <Border  Grid.Row="0"
-                 Grid.Column="2"
-                 CornerRadius="20"
-                 Name="Debts"
-                 MouseDown="Debts_MouseDown"
-                 
-              Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="{DynamicResource TertiaryBackgroundColor}">
+        <Border
+         Name="Debts"
+         Grid.Column="2"
+         CornerRadius="20"
+         Margin="7,4,7,0"
+         Height="150"
+         VerticalAlignment="Top"
+         Background="{DynamicResource TertiaryBackgroundColor}"
+         Grid.Row="0"
+         Grid.RowSpan="2">
 
             <Grid>
-                <!-- Border الخارجي -->
-                <Border 
-                Background="Transparent"
-                Height="125"
-                Width="180"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                CornerRadius="20"
-                Opacity="0.9"
-                Margin="10"
-                Cursor="Hand"
-                RenderTransformOrigin="1, 0.5">
-
-
-                    <Border.RenderTransform>
-                        <ScaleTransform />
-                    </Border.RenderTransform>
-                    <Border.Triggers>
-                        <!-- تنشيط الانيميشن عند دخول الماوس -->
-                        <EventTrigger RoutedEvent="MouseEnter">
-                            <BeginStoryboard Storyboard="{StaticResource MouseEnterAnimation}" />
-                        </EventTrigger>
-                        <!-- تنشيط الانيميشن عند مغادرة الماوس -->
-                        <EventTrigger RoutedEvent="MouseLeave">
-                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveAnimation}" />
-                        </EventTrigger>
-                    </Border.Triggers>
-
-                    <TextBlock Text="الديون"
-                       Foreground="{DynamicResource TertiaryTextColor}"
-                       FontWeight="ExtraLight"
-                       FontSize="35"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Center" />
-                </Border>
-
+                <local:BorderAnimation Text="الديون"
+                                     TextColor="{DynamicResource TertiaryTextColor}"
+                                     BackgroundColor="Transparent"
+                                     IconSource="/Assets/R.jpg"
+                                     Margin="0,0,0,0"
+                                       
+                                       />
 
             </Grid>
-
-
         </Border>
 
-        <!--الايرادات-->
+        <!--الإيرادات-->
         <Border
-            Name="Revenue"
-            MouseDown="Revenue_MouseDown"
-          Grid.Column="1"
-          CornerRadius="20"
-       Margin="7,-40,7,0" Height="152" VerticalAlignment="Top" Background="{DynamicResource TertiaryBackgroundColor}" Grid.Row="1" Grid.RowSpan="2">
-
-            <Grid >
-                <!-- Border الخارجي -->
-                <Border 
-         Background="Transparent"
-         Height="125"
-         Width="180"
-         HorizontalAlignment="Right"
-         VerticalAlignment="Center"
+         Name="Revenue"
+         Grid.Column="2"
          CornerRadius="20"
-         Opacity="0.9"
-         Margin="10"
-         Cursor="Hand"
-         RenderTransformOrigin="1, 0.5">
+         Margin="7,-40,7,0"
+         Height="150"
+         VerticalAlignment="Top"
+         Background="{DynamicResource TertiaryBackgroundColor}"
+         Grid.Row="1"
+         Grid.RowSpan="2">
 
-
-                    <Border.RenderTransform>
-                        <ScaleTransform />
-                    </Border.RenderTransform>
-                    <Border.Triggers>
-                        <!-- تنشيط الانيميشن عند دخول الماوس -->
-                        <EventTrigger RoutedEvent="MouseEnter">
-                            <BeginStoryboard Storyboard="{StaticResource MouseEnterAnimation}" />
-                        </EventTrigger>
-                        <!-- تنشيط الانيميشن عند مغادرة الماوس -->
-                        <EventTrigger RoutedEvent="MouseLeave">
-                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveAnimation}" />
-                        </EventTrigger>
-                    </Border.Triggers>
-
-                    <TextBlock Text="الاٍيرادات"
-                Foreground="{DynamicResource TertiaryTextColor}"
-                FontWeight="ExtraLight"
-                FontSize="35"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center" />
-                </Border>
-
+            <Grid>
+                <local:BorderAnimation Text="الإيرادات"
+                                     TextColor="{DynamicResource TertiaryTextColor}"
+                                     BackgroundColor="Transparent"
+                                     IconSource="/Assets/R.jpg"
+                                     Margin="0,-7,0,0"
+                                       MouseDown="BorderAnimation_MouseDown"
+                                       
+                                       />
 
             </Grid>
-
-
         </Border>
 
 
