@@ -7,6 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ViewSalesList"
+      FlowDirection="{DynamicResource AppFlowDirection}"
       >
     <Grid>
 
@@ -69,7 +70,6 @@
                       SelectionUnit="FullRow"
                       GridLinesVisibility="Horizontal"
                       RowBackground="White"
-                     
                       AlternatingRowBackground="#FF97ACCE"
                       BorderThickness="1"
                       Margin="2,5,2,0"
@@ -78,12 +78,33 @@
 
                 <!-- الأعمدة -->
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="اسم المستخدم" Binding="{Binding UserName}" Width="*" />
+                <DataGridTextColumn Header="اسم المستخدم" Binding="{Binding UserName}" Width="*" />
                     <DataGridTextColumn Header="تاريخ القائمة" Binding="{Binding InvoiceDate}" Width="*" />
-                    <DataGridTextColumn Header="ربح القائمة" Binding="{Binding Profit}" Width="*" />
                     <DataGridTextColumn Header="المبلغ الكلي" Binding="{Binding TotalAmount}" Width="*" />
                     <DataGridTextColumn Header="اسم الزبون" Binding="{Binding CustomerName}" Width="*" />
-                </DataGrid.Columns>
-            </DataGrid>
+                    <DataGridTextColumn Header="رقم القائمة" Binding="{Binding LisrNum}" Width="*" />
+
+            </DataGrid.Columns>
+
+            <DataGrid.ContextMenu>
+                <ContextMenu Width="auto" Height="auto" BorderThickness="2" BorderBrush="Gray">
+                    <!--  "تفاصيل القائمة" -->
+                    <MenuItem Header="تفاصيل القائمة" Click="MenuItem_Details_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Logo.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <Separator Background="Gray"  Margin="5" />
+
+                    <!-- عنصر "تصدير إلى Excel" -->
+                    <MenuItem Header="تصدير إلى Excel" Click="MenuItem_Export_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Logo.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
     </Grid>
 </Page>
