@@ -6,7 +6,7 @@ namespace DAL
 {
     public class clsPurchasesDetailsData
     {
-        public static async Task<int?> AddAsync(int purchaseId, int productId, decimal price, string status, int quantity, DateTime warrantyDate, int userId)
+        public static async Task<int?> AddAsync(int purchaseId, int productId, decimal price, string status, int quantity, DateTime warrantyDate)
         {
             SqlParameter[] parameters =
             {
@@ -15,14 +15,14 @@ namespace DAL
                 new SqlParameter("@Price", price),
                 new SqlParameter("@Status", status),
                 new SqlParameter("@Quantity", quantity),
-                new SqlParameter("@WarrantyDate", warrantyDate),
-                new SqlParameter("@UserID", userId)
+                new SqlParameter("@WarrantyDate", warrantyDate)
+                
             };
-            return await CRUD.AddAsync("SP_", parameters);
+            return await CRUD.AddAsync("SP_AddPurchaseDetail", parameters);
         }
 
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int purchaseId)
-            => await CRUD.GetByColumnValueAsync("SP_", "PurchaseID", purchaseId);
+            => await CRUD.GetByColumnValueAsync("SP_GetPurchaseDetailByID", "PurchaseID", purchaseId);
 
         public static async Task<List<Dictionary<string, object>>?> GetByProductNameAsync(string productName)
             => await CRUD.GetAllAsListAsync("SP_", new SqlParameter[] { new SqlParameter("@ProductName", productName) });
@@ -39,7 +39,7 @@ namespace DAL
                 new SqlParameter("@Quantity", quantity),
                 new SqlParameter("@WarrantyDate", warrantyDate)
             };
-            return await CRUD.UpdateAsync("SP_", parameters);
+            return await CRUD.UpdateAsync("SP_UpdatePurchaseDetail", parameters);
         }
 
         public static async Task<bool> DeleteAsync(int purchaseId) => await CRUD.DeleteAsync("SP_", "@PurchaseID", purchaseId);
