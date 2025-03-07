@@ -1,46 +1,121 @@
-﻿
-
-<Page x:Class="IQDTemplete.Pages.Setting1"
+﻿<Page x:Class="IQDTemplete.Pages.Setting1"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:IQDTemplete.Pages"
-     FlowDirection="{DynamicResource AppFlowDirection}"
+      FlowDirection="{DynamicResource AppFlowDirection}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Setting" Loaded="Page_Loaded"
-      >
+      Title="Setting" Loaded="Page_Loaded">
 
     <Grid>
         <Border CornerRadius="8" Background="{DynamicResource SecundaryBackgroundColor}">
             <StackPanel>
 
-                <GroupBox  Padding="0,12,0,0" BorderThickness="0.4" BorderBrush="{DynamicResource Coboxborder}" Height="90" Margin="8" FontWeight="Bold" FontSize="14">
+                <GroupBox Padding="0,12,0,0" BorderThickness="0.4" BorderBrush="{DynamicResource Coboxborder}" Height="90" Margin="8" FontWeight="Bold" FontSize="14">
                     <GroupBox.HeaderTemplate>
-                        <DataTemplate >
+                        <DataTemplate>
                             <TextBlock Text="{DynamicResource ThemeTitle}" Foreground="{DynamicResource PrimaryTextColor}"/>
                         </DataTemplate>
                     </GroupBox.HeaderTemplate>
                     <StackPanel>
-                        <RadioButton Name="rdLight"   Margin="0,0,0,8" Checked="rdLight_Checked" Content="{DynamicResource rdLight}" GroupName="Theme"  Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal" />
-                        <RadioButton Name="rdDark"  Checked="rdDark_Checked"  Content="{DynamicResource rdDark}" GroupName="Theme" Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal"/>
+                        <RadioButton Name="rdLight" Margin="0,0,0,8" Checked="rdLight_Checked" Content="{DynamicResource rdLight}" GroupName="Theme" Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal" />
+                        <RadioButton Name="rdDark" Checked="rdDark_Checked" Content="{DynamicResource rdDark}" GroupName="Theme" Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal"/>
                     </StackPanel>
                 </GroupBox>
-                
+
                 <GroupBox Padding="0,12,0,0" BorderThickness="0.4" BorderBrush="{DynamicResource Coboxborder}" Height="90" Margin="8" FontWeight="Bold" FontSize="14">
                     <GroupBox.HeaderTemplate>
-                        <DataTemplate >
+                        <DataTemplate>
                             <TextBlock Text="{DynamicResource LanguageTitle}" Foreground="{DynamicResource PrimaryTextColor}"/>
                         </DataTemplate>
                     </GroupBox.HeaderTemplate>
                     <StackPanel>
-                        <RadioButton Margin="0,0,0,8" Name="rdEnglish" Checked="rdEnglish_Checked"  Content="{DynamicResource rdEnglish}" GroupName="Language"  Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal" />
+                        <RadioButton Margin="0,0,0,8" Name="rdEnglish" Checked="rdEnglish_Checked" Content="{DynamicResource rdEnglish}" GroupName="Language" Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal" />
                         <RadioButton Name="rdArabic" Checked="rdArabic_Checked" Content="{DynamicResource rdArabic}" GroupName="Language" Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal"/>
                     </StackPanel>
                 </GroupBox>
+
+                <!-- قسم تغيير الشعار -->
+                <GroupBox Padding="0,12,0,0" BorderThickness="0.4" BorderBrush="{DynamicResource Coboxborder}" Height="Auto" Margin="8" FontWeight="Bold" FontSize="14">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Logo Settings" Foreground="{DynamicResource PrimaryTextColor}"/>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <StackPanel HorizontalAlignment="Center">
+                        <!-- عرض الشعار الحالي -->
+                        <Image x:Name="imgLogo" Width="100" Height="100" Margin="10"/>
+
+                        <!-- زر تغيير الشعار -->
+                        <Button x:Name="btnChangeLogo" Content="Change Logo" 
+                                Click="btnChangeLogo_Click" 
+                                Style="{DynamicResource ProButtonStyle}" 
+                                Width="150" Margin="10"/>
+                    </StackPanel>
+                </GroupBox>
+
             </StackPanel>
         </Border>
     </Grid>
 </Page>
+
+
+
+
+
+
+
+
+
+<!--<Page x:Class="IQDTemplete.Pages.Setting1"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:IQDTemplete.Pages"
+      FlowDirection="{DynamicResource AppFlowDirection}"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Setting" Loaded="Page_Loaded">
+
+    <Grid>
+        <Border CornerRadius="8" Background="{DynamicResource SecundaryBackgroundColor}">
+            <StackPanel>
+
+                <GroupBox Padding="0,12,0,0" BorderThickness="0.4" BorderBrush="{DynamicResource Coboxborder}" Height="90" Margin="8" FontWeight="Bold" FontSize="14">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{DynamicResource ThemeTitle}" Foreground="{DynamicResource PrimaryTextColor}"/>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <StackPanel>
+                        <RadioButton Name="rdLight" Margin="0,0,0,8" Checked="rdLight_Checked" Content="{DynamicResource rdLight}" GroupName="Theme" Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal" />
+                        <RadioButton Name="rdDark" Checked="rdDark_Checked" Content="{DynamicResource rdDark}" GroupName="Theme" Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Padding="0,12,0,0" BorderThickness="0.4" BorderBrush="{DynamicResource Coboxborder}" Height="90" Margin="8" FontWeight="Bold" FontSize="14">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{DynamicResource LanguageTitle}" Foreground="{DynamicResource PrimaryTextColor}"/>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <StackPanel>
+                        <RadioButton Margin="0,0,0,8" Name="rdEnglish" Checked="rdEnglish_Checked" Content="{DynamicResource rdEnglish}" GroupName="Language" Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal" />
+                        <RadioButton Name="rdArabic" Checked="rdArabic_Checked" Content="{DynamicResource rdArabic}" GroupName="Language" Foreground="{DynamicResource PrimaryTextColor}" FontWeight="Normal"/>
+                    </StackPanel>
+                </GroupBox>
+
+                --><!-- زر تغيير الشعار --><!--
+                <Button x:Name="btnChangeLogo" Content="Change Logo" 
+                        Click="btnChangeLogo_Click" 
+                        Style="{DynamicResource ProButtonStyle}" 
+                        Width="150" Margin="10"/>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>-->
 

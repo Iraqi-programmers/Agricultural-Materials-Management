@@ -35,7 +35,8 @@
 
                     <!-- Logo -->
                     <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <Image Source="/Assets/Logo.png" Stretch="Fill" Height="36" Width="36" VerticalAlignment="Center" Margin="10 0 0 0"/>
+                        <!--<Image Source="/Assets/Logo.png" Stretch="Fill" Height="36" Width="36" VerticalAlignment="Center" Margin="10 0 0 0"/>-->
+                        <Image x:Name = "imgLogo" Source = "/Assets/Logo.png" Stretch = "Fill" Height = "36" Width = "36" VerticalAlignment = "Center" Margin = "10 0 0 0" />
                         <Label Content="Orizon" Foreground="{DynamicResource SecundaryBlueColor}" FontWeight="Bold" FontSize="24" VerticalAlignment="Center" HorizontalContentAlignment="Left" HorizontalAlignment="Left" Margin="5 0 0 0"/>
                     </StackPanel>
 
