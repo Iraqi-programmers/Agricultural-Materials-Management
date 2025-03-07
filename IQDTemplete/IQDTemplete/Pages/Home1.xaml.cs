@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Interface.Pages;
 
 namespace IQDTemplete.Pages
 {
@@ -23,6 +24,22 @@ namespace IQDTemplete.Pages
         public Home1()
         {
             InitializeComponent();
+        }
+
+        private void DebitsMangment_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.MainFrameInstance.Content = new DebitsPage();
+        }
+
+        private void AddSalesMenue_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.MainFrameInstance.Content = new AddSalesMunuePage();
+        }
+
+        private void AddPurcasesMenue_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow.MainFrameInstance.Content = new AddPurchasesPage();
+          
         }
     }
 }

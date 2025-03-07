@@ -16,34 +16,13 @@ using System.Windows.Shapes;
 namespace Interface.Pages
 {
     /// <summary>
-    /// Interaction logic for Ledger.xaml
+    /// Interaction logic for AddPurchasesPage.xaml
     /// </summary>
-    public partial class Ledger : Page
+    public partial class AddPurchasesPage : Page
     {
-        public Ledger()
+        public AddPurchasesPage()
         {
             InitializeComponent();
-        }
-
-       
-        private void Purchases_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void SalesBorder_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void Debts_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void Revenue_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
         }
     }
 }

@@ -19,13 +19,7 @@ namespace IQDTemplete
             frameContent.Content = new Home1();
         }
 
-        private void Themes_Click(object sender, RoutedEventArgs e)
-        {
-            if (Themes.IsChecked == true)
-                ThemesController.SetTheme(ThemesController.ThemeTypes.Dark);
-            else
-                ThemesController.SetTheme(ThemesController.ThemeTypes.Light);
-        }
+      
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {

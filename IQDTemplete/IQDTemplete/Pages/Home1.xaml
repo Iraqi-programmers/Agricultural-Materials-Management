@@ -45,15 +45,11 @@
                  VerticalAlignment="Top"
                  CornerRadius="20"
                  Opacity="0.3"
-                 Margin="10,10,0,0" />
+                 Margin="10,10,10,0" >
+                    <Button Name="DebitsMangment" Click="DebitsMangment_Click"   FontSize="15" Content="Depits Mangment" Margin="10" BorderThickness="0" Foreground="Black"/>
+                </Border>
 
-                <TextBlock Text="REVENUE &#x0a;GROWTH &#x0a;$62.8K"
-                    Foreground="#FFFFFF"
-                    FontFamily="Oswald"
-                    FontSize="32"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Left"
-                    Margin="30,20,0,0" />
+
 
             </Grid>
 
@@ -61,43 +57,16 @@
         <Border  Grid.Row="1"
 Grid.Column="1"
 CornerRadius="20"
-Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="{DynamicResource TertiaryBackgroundColor}">
 
-            <Border.Background>
+          
 
-                <LinearGradientBrush StartPoint="0.75,0"
-                     EndPoint="0,1">
 
-                    <GradientStop Color="#06A4FB"
-                  Offset="0.1" />
 
-                    <GradientStop Color="#B84EEB"
-                  Offset="0.8" />
+            <Button Name="AddSalesMenue" Click="AddSalesMenue_Click" Background="LawnGreen"  Style="{DynamicResource ProButtonStyle}" FontSize="15" Content="Add Sales Menue" Margin="10,0,10,56" BorderThickness="0" Foreground="Black"/>
 
-                </LinearGradientBrush>
 
-            </Border.Background>
 
-            <Grid>
-
-                <Border Background="#FFFFFF"
-        Height="125"
-        Width="180"
-        HorizontalAlignment="Left"
-        VerticalAlignment="Top"
-        CornerRadius="20"
-        Opacity="0.3"
-        Margin="10,10,0,0" />
-
-                <TextBlock Text="REVENUE &#x0a;GROWTH &#x0a;$62.8K"
-           Foreground="#FFFFFF"
-           FontFamily="Oswald"
-           FontSize="32"
-           VerticalAlignment="Top"
-           HorizontalAlignment="Left"
-           Margin="30,20,0,0" />
-
-            </Grid>
 
         </Border>
         <Border  Grid.Row="2"
@@ -123,21 +92,15 @@ Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch">
             <Grid>
 
                 <Border Background="#FFFFFF"
-        Height="125"
-        Width="180"
-        HorizontalAlignment="Left"
-        VerticalAlignment="Top"
-        CornerRadius="20"
-        Opacity="0.3"
-        Margin="10,10,0,0" />
-
-                <TextBlock Text="REVENUE &#x0a;GROWTH &#x0a;$62.8K"
-           Foreground="#FFFFFF"
-           FontFamily="Oswald"
-           FontSize="32"
-           VerticalAlignment="Top"
-           HorizontalAlignment="Left"
-           Margin="30,20,0,0" />
+     Height="125"
+     Width="180"
+     HorizontalAlignment="Center"
+     VerticalAlignment="Center"
+     CornerRadius="20"
+     Opacity="0.3"
+     Margin="10,10,10,0" >
+                    <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="AddPurcasesMenue" Click="AddPurcasesMenue_Click"  Style="{DynamicResource ProButtonStyle}" FontSize="15" Content="Add Purceses Menue" Margin="10" BorderThickness="0" Foreground="Black"/>
+                </Border>
 
             </Grid>
 
