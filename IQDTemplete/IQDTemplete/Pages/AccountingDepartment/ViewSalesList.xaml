@@ -68,8 +68,9 @@
                       SelectionMode="Single"
                       SelectionUnit="FullRow"
                       GridLinesVisibility="Horizontal"
-                      RowBackground="{DynamicResource PrimaryBackgroundColor}"
-                      AlternatingRowBackground="{DynamicResource PrimaryBackgroundColor}"
+                      RowBackground="White"
+                     
+                      AlternatingRowBackground="#FF97ACCE"
                       BorderThickness="1"
                       Margin="2,5,2,0"
                       FontSize="20"

@@ -3,10 +3,10 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:IQDTemplete.Pages"
+       xmlns:local="clr-namespace:Interface.Pages.UserControl"
        FlowDirection="{DynamicResource AppFlowDirection}"
       mc:Ignorable="d" 
-      
+       d:DesignHeight="450" d:DesignWidth="800"
       Title="Home" FontFamily="Poppins">
 
     <Grid  Background="{DynamicResource SecundaryBackgroundColor}">
@@ -16,97 +16,91 @@
             <ColumnDefinition  Width="*"/>
 
         </Grid.ColumnDefinitions>
-        <Border  Grid.Row="0"
-         Grid.Column="0"
-         CornerRadius="20"
-         Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch">
 
-            <Border.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <LinearGradientBrush StartPoint="0.75,0"
-                              EndPoint="0,1">
-
-                    <GradientStop Color="#06A4FB"
-                           Offset="0.1" />
-
-                    <GradientStop Color="#B84EEB"
-                           Offset="0.8" />
-
-                </LinearGradientBrush>
-
-            </Border.Background>
+        <!--المشتريات-->
+        <Border
+      Grid.Column="0"
+      CornerRadius="20"
+      Margin="7,4,7,0"
+      Height="150"
+      VerticalAlignment="Top"
+      Background="{DynamicResource TertiaryBackgroundColor}"
+      Grid.Row="0"
+      Grid.RowSpan="1">
 
             <Grid>
-
-                <Border Background="#FFFFFF"
-                 Height="125"
-                 Width="180"
-                 HorizontalAlignment="Left"
-                 VerticalAlignment="Top"
-                 CornerRadius="20"
-                 Opacity="0.3"
-                 Margin="10,10,10,0" >
-                    <Button Name="DebitsMangment" Click="DebitsMangment_Click"   FontSize="15" Content="Depits Mangment" Margin="10" BorderThickness="0" Foreground="Black"/>
-                </Border>
-
-
-
+                <local:BorderAnimation x:Name="AddPurchasesMenue"
+                                    Text="{DynamicResource addpurchesmenue}"
+                                    TextColor="{DynamicResource TertiaryTextColor}"
+                                    BackgroundColor="Transparent"
+                                    IconSource="/Assets/R.jpg"
+                                  MouseDown="AddPurchasesMenue_MouseDown"
+                                    />
             </Grid>
-
         </Border>
-        <Border  Grid.Row="1"
-Grid.Column="1"
-CornerRadius="20"
-Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch" Background="{DynamicResource TertiaryBackgroundColor}">
 
-          
-
-
-
-            <Button Name="AddSalesMenue" Click="AddSalesMenue_Click" Background="LawnGreen"  Style="{DynamicResource ProButtonStyle}" FontSize="15" Content="Add Sales Menue" Margin="10,0,10,56" BorderThickness="0" Foreground="Black"/>
-
-
-
-
-        </Border>
-        <Border  Grid.Row="2"
-Grid.Column="4"
-CornerRadius="20"
-Margin="7" Height="152" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-
-            <Border.Background>
-
-                <LinearGradientBrush StartPoint="0.75,0"
-                     EndPoint="0,1">
-
-                    <GradientStop Color="#06A4FB"
-                  Offset="0.1" />
-
-                    <GradientStop Color="#B84EEB"
-                  Offset="0.8" />
-
-                </LinearGradientBrush>
-
-            </Border.Background>
+        <!--المبيعات-->
+        <Border
+      Grid.Column="1"
+      CornerRadius="20"
+      Margin="7,4,7,0"
+      Height="150"
+      VerticalAlignment="Top"
+      Background="{DynamicResource TertiaryBackgroundColor}"
+      Grid.Row="0"
+      Grid.RowSpan="1">
 
             <Grid>
-
-                <Border Background="#FFFFFF"
-     Height="125"
-     Width="180"
-     HorizontalAlignment="Center"
-     VerticalAlignment="Center"
-     CornerRadius="20"
-     Opacity="0.3"
-     Margin="10,10,10,0" >
-                    <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="AddPurcasesMenue" Click="AddPurcasesMenue_Click"  Style="{DynamicResource ProButtonStyle}" FontSize="15" Content="Add Purceses Menue" Margin="10" BorderThickness="0" Foreground="Black"/>
-                </Border>
+                <local:BorderAnimation x:Name="DeploySalesMenue"
+                                  Text="{DynamicResource addsalesmenue}"
+                                  TextColor="{DynamicResource TertiaryTextColor}"
+                                  BackgroundColor="Transparent"
+                                  IconSource="/Assets/R.jpg"
+                                  Margin="0,0,0,0"
+                                  MouseDown="DeploySalesMenue_MouseDown"
+                                    />
 
             </Grid>
-
         </Border>
+
+
+        <!--الديون-->
+        <Border
+      Grid.Column="2"
+      CornerRadius="20"
+      Margin="7,4,7,0"
+      Height="150"
+      VerticalAlignment="Top"
+      Background="{DynamicResource TertiaryBackgroundColor}"
+      Grid.Row="0"
+      Grid.RowSpan="2">
+
+            <Grid>
+                <local:BorderAnimation x:Name="DebtsMangment"
+                                  Text="{DynamicResource debitmangment}"
+                                     
+                                  TextColor="{DynamicResource TertiaryTextColor}"
+                                  BackgroundColor="Transparent"
+                                  IconSource="/Assets/R.jpg"
+                                  Margin="0,0,0,0"
+                                   MouseDown="DebtsMangment_MouseDown"
+                                    
+                                    />
+
+            </Grid>
+        </Border>
+
+      
 
 
 
     </Grid>
+
+
 </Page>

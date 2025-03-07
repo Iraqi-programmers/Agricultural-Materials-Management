@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="/Styles/RadioButtonStyle.xaml"/>
                 <ResourceDictionary Source="/Styles/ButtonStyle.xaml"/>
                 <ResourceDictionary Source="Languages/StringLanguage.EN.xaml"/>
+               
             </ResourceDictionary.MergedDictionaries>
 
             <!-- أنماط DataGrid -->
@@ -36,7 +37,8 @@
             </Style>
 
             <Style TargetType="DataGridRow">
-                <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundColor}" />
+                <Setter Property="Background" Value="White" />
+               
                 <Setter Property="Foreground" Value="{DynamicResource SecundaryTextColor}" />
                 <Setter Property="BorderThickness" Value="2" />
                 <Setter Property="BorderBrush" Value="GhostWhite" />

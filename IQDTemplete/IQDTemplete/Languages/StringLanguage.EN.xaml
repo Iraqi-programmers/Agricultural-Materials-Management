@@ -30,4 +30,8 @@
     <system:String x:Key="rdLight">Light</system:String>
     <system:String x:Key="rdArabic">Arabic</system:String>
     <system:String x:Key="rdEnglish">English</system:String>
+
+    <system:String x:Key="addsalesmenue">]deploy Sales Menue </system:String>
+    <system:String x:Key="addpurchesmenue">Add Purcases Menue</system:String>
+    <system:String x:Key="debitmangment">Debits Mangment</system:String>
 </ResourceDictionary>

@@ -28,4 +28,8 @@
     <system:String x:Key="rdLight">نهاري</system:String>
     <system:String x:Key="rdArabic">العربية</system:String>
     <system:String x:Key="rdEnglish">الانكليزية</system:String>
+
+    <system:String x:Key="addsalesmenue">اصدار قائمة بيع</system:String>
+    <system:String x:Key="addpurchesmenue">اضافة قائمة شراء</system:String>
+    <system:String x:Key="debitmangment">ادارة الديون</system:String>
 </ResourceDictionary>

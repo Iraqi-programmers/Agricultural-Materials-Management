@@ -26,20 +26,21 @@ namespace IQDTemplete.Pages
             InitializeComponent();
         }
 
-        private void DebitsMangment_Click(object sender, RoutedEventArgs e)
+      
+
+        private void DebtsMangment_MouseDown(object sender, MouseButtonEventArgs e)
         {
             MainWindow.MainFrameInstance.Content = new DebitsPage();
         }
 
-        private void AddSalesMenue_Click(object sender, RoutedEventArgs e)
+        private void DeploySalesMenue_MouseDown(object sender, MouseButtonEventArgs e)
         {
             MainWindow.MainFrameInstance.Content = new AddSalesMunuePage();
         }
 
-        private void AddPurcasesMenue_Click(object sender, RoutedEventArgs e)
+        private void AddPurchasesMenue_MouseDown(object sender, MouseButtonEventArgs e)
         {
             MainWindow.MainFrameInstance.Content = new AddPurchasesPage();
-          
         }
     }
 }
