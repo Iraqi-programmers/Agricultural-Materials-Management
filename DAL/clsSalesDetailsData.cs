@@ -5,9 +5,9 @@ namespace DAL
 {
     public class clsSalesDetailsData
     {
-        public static async Task<Dictionary<string, object>?> GetByIdAsync(int detailId) => await CRUD.GetByColumnValueAsync("SP_", "SalesDetailID", detailId);
+        public static async Task<Dictionary<string, object>?> GetByIdAsync(int detailId) => await CRUD.GetByColumnValueAsync("[SP_GetSalesDetailByID]", "@DetailID", detailId);
 
-        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_");
+        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllSalesDetails");
     }
 }
 /*
