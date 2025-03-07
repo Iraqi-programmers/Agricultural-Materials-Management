@@ -31,7 +31,12 @@
     <system:String x:Key="rdArabic">Arabic</system:String>
     <system:String x:Key="rdEnglish">English</system:String>
 
-    <system:String x:Key="addsalesmenue">]deploy Sales Menue </system:String>
+    <system:String x:Key="addsalesmenue">Deploy Sales Menue </system:String>
     <system:String x:Key="addpurchesmenue">Add Purcases Menue</system:String>
     <system:String x:Key="debitmangment">Debits Mangment</system:String>
+    <system:String x:Key="StorageContain">Storage Content</system:String>
+    <system:String x:Key="AddMenuetoStorage">Add Menue To Storage</system:String>
+    <system:String x:Key="Suppliers">Suppliers</system:String>
+    <system:String x:Key="ReturnItemToStorage">Returned Items</system:String>
+    
 </ResourceDictionary>

@@ -28,8 +28,13 @@
     <system:String x:Key="rdLight">نهاري</system:String>
     <system:String x:Key="rdArabic">العربية</system:String>
     <system:String x:Key="rdEnglish">الانكليزية</system:String>
-
     <system:String x:Key="addsalesmenue">اصدار قائمة بيع</system:String>
     <system:String x:Key="addpurchesmenue">اضافة قائمة شراء</system:String>
     <system:String x:Key="debitmangment">ادارة الديون</system:String>
+
+    <system:String x:Key="StorageContain">محتويات المخزن</system:String>
+    <system:String x:Key="AddMenuetoStorage">اضافة قائمة للمخزن</system:String>
+    <system:String x:Key="Suppliers">الموردون</system:String>
+    <system:String x:Key="ReturnItemToStorage">مرجعات المخزن</system:String>
+   
 </ResourceDictionary>

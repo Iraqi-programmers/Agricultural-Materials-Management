@@ -23,7 +23,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--المشتريات-->
+        <!--اضافة قائمة مشتريات-->
         <Border
       Grid.Column="0"
       CornerRadius="20"
@@ -39,13 +39,13 @@
                                     Text="{DynamicResource addpurchesmenue}"
                                     TextColor="{DynamicResource TertiaryTextColor}"
                                     BackgroundColor="Transparent"
-                                    IconSource="/Assets/R.jpg"
+                                    IconSource="/Assets/add.png"
                                   MouseDown="AddPurchasesMenue_MouseDown"
                                     />
             </Grid>
         </Border>
 
-        <!--المبيعات-->
+        <!--اصدار قائمة مبيعات-->
         <Border
       Grid.Column="1"
       CornerRadius="20"
@@ -61,7 +61,7 @@
                                   Text="{DynamicResource addsalesmenue}"
                                   TextColor="{DynamicResource TertiaryTextColor}"
                                   BackgroundColor="Transparent"
-                                  IconSource="/Assets/R.jpg"
+                                  IconSource="/Assets/DeploySalesMenue.png"
                                   Margin="0,0,0,0"
                                   MouseDown="DeploySalesMenue_MouseDown"
                                     />
@@ -70,7 +70,7 @@
         </Border>
 
 
-        <!--الديون-->
+        <!-- ادارة الديون-->
         <Border
       Grid.Column="2"
       CornerRadius="20"
@@ -87,7 +87,7 @@
                                      
                                   TextColor="{DynamicResource TertiaryTextColor}"
                                   BackgroundColor="Transparent"
-                                  IconSource="/Assets/R.jpg"
+                                  IconSource="/Assets/DebitsMangment.png"
                                   Margin="0,0,0,0"
                                    MouseDown="DebtsMangment_MouseDown"
                                     

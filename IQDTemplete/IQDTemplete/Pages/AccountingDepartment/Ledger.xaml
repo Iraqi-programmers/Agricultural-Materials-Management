@@ -39,7 +39,7 @@
                                        Text="{DynamicResource rdPurchases}"
                                        TextColor="{DynamicResource TertiaryTextColor}"
                                        BackgroundColor="Transparent"
-                                       IconSource="/Assets/R.jpg"
+                                       IconSource="/Assets/Purchases.png"
                                        MouseDown="Purchases_MouseDown"
                                        />
             </Grid>
@@ -61,7 +61,7 @@
                                      Text="{DynamicResource rdSales}"
                                      TextColor="{DynamicResource TertiaryTextColor}"
                                      BackgroundColor="Transparent"
-                                     IconSource="/Assets/R.jpg"
+                                     IconSource="/Assets/sale.png"
                                      Margin="0,0,0,0"
                                        MouseDown="Sales_MouseDown"
                                        />
@@ -79,14 +79,14 @@
          VerticalAlignment="Top"
          Background="{DynamicResource TertiaryBackgroundColor}"
          Grid.Row="0"
-         Grid.RowSpan="2">
+        >
 
             <Grid>
                 <local:BorderAnimation x:Name="Debts"
                                      Text="{DynamicResource rdDebts}"
                                      TextColor="{DynamicResource TertiaryTextColor}"
                                      BackgroundColor="Transparent"
-                                     IconSource="/Assets/R.jpg"
+                                     IconSource="/Assets/Debits3.png"
                                      Margin="0,0,0,0"
                                        
                                        />
@@ -103,14 +103,14 @@
          VerticalAlignment="Top"
          Background="{DynamicResource TertiaryBackgroundColor}"
          Grid.Row="1"
-         Grid.RowSpan="2">
+        >
 
             <Grid>
                 <local:BorderAnimation x:Name="Revenue"
                                        Text="{DynamicResource rdRevenue}"
                                        TextColor="{DynamicResource TertiaryTextColor}"
                                        BackgroundColor="Transparent"
-                                       IconSource="/Assets/R.jpg"
+                                       IconSource="/Assets/Revenew.png"
                                        Margin="0,-7,0,0"
                                        
                                        />

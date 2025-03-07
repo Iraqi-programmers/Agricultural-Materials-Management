@@ -3,14 +3,152 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Interface.Pages"
+      xmlns:local="clr-namespace:Interface.Pages.UserControl"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Storage"
         FlowDirection="{DynamicResource AppFlowDirection}"
       FontFamily="Poppins">
 
-    <Border CornerRadius="8" Background="{DynamicResource SecundaryBackgroundColor}">
-        <Label Content="Storage" FontSize="50" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-    </Border>
+    <Grid  Background="{DynamicResource SecundaryBackgroundColor}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition  Width="*"/>
+            <ColumnDefinition  Width="*"/>
+
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--المشتريات-->
+        <Border
+     Grid.Column="0"
+     CornerRadius="20"
+     Margin="7,4,7,0"
+     Height="150"
+     VerticalAlignment="Top"
+     Background="{DynamicResource TertiaryBackgroundColor}"
+     Grid.Row="0"
+     >
+
+            <Grid>
+                <local:BorderAnimation x:Name="StorageContent"
+                                   Text="{DynamicResource Suppliers}"
+                                   TextColor="{DynamicResource TertiaryTextColor}"
+                                   BackgroundColor="Transparent"
+                                   IconSource="/Assets/supplier.png"
+                                   
+                                   />
+            </Grid>
+        </Border>
+
+        <!--المبيعات-->
+        <Border
+     Grid.Column="1"
+     CornerRadius="20"
+     Margin="7,4,7,0"
+     Height="150"
+     VerticalAlignment="Top"
+     Background="{DynamicResource TertiaryBackgroundColor}"
+     Grid.Row="0"
+     >
+
+            <Grid>
+                <local:BorderAnimation x:Name="AddMenueTostorage"
+                                 Text="{DynamicResource AddMenuetoStorage}"
+                                 TextColor="{DynamicResource TertiaryTextColor}"
+                                 BackgroundColor="Transparent"
+                                 IconSource="/Assets/addmenue (2).png"
+                                 Margin="0,0,0,0"
+                            
+                                   />
+
+            </Grid>
+        </Border>
+
+
+        <!--الديون-->
+        <Border
+     Grid.Column="2"
+     CornerRadius="20"
+     Margin="7,4,7,0"
+     Height="150"
+     VerticalAlignment="Top"
+     Background="{DynamicResource TertiaryBackgroundColor}"
+     Grid.Row="0"
+    >
+
+            <Grid>
+                <local:BorderAnimation x:Name="Suppliers"
+                                 Text="{DynamicResource StorageContain}"
+                                    
+                                 TextColor="{DynamicResource TertiaryTextColor}"
+                                 BackgroundColor="Transparent"
+                                 IconSource="/Assets/StorageContent.png" 
+                                 Margin="0,0,0,0"
+                               
+                                   
+                                   />
+
+            </Grid>
+        </Border>
+
+        <Border
+Grid.Column="0"
+CornerRadius="20"
+ Margin="7,-40,7,0"
+Height="150"
+VerticalAlignment="Top"
+Background="{DynamicResource TertiaryBackgroundColor}"
+Grid.Row="1"
+>
+
+            <Grid>
+                <local:BorderAnimation x:Name="ReturnItemToStorage"
+                            Text="{DynamicResource ReturnItemToStorage}"
+                               
+                            TextColor="{DynamicResource TertiaryTextColor}"
+                            BackgroundColor="Transparent"
+                            IconSource="/Assets/Return_Items.png"
+                            Margin="0,0,0,0"
+                          
+                              
+                              />
+
+            </Grid>
+        </Border>
+
+        <Border
+Grid.Column="1"
+CornerRadius="20"
+ Margin="7,-40,7,0"
+Height="150"
+VerticalAlignment="Top"
+Background="{DynamicResource TertiaryBackgroundColor}"
+Grid.Row="1"
+>
+
+            <Grid>
+                <local:BorderAnimation x:Name="DeploySalesMenue"
+                            Text="{DynamicResource addsalesmenue}"
+                               
+                            TextColor="{DynamicResource TertiaryTextColor}"
+                            BackgroundColor="Transparent"
+                            IconSource="/Assets/DeploySalesMenue.png"
+                            Margin="0,0,0,0"
+                          
+                              
+                              />
+
+            </Grid>
+        </Border>
+
+
+
+
+    </Grid>
 </Page>

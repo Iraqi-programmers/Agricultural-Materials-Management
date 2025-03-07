@@ -83,13 +83,13 @@
                            Height="40"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
-                           Margin="-20,0,-10,0" />
+                           Margin="-39,0,-10,0" />
 
                     <!-- النص -->
                     <TextBlock Text="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                Foreground="{Binding TextColor, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                FontWeight="ExtraLight"
-                               FontSize="35"
+                               FontSize="18"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"
                                Grid.Column="1" />
