@@ -6,121 +6,83 @@
       xmlns:local="clr-namespace:Interface.Pages.AccountingDepartment"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ViewSalesList">
-    <Grid Background="{DynamicResource PrimaryBackgroundColor}" >
+      Title="ViewSalesList"
+      >
+    <Grid>
 
-        <StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <Grid.Resources>
+            <!-- CollectionViewSource للفلترة -->
+            <CollectionViewSource x:Key="FilteredInvoices" Source="{Binding Invoices}" Filter="CollectionViewSource_Filter" />
+        </Grid.Resources>
 
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
-
-
-                <Button Style="{DynamicResource ProButtonStyle}" Content="رجوع" Width="120" Height="40" Margin="770,0,0,0" Click="Button_Click" ></Button>
-
-                <!-- عنوان الصفحة -->
-                <TextBlock Text="قائمة المبيعات"
-                 FontSize="28"
-                 FontWeight="Bold"
+        <TextBlock Text="قائمة المبيعات" Grid.Row="0"
+                 FontSize="35"
+                 FontWeight="ExtraLight"
                  Foreground="{DynamicResource PrimaryTextColor}"
-                 HorizontalAlignment="Center"
-                 Margin="0,-44,0,20"
-                 VerticalAlignment="Top" />
-                
-
-            </StackPanel>
-
-            <!-- مربع البحث -->
-        <TextBox x:Name="SearchTextBox"
-                 ToolTip="بحث باستخدام اسم الزبون"
-                  Width="300"
-                  Height="40"
-                  FontSize="14"
-                  Padding="10"
-                 TextAlignment="Center"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Top"
-                  Margin="0,20,20,0"
-                  TextChanged="SearchTextBox_TextChanged"
+                 Margin="5,0,0,10"
                   />
 
-        <!-- DataGrid -->
-        <DataGrid x:Name="InvoiceDataGrid"
-                  AutoGenerateColumns="False"
-                  HeadersVisibility="Column"
-                  IsReadOnly="True"
-                  SelectionMode="Single"
-                  SelectionUnit="FullRow"
-                  GridLinesVisibility="Horizontal"
-                  RowBackground="{DynamicResource PrimaryBackgroundColor}"
-                  AlternatingRowBackground="{DynamicResource PrimaryBackgroundColor}"
-                  BorderThickness="1"
-                  Margin="20,20,20,0"
-                  FontSize="20"
-                  FontFamily="Segoe UI"
-                  Height="auto" 
-                  >
-
-            <!-- أنماط DataGrid -->
-            <DataGrid.Resources>
-                <!-- نمط الرأس -->
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Background" Value="{DynamicResource SecundaryBackgroundColor}" />
-                    <Setter Property="Foreground" Value="{DynamicResource SecundaryTextColor}" />
-                    <Setter Property="FontSize" Value="16" />
-                    <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="Padding" Value="12" />
-                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                    <Setter Property="VerticalAlignment" Value="Stretch" />
-                </Style>
-
-                <!-- نمط الخلايا -->
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Padding" Value="10" />
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextColor}" />
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                     <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-                     <Setter Property="FontSize" Value="22"></Setter>
-                    
-                </Style>
-
-                <!-- نمط الصفوف عند التحديد -->
-                <Style TargetType="DataGridRow">
-                    <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundColor}" />
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="False">
-                            <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundColor}" />
-                            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextColor}" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.Resources>
-
-            <!-- الأعمدة -->
-            <DataGrid.Columns>
-
-                <DataGridTextColumn Header="اسم المستخدم"
-                  Binding="{Binding UserName}"
-                  Width="*" />
-
-                <DataGridTextColumn Header="تاريخ القائمة"
-                     Binding="{Binding InvoiceDate}"
-                     Width="*" />
-
-                <DataGridTextColumn Header="ربح القائمة"
-                     Binding="{Binding Profit}"
-                     Width="*" />
-                
-                <DataGridTextColumn Header="المبلغ الكلي"
-                 Binding="{Binding TotalAmount}"
-                 Width="*" />
-                
-                <DataGridTextColumn Header="اسم الزبون"
-                    Binding="{Binding CustomerName}"
-                    Width="*" />
-
-              
-            </DataGrid.Columns>
-        </DataGrid>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch"> 
+        <ComboBox x:Name="FilterComboBox" 
+             Width="200"
+             Height="40"
+             FontSize="16"
+             Padding="55,8,0,0"
+             Margin="4,12,0,11"
+             FontWeight="ExtraLight"
+             SelectedIndex="0">
+            <ComboBoxItem Content="أسم المستخدم"/>
+            <ComboBoxItem Content="تاريخ القائمة" />
+            <ComboBoxItem Content="ربح القائمة" />
+            <ComboBoxItem Content="المبلغ الكلي" />
+            <ComboBoxItem Content="اسم الزبون" />
+        </ComboBox>
         </StackPanel>
+
+        <TextBox x:Name="SearchTextBox" Grid.Row="1"
+             Width="300"
+             Height="40"
+             FontSize="15"
+             Padding="10"
+             FontWeight="ExtraLight"
+             TextAlignment="Center"
+             VerticalAlignment="Stretch"
+             HorizontalAlignment="Left"
+             TextChanged="SearchTextBox_TextChanged"
+             Margin="205,1,0,0"
+             ToolTip="{Binding SelectedItem.Content, ElementName=FilterComboBox, StringFormat='بحث باستخدام {0}'}"                         >
+
+        </TextBox>
+
+        <!-- DataGrid -->
+            <DataGrid x:Name="InvoiceDataGrid" Grid.Row="2" FlowDirection="{DynamicResource SPAppFlowDirection}"
+                      AutoGenerateColumns="False"
+                      HeadersVisibility="Column"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      SelectionUnit="FullRow"
+                      GridLinesVisibility="Horizontal"
+                      RowBackground="{DynamicResource PrimaryBackgroundColor}"
+                      AlternatingRowBackground="{DynamicResource PrimaryBackgroundColor}"
+                      BorderThickness="1"
+                      Margin="2,5,2,0"
+                      FontSize="20"
+                      ItemsSource="{Binding Source={StaticResource FilteredInvoices}}">
+
+                <!-- الأعمدة -->
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="اسم المستخدم" Binding="{Binding UserName}" Width="*" />
+                    <DataGridTextColumn Header="تاريخ القائمة" Binding="{Binding InvoiceDate}" Width="*" />
+                    <DataGridTextColumn Header="ربح القائمة" Binding="{Binding Profit}" Width="*" />
+                    <DataGridTextColumn Header="المبلغ الكلي" Binding="{Binding TotalAmount}" Width="*" />
+                    <DataGridTextColumn Header="اسم الزبون" Binding="{Binding CustomerName}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
     </Grid>
 </Page>

@@ -6,8 +6,11 @@ namespace Interface.Pages.AccountingDepartment
     /// <summary>
     /// Interaction logic for ViewSalesList.xaml
     /// </summary>
+    /// 
+
     public partial class ViewSalesList : Page
     {
+
         private CollectionViewSource _invoiceViewSource;
         public class Invoice
         {
@@ -61,10 +64,6 @@ namespace Interface.Pages.AccountingDepartment
             }
         }
 
-        private void InvoiceDataGrid_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
-        {
-
-        }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -73,6 +72,39 @@ namespace Interface.Pages.AccountingDepartment
                 NavigationService.GoBack();
             }
         }
+
+        private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
+        {
+            // تطبيق الفلترة بناءً على البحث
+            var invoice = e.Item as Invoice; // استبدل Invoice بنوع البيانات الخاص بك
+            if (invoice == null) return;
+
+            string filterText = SearchTextBox.Text.ToLower();
+            string selectedFilter = (FilterComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+
+            switch (selectedFilter)
+            {
+                case "اسم المستخدم":
+                    e.Accepted = invoice.UserName.ToLower().Contains(filterText);
+                    break;
+                case "تاريخ القائمة":
+                    e.Accepted = invoice.InvoiceDate.ToLower().Contains(filterText);
+                    break;
+                case "ربح القائمة":
+                    e.Accepted = invoice.Profit.ToString().Contains(filterText);
+                    break;
+                case "المبلغ الكلي":
+                    e.Accepted = invoice.TotalAmount.ToString().Contains(filterText);
+                    break;
+                case "اسم الزبون":
+                    e.Accepted = invoice.CustomerName.ToLower().Contains(filterText);
+                    break;
+                default:
+                    e.Accepted = true;
+                    break;
+            }
+        }
     }
+    
 }
 
