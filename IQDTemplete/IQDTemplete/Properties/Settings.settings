@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="IQDTemplete.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Interface.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="Language" Type="System.String" Scope="User">
@@ -7,6 +7,9 @@
     </Setting>
     <Setting Name="Theme" Type="System.String" Scope="User">
       <Value Profile="(Default)">LightTheme</Value>
+    </Setting>
+    <Setting Name="LogoPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

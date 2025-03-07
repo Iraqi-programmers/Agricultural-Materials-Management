@@ -16,6 +16,7 @@ using Interface.Properties;
 using IQDTemplete.Languages;
 using IQDTemplete.Themes;
 
+
 namespace IQDTemplete.Pages
 {
     /// <summary>
@@ -68,6 +69,37 @@ namespace IQDTemplete.Pages
         {
             LanguageControler.SetLanguage(LanguageControler.enLanguage.Arabic);
         }
+
+        //private void btnChangeLogo_Click(object sender, RoutedEventArgs e)
+        //{
+
+        //}
+
+        private void btnChangeLogo_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp",
+                Title = "اختر شعارًا جديدًا"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string newLogoPath = openFileDialog.FileName;
+
+                // تحديث الشعار في الواجهة
+                if (imgLogo != null)
+                {
+                    imgLogo.Source = new BitmapImage(new Uri(newLogoPath, UriKind.Absolute));
+                }
+
+                // حفظ المسار لاستخدامه لاحقًا
+                Settings.Default.LogoPath = newLogoPath;
+                Settings.Default.Save();
+            }
+        }
+
+
 
         //private void Button_Click(object sender, RoutedEventArgs e)
         //{
