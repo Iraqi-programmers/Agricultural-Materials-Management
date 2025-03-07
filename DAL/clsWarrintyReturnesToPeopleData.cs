@@ -10,18 +10,18 @@ namespace DAL
         {
             SqlParameter[] parameters =
             {
-                new SqlParameter("@returndStocksID", returndStocksId),
-                new SqlParameter("@Status", personId),
-                new SqlParameter("@userID", userId),
+                new SqlParameter("@ReturnStocksID", returndStocksId),
+                new SqlParameter("@PersonID", personId),
+                new SqlParameter("@UserID", userId),
             };
-            return await CRUD.AddAsync("SP_Add", parameters);
+            return await CRUD.AddAsync("SP_AddWarrantyReturn", parameters);
         }
 
-        public static async Task<Dictionary<string, object>?> GetByIdAsync(int warrantyReturnedId) => await CRUD.GetByColumnValueAsync("SP_GetByID", "WarrantyReturnedID", warrantyReturnedId);
+        public static async Task<Dictionary<string, object>?> GetByIdAsync(int warrantyReturnedId) => await CRUD.GetByColumnValueAsync("SP_GetWarrantyReturnsByID", "@WarrantyReturnedID", warrantyReturnedId);
 
-        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAll");
+        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllWarrantyReturns");
 
-        public static async Task<Dictionary<string, object>?> GetByPersonIdAsync(int personid) => await CRUD.GetByColumnValueAsync("SP_GetByPersonID", "PersonID", personid);
+        public static async Task<Dictionary<string, object>?> GetByPersonIdAsync(int personid) => await CRUD.GetByColumnValueAsync("SP_GetWarrantyReturnsByPerson", "@PersonID", personid);
 
         public static async Task<DataTable?> GetAllStockByProductIdAsync(int ProductId)
         {
@@ -36,14 +36,14 @@ namespace DAL
         {
             SqlParameter[] parameters =
             {
-                new SqlParameter("@returndStocksID", returndStocksId),
-                new SqlParameter("@personID", personId),
-                new SqlParameter("@userID", userId),
+                new SqlParameter("@WarrantyReturnedID", returndStocksId),
+                new SqlParameter("@PersonID", personId),
+                new SqlParameter("@UserID", userId),
             };
-            return await CRUD.UpdateAsync("SP_Update", parameters);
+            return await CRUD.UpdateAsync("SP_UpdateWarrantyReturn", parameters);
         }
 
-        public static async Task<bool> DeleteAsync(int warrantyReturnedId) => await CRUD.DeleteAsync("SP_Delete", "WarrantyReturnedID", warrantyReturnedId);
+        public static async Task<bool> DeleteAsync(int warrantyReturnedId) => await CRUD.DeleteAsync("SP_DeleteWarrantyReturn", "@WarrantyReturnedID", warrantyReturnedId);
     }
 }
 

@@ -11,7 +11,7 @@ namespace DAL
             SqlParameter[] parameters =
             {
                 new SqlParameter("@Amount", amount),
-                new SqlParameter("@SupplierID", supplierId),
+               
                 new SqlParameter("@PaymentDate", pymentDate),
                 new SqlParameter("@PurchaseID", purchaseId),
                 new SqlParameter("@UserID", userId)
@@ -37,7 +37,7 @@ namespace DAL
 
         public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllSupplierPayments");
 
-        public static async Task<bool> DeleteAsync(int supplierPaymentId) => await CRUD.DeleteAsync("SP_DeleteSupplierPayment", "@SupplierPaymentID", supplierPaymentId);
+        public static async Task<bool> DeleteAsync(int supplierPaymentId) => await CRUD.DeleteAsync("SP_DeleteSupplierPayment", "@SupplierPymentID", supplierPaymentId);
     }
 }
 /*
