@@ -6,38 +6,39 @@ namespace DAL
 {
     public class clsReturnedStocksData
     {
-        public static async Task<int?> AddNew(int? SaleDetailID, int quantity, int? supplierId, int? userId)
+        public static async Task<int?> AddNew(int? saleDetailId, int quantity, int? supplierId, int? userId)
         {
             SqlParameter[] parameters =
             {
-                new SqlParameter("@SaleDetailID", SaleDetailID),
-                new SqlParameter("@supplierId", supplierId),
+                new SqlParameter("@SaleDetailID", saleDetailId),
                 new SqlParameter("@Quantity", quantity),
                 new SqlParameter("@SupplierID", supplierId),
                 new SqlParameter("@UserID", userId)
             };
-            return await CRUD.AddAsync("SP_AddReturnedProduct", parameters);
+            return await CRUD.AddAsync("SP_AddReturnedStock", parameters);
         }
 
-        public static async Task<bool> Update(int? SaleDetailID, int quantity, int? supplierId, int? userId)
+        public static async Task<bool> Update(int? returnedStockId, int? saleDetailId, int quantity, int? supplierId, int? userId)
         {
             SqlParameter[] parameters =
             {
-                new SqlParameter("@SaleDetailID", SaleDetailID),
-                new SqlParameter("@supplierId", supplierId),
+                
+                new SqlParameter("@ReturnedStockId", returnedStockId),
+                new SqlParameter("@SaleDetailID", saleDetailId),
                 new SqlParameter("@Quantity", quantity),
                 new SqlParameter("@SupplierID", supplierId),
                 new SqlParameter("@UserID", userId)
             };
-            return await CRUD.UpdateAsync("SP_UpdateReturnedProduct", parameters);
+
+            return await CRUD.UpdateAsync("SP_UpdateReturnedStock", parameters);
         }
 
-        public static async Task<bool> Delete(int returnedProductId) => await CRUD.DeleteAsync("SP_DeleteReturnedProduct", "ReturnedProductID", returnedProductId);
+        public static async Task<bool> Delete(int returnedProductId) => await CRUD.DeleteAsync("SP_DeleteReturnedStock", "ReturnedProductID", returnedProductId);
 
         public static async Task<Dictionary<string,object>?> GetByIdAsync(int returnedProductId) 
-            => await CRUD.GetByColumnValueAsync("SP_GetReturnedProductByID", "ReturnedProductID", returnedProductId);
+            => await CRUD.GetByColumnValueAsync("SP_GetReturnedStockByID", "@ReturnStockID", returnedProductId);
         
-        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllReturnedProducts");
+        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllReturnedStocks");
     }
 }
 
@@ -56,7 +57,7 @@ BEGIN
 END;
 
 CREATE PROCEDURE sp_UpdateReturnedStock
-    @ReturnedStockId INT,
+    @returnedStockId INT,
     @SalesDetailsId INT,
     @Quantity INT,
     @SupplierId INT,
@@ -68,19 +69,19 @@ BEGIN
         Quantity = @Quantity,
         SupplierId = @SupplierId,
         UserId = @UserId
-    WHERE ReturnedStockID = @ReturnedStockId;
+    WHERE ReturnedStockID = @returnedStockId;
 END;
 
 CREATE PROCEDURE sp_DeleteReturnedStock
-    @ReturnedStockId INT
+    @returnedStockId INT
 AS
 BEGIN
     DELETE FROM ReturnedStocks
-    WHERE ReturnedStockID = @ReturnedStockId;
+    WHERE ReturnedStockID = @returnedStockId;
 END;
 
 CREATE PROCEDURE sp_GetReturnedStockById
-    @ReturnedStockId INT
+    @returnedStockId INT
 AS
 BEGIN
     SELECT rs.ReturnedStockID, rs.Quantity, rs.SalesDetailsId, rs.SupplierId, rs.UserId,
@@ -90,7 +91,7 @@ BEGIN
     JOIN SalesDetails sd ON rs.SalesDetailsId = sd.DetailID
     JOIN Suppliers s ON rs.SupplierId = s.SupplierID
     JOIN Users u ON rs.UserId = u.UserID
-    WHERE rs.ReturnedStockID = @ReturnedStockId;
+    WHERE rs.ReturnedStockID = @returnedStockId;
 END;
 
 CREATE PROCEDURE sp_GetAllReturnedStocks
