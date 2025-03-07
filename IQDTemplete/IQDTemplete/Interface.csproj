@@ -9,14 +9,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ChangeLogo\**" />
+    <EmbeddedResource Remove="ChangeLogo\**" />
+    <None Remove="ChangeLogo\**" />
+    <Page Remove="ChangeLogo\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Assets\Logo.png" />
     <None Remove="Assets\OIP.jpg" />
+    <None Remove="Assets\R.jpg" />
     <None Remove="jsconfig1.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\Logo.png" />
-    <Content Include="Assets\OIP.jpg" />
+    <Resource Include="Assets\R.jpg" />
+    <Resource Include="Assets\OIP.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,10 +51,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ChangeLogo\" />
   </ItemGroup>
 
 </Project>
