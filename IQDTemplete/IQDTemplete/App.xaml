@@ -5,6 +5,9 @@
              xmlns:local="clr-namespace:IQDTemplete"
              StartupUri="LoginWindow.xaml">
     <Application.Resources>
+        
+        
+        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Themes/LightTheme.xaml"/>
@@ -14,6 +17,9 @@
                 <ResourceDictionary Source="Languages/StringLanguage.EN.xaml"/>
                 <ResourceDictionary Source="/Styles/ButtonStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
