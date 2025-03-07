@@ -197,7 +197,7 @@ END;
          */
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int saleId)
         {
-            var dict = await CRUD.GetByColumnValueAsync("SP_GetSalesById", "SalesID", saleId);
+            var dict = await CRUD.GetByColumnValueAsync("sp_GetSalesById", "SalesID", saleId);
 
             if (dict == null) return null;
 
@@ -227,7 +227,7 @@ END;
             return dict;
         }
 
-        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_");
+        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllSales");
 
         /*
 
