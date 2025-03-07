@@ -7,6 +7,12 @@
     <FlowDirection x:Key="AppFlowDirection">LeftToRight</FlowDirection>
     <FlowDirection x:Key="SPAppFlowDirection">RightToLeft</FlowDirection>
 
+
+    <system:String x:Key="rdDebts">Debts</system:String>
+    <system:String x:Key="rdSales">Sales</system:String>
+    <system:String x:Key="rdPurchases">Purchases</system:String>
+    <system:String x:Key="rdRevenue">Revenue</system:String>
+
     <system:String x:Key="rdSetting">Setting</system:String>
     <system:String x:Key="rdNotifications">Notifications</system:String>
     <system:String x:Key="rdUsers">Users</system:String>
