@@ -19,12 +19,9 @@ namespace IQDTemplete
         public MainWindow()
         {
             InitializeComponent();
+            UpdateLogoPath();
             MainFrameInstance = frameContent;
             frameContent.Content = new Home1();
-
-            string savedLogoPath = Settings.Default.LogoPath;
-            if (!string.IsNullOrEmpty(savedLogoPath) && File.Exists(savedLogoPath))
-                imgLogo.Source = new BitmapImage(new Uri(savedLogoPath, UriKind.Absolute));
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -87,6 +84,12 @@ namespace IQDTemplete
 
         private void rdSettings_Checked(object sender, RoutedEventArgs e)
         {
+        }
+
+        public static void UpdateLogoPath()
+        {
+            string logoPath = Settings.Default.LogoPath;
+            Application.Current.Resources["AppLogo"] = new System.Windows.Media.Imaging.BitmapImage(new Uri(logoPath, UriKind.RelativeOrAbsolute));
         }
     }
 

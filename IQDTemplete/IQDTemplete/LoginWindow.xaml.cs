@@ -11,7 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Interface.Properties;
 using IQDTemplete;
+using System.IO;
 
 namespace Interface
 {
@@ -23,8 +25,8 @@ namespace Interface
         public LoginWindow()
         {
             InitializeComponent();
+            MainWindow.UpdateLogoPath();
         }
-
 
         private void btnClose_Click_2(object sender, RoutedEventArgs e)
         {

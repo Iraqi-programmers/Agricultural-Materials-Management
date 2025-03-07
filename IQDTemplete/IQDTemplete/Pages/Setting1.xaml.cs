@@ -39,7 +39,6 @@ namespace IQDTemplete.Pages
             {
                 rdArabic.IsChecked = true;
             }
-
             if (Settings.Default.Theme == "LightTheme")
             {
                 rdLight.IsChecked = true;
@@ -70,36 +69,21 @@ namespace IQDTemplete.Pages
             LanguageControler.SetLanguage(LanguageControler.enLanguage.Arabic);
         }
 
-        //private void btnChangeLogo_Click(object sender, RoutedEventArgs e)
-        //{
-
-        //}
-
         private void btnChangeLogo_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = "Image Files|*.png;*.jpg;*.jpeg;*.bmp;*.gif";
+
+            if (dlg.ShowDialog() == true)
             {
-                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp",
-                Title = "اختر شعارًا جديدًا"
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                string newLogoPath = openFileDialog.FileName;
-
-                // تحديث الشعار في الواجهة
-                if (imgLogo != null)
-                {
-                    imgLogo.Source = new BitmapImage(new Uri(newLogoPath, UriKind.Absolute));
-                }
-
-                // حفظ المسار لاستخدامه لاحقًا
-                Settings.Default.LogoPath = newLogoPath;
+                // حفظ المسار الجديد في الإعدادات
+                Settings.Default.LogoPath = dlg.FileName;
                 Settings.Default.Save();
+
+                // تحديث الصورة في جميع الأماكن
+                MainWindow.UpdateLogoPath();
             }
         }
-
-
 
         //private void Button_Click(object sender, RoutedEventArgs e)
         //{
@@ -110,7 +94,5 @@ namespace IQDTemplete.Pages
         //{
         //    LanguageControler.SetLanguage(LanguageControler.enLanguage.Arabic);
         //}
-
-
     }
 }
