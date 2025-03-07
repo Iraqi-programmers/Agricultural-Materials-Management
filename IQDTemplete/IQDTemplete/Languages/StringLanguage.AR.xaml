@@ -7,6 +7,10 @@
     <FlowDirection x:Key="AppFlowDirection">RightToLeft</FlowDirection>
     <FlowDirection x:Key="SPAppFlowDirection">LeftToRight</FlowDirection>
 
+    <system:String x:Key="rdDebts">الديـون</system:String>
+    <system:String x:Key="rdSales">المبيعات</system:String>
+    <system:String x:Key="rdPurchases">المشتريات</system:String>
+    <system:String x:Key="rdRevenue">الإيرادات</system:String>
     <system:String x:Key="rdSetting">الاعدادات</system:String>
     <system:String x:Key="rdNotifications">الاشعارات</system:String>
     <system:String x:Key="rdUsers">المستخدمين</system:String>
