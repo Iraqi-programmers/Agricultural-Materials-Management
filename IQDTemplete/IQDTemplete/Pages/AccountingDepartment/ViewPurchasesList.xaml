@@ -9,6 +9,32 @@
       Title="ViewPurchasesList">
 
     <Grid>
-        
+       
+
+        <DataGrid  x:Name="PurchasesDataGrid"
+                      AutoGenerateColumns="False"
+                      HeadersVisibility="Column"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      SelectionUnit="FullRow"
+                      GridLinesVisibility="Vertical"
+                      RowBackground="{DynamicResource PrimaryBackgroundColor}"
+                      AlternatingRowBackground="{DynamicResource PrimaryBackgroundColor}"
+                      BorderThickness="1"
+                      Margin="5,5,5,0"
+                      FontSize="20"
+                     
+                     >
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="رقم القائمة" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="المبلغ الكلي" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="المبلغ المدفوع" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="التاريخ" Width="*"></DataGridTextColumn>
+            </DataGrid.Columns>
+            
+        </DataGrid>
+
     </Grid>
+        
 </Page>

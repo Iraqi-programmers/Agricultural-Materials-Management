@@ -40,7 +40,7 @@
                                        TextColor="{DynamicResource TertiaryTextColor}"
                                        BackgroundColor="Transparent"
                                        IconSource="/Assets/R.jpg"
-                                       Margin="0,0,0,0"
+                                       MouseDown="Purchases_MouseDown"
                                        />
             </Grid>
         </Border>
