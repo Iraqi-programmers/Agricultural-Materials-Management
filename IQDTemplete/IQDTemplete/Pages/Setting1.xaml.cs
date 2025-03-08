@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using Interface.Properties;
 using IQDTemplete.Languages;
 using IQDTemplete.Themes;
+using Microsoft.Data.SqlClient;
+using Microsoft.Win32;
 
 
 namespace IQDTemplete.Pages
@@ -24,6 +26,8 @@ namespace IQDTemplete.Pages
     /// </summary>
     public partial class Setting1 : Page
     {
+        private string __backupPath { get; set; } = string.Empty;
+
         public Setting1()
         {
             InitializeComponent();
@@ -71,7 +75,7 @@ namespace IQDTemplete.Pages
 
         private void btnChangeLogo_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            OpenFileDialog dlg = new OpenFileDialog();
             dlg.Filter = "Image Files|*.png;*.jpg;*.jpeg;*.bmp;*.gif";
 
             if (dlg.ShowDialog() == true)
@@ -85,14 +89,87 @@ namespace IQDTemplete.Pages
             }
         }
 
-        //private void Button_Click(object sender, RoutedEventArgs e)
+        //private void btnChoosePath_Click(object sender, RoutedEventArgs e)
         //{
-        //    LanguageControler.SetLanguage(LanguageControler.enLanguage.English);
+        //    OpenFileDialog dialog = new OpenFileDialog();
+
+        //    if (dialog.ShowDialog() == true)
+        //    {
+        //        __backupPath = dialog.FileName; // حفظ المسار المختار
+        //        txtBackupName.Visibility = Visibility.Visible; // إظهار حقل اسم النسخة الاحتياطية
+        //        btnBackup.Visibility = Visibility.Visible; // إظهار زر النسخ الاحتياطي
+        //        MessageBox.Show(__backupPath);
+        //    }
         //}
 
-        //private void Button_Click_1(object sender, RoutedEventArgs e)
+        //private async void btnBackup_Click(object sender, RoutedEventArgs e)
         //{
-        //    LanguageControler.SetLanguage(LanguageControler.enLanguage.Arabic);
+        //    if (string.IsNullOrWhiteSpace(txtBackupName.Text))
+        //    {
+        //        MessageBox.Show("Please enter backup name.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+        //        return;
+        //    }
+
+        //    string fileName = $"{txtBackupName.Text}.bak";
+        //    string fullPath = System.IO.Path.Combine(__backupPath, fileName);
+
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection("Your_Connection_String"))
+        //        {
+        //            await conn.OpenAsync();
+        //            string query = $"BACKUP DATABASE YourDatabaseName TO DISK = '{fullPath}'";
+
+        //            using (SqlCommand cmd = new SqlCommand(query, conn))
+        //            {
+        //                await cmd.ExecuteNonQueryAsync();
+        //            }
+        //        }
+
+        //        MessageBox.Show("Backup Created Successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
         //}
+
+        private void BrowseFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            // إنشاء OpenFileDialog
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            // تعيين خصائص OpenFileDialog
+            openFileDialog.Filter = "جميع الملفات (*.*)|*.*"; // تصفية الملفات
+            openFileDialog.Title = "اختيار مجلد";
+            openFileDialog.ValidateNames = false; // تعطيل التحقق من صحة الاسم
+            openFileDialog.CheckFileExists = false; // تعطيل التحقق من وجود الملف
+            openFileDialog.FileName = "اختيار مجلد"; // نص افتراضي
+
+            // فتح مربع الحوار وعرض النتيجة
+            if (openFileDialog.ShowDialog() == true)
+            {
+                // الحصول على المسار من FileName
+                string selectedPath = System.IO.Path.GetDirectoryName(openFileDialog.FileName)!;
+
+                MessageBox.Show(selectedPath);
+
+                // حفظ المسار في TextBox
+                FolderPathTextBox.Text = selectedPath;
+            }
+        }
+
+        private void CreateBackup_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(FolderPathTextBox.Text))
+            {
+                MessageBox.Show($"تم حفظ المسار: {FolderPathTextBox.Text}", "تأكيد", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("يرجى اختيار مجلد أولاً!", "تحذير", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
     }
 }

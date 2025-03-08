@@ -48,29 +48,34 @@
                         <!-- عرض الشعار الحالي -->
                         <Image x:Name="imgLogo" Source="{DynamicResource AppLogo}" Width="100" Height="100" Margin="10"/>
 
+                        
+                        
+                        
+                        
                         <Button x:Name="btnChangeLogo" Content="Change Logo"
                             Click="btnChangeLogo_Click"
-                            Width="100" Height="30" Margin="10"
-                            FontSize="12" FontWeight="Bold"
+                            Width="100" Height="40" Margin="10"
+                            FontSize="10" FontWeight="Bold"
                             Foreground="White"
-                            Padding="5"
+                            Padding="2"
                             Cursor="Hand">
                             <Button.Style>
                                 <Style TargetType="Button">
-                                    <!--الخصائص الافتراضية-->
+                                    <!-- الخصائص الافتراضية -->
                                     <Setter Property="Background">
                                         <Setter.Value>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                <GradientStop Color="#2A6FC7" Offset="0"/>
-                                                <GradientStop Color="#1E5799" Offset="1"/>
-                                            </LinearGradientBrush>
+                                            <SolidColorBrush Color="#111111"/>
                                         </Setter.Value>
                                     </Setter>
-                                    <Setter Property="BorderBrush" Value="#0D3C75"/>
-                                    <Setter Property="BorderThickness" Value="2"/>
+                                    <Setter Property="BorderBrush">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="#00FFFF"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="BorderThickness" Value="3"/>
                                     <Setter Property="Effect">
                                         <Setter.Value>
-                                            <DropShadowEffect Color="Black" Opacity="0.5" BlurRadius="10" ShadowDepth="4"/>
+                                            <DropShadowEffect Color="#00FFFF" Opacity="0.8" BlurRadius="12" ShadowDepth="0"/>
                                         </Setter.Value>
                                     </Setter>
                                     <Setter Property="RenderTransform">
@@ -82,75 +87,86 @@
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
                                                 <Grid>
-                                                    <!--الظل السفلي لإضافة تأثير البروز-->
-                                                    <Border Background="Black" CornerRadius="10" Margin="0,5,0,0" Opacity="0.2"/>
-                                                    <!--الشكل الرئيسي للزر-->
+                                                    <!-- الظل الخلفي -->
+                                                    <Border Background="#000000" CornerRadius="18" Opacity="0.3" Margin="0,4,0,0"/>
+
+                                                    <!-- الشكل الرئيسي -->
                                                     <Border Background="{TemplateBinding Background}" 
-                                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                                        CornerRadius="10" Padding="5">
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="18" Padding="6">
                                                         <Grid>
-                                                            <!--الانعكاس العلوي (يعطي تأثير لمعان)-->
-                                                            <Rectangle Height="15" VerticalAlignment="Top" Opacity="0.3" RadiusX="10" RadiusY="10">
+                                                            <!-- محتوى الزر -->
+                                                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+
+                                                            <!-- وميض متحرك في منتصف المسافة بين النص والحد السفلي -->
+                                                            <Rectangle Height="3" Width="50" VerticalAlignment="Bottom" Margin="0,0,0,0">
                                                                 <Rectangle.Fill>
-                                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                                        <GradientStop Color="White" Offset="0"/>
+                                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                                        <GradientStop Color="Transparent" Offset="0"/>
+                                                                        <GradientStop Color="#00FFFF" Offset="0.5"/>
                                                                         <GradientStop Color="Transparent" Offset="1"/>
                                                                     </LinearGradientBrush>
                                                                 </Rectangle.Fill>
+                                                                <Rectangle.RenderTransform>
+                                                                    <TranslateTransform X="0"/>
+                                                                </Rectangle.RenderTransform>
+                                                                <Rectangle.Triggers>
+                                                                    <EventTrigger RoutedEvent="Loaded">
+                                                                        <BeginStoryboard>
+                                                                            <Storyboard RepeatBehavior="Forever">
+                                                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" 
+                                    From="-25" To="25" Duration="0:0:2.5" AutoReverse="True"/>
+                                                                            </Storyboard>
+                                                                        </BeginStoryboard>
+                                                                    </EventTrigger>
+                                                                </Rectangle.Triggers>
                                                             </Rectangle>
-                                                            <!--الأيقونة الاختيارية مع النص-->
-                                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                                                <!--<Image Source="Images/icon.png" Width="22" Height="22" Margin="0,0,8,0"/>-->
-                                                                <!--استبدل بالأيقونة-->
-                                                                <ContentPresenter VerticalAlignment="Center"/>
-                                                            </StackPanel>
                                                         </Grid>
                                                     </Border>
                                                 </Grid>
 
-                                                <!--تأثيرات الزر-->
+                                                <!-- تأثيرات التفاعل -->
                                                 <ControlTemplate.Triggers>
-                                                    <!--عند تمرير الماوس-->
+                                                    <!-- عند تمرير الماوس -->
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background">
+                                                        <Setter Property="BorderBrush">
                                                             <Setter.Value>
-                                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                                    <GradientStop Color="#3E8AEF" Offset="0"/>
-                                                                    <GradientStop Color="#2A6FC7" Offset="1"/>
-                                                                </LinearGradientBrush>
+                                                                <SolidColorBrush Color="#FF00FF"/>
                                                             </Setter.Value>
                                                         </Setter>
                                                         <Setter Property="Effect">
                                                             <Setter.Value>
-                                                                <DropShadowEffect Color="Black" Opacity="0.7" BlurRadius="12" ShadowDepth="5"/>
+                                                                <DropShadowEffect Color="#FF00FF" Opacity="0.9" BlurRadius="18" ShadowDepth="0"/>
                                                             </Setter.Value>
                                                         </Setter>
                                                         <Setter Property="RenderTransform">
                                                             <Setter.Value>
-                                                                <ScaleTransform ScaleX="1.07" ScaleY="1.07"/>
+                                                                <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Trigger>
 
-                                                    <!--عند الضغط على الزر-->
+                                                    <!-- عند الضغط على الزر -->
                                                     <Trigger Property="IsPressed" Value="True">
                                                         <Setter Property="Background">
                                                             <Setter.Value>
-                                                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                                    <GradientStop Color="#1E5799" Offset="0"/>
-                                                                    <GradientStop Color="#0D3C75" Offset="1"/>
-                                                                </LinearGradientBrush>
+                                                                <SolidColorBrush Color="#222222"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter Property="BorderBrush">
+                                                            <Setter.Value>
+                                                                <SolidColorBrush Color="#FF4500"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect Color="#FF4500" Opacity="0.8" BlurRadius="12" ShadowDepth="0"/>
                                                             </Setter.Value>
                                                         </Setter>
                                                         <Setter Property="RenderTransform">
                                                             <Setter.Value>
                                                                 <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                        <Setter Property="Effect">
-                                                            <Setter.Value>
-                                                                <DropShadowEffect Color="Black" Opacity="0.6" BlurRadius="8" ShadowDepth="2"/>
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Trigger>
@@ -162,9 +178,69 @@
                             </Button.Style>
                         </Button>
 
+                 
+
                     </StackPanel>
                 </GroupBox>
-                
+
+
+                <GroupBox Padding="10" BorderThickness="1" BorderBrush="{DynamicResource Coboxborder}" 
+Height="130" Margin="10" FontWeight="Bold" FontSize="13" Header="إدارة النسخة الاحتياطية">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- زر اختيار المجلد -->
+                            <Button Content="اختيار مجلد" 
+                    Width="100" 
+                    Height="35" 
+                    FontSize="12"
+                    Style="{DynamicResource ModernButtonStyle}"
+                    Click="BrowseFolderButton_Click"
+                    Grid.Column="0">
+                                <Button.Effect>
+                                    <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3"/>
+                                </Button.Effect>
+                            </Button>
+
+                            <!-- مربع النص بين الأزرار -->
+                            <TextBox x:Name="FolderPathTextBox"
+                     Width="280"
+                     Height="35"
+                     VerticalAlignment="Center"
+                     IsReadOnly="True"
+                     FontSize="12"
+                     Padding="6"
+                     TextAlignment="Center"
+                     Style="{StaticResource ModernTextBoxStyle}" 
+                     Grid.Column="2"/>
+
+                            <!-- زر إنشاء النسخة الاحتياطية -->
+                            <Button Content="إنشاء" 
+                    Width="100" 
+                    Height="35" 
+                    FontSize="12"
+                    Style="{DynamicResource ModernButtonStyle}"
+                    Click="CreateBackup_Click"
+                    Grid.Column="4">
+                                <Button.Effect>
+                                    <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3"/>
+                                </Button.Effect>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </GroupBox>
+
             </StackPanel>
         </Border>
     </Grid>

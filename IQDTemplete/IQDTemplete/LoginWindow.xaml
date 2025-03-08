@@ -35,7 +35,7 @@
 
             <StackPanel Margin="20,0,0,0" Grid.Column="0" >
                 <StackPanel Margin="-87,20,0,40" HorizontalAlignment="Center">
-                    <Image x:Name="imgLogo" Source="{DynamicResource AppLogo}" Stretch="Fill" Height="36" Width="36" Margin="-6,0,0,5"/>
+                    <Image x:Name="imgLogo" Source="/Assets/Logo.png" Stretch="Fill" Height="36" Width="36" Margin="-6,0,0,5"/>
                     <TextBlock Foreground="{DynamicResource PrimaryTextColor}" FontSize="20" Text="{DynamicResource company}" FontStyle="Italic" />
                 </StackPanel>
 

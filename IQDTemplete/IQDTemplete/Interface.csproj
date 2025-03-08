@@ -16,16 +16,42 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\add.png" />
+    <None Remove="Assets\addmenue %282%29.png" />
+    <None Remove="Assets\addMenue.png" />
+    <None Remove="Assets\AddMenue1.png" />
+    <None Remove="Assets\Debits3.png" />
+    <None Remove="Assets\DebitsMangment.png" />
+    <None Remove="Assets\DeploySalesMenue.png" />
     <None Remove="Assets\Logo.png" />
     <None Remove="Assets\OIP.jpg" />
+    <None Remove="Assets\Purchases.png" />
     <None Remove="Assets\R.jpg" />
+    <None Remove="Assets\Return_Items.png" />
+    <None Remove="Assets\Revenew.png" />
+    <None Remove="Assets\sale.png" />
+    <None Remove="Assets\StorageContent.png" />
+    <None Remove="Assets\supplier.png" />
     <None Remove="jsconfig1.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\add.png" />
+    <Resource Include="Assets\addmenue (2).png" />
+    <Resource Include="Assets\addMenue.png" />
+    <Resource Include="Assets\AddMenue1.png" />
+    <Resource Include="Assets\Debits3.png" />
+    <Resource Include="Assets\DebitsMangment.png" />
+    <Resource Include="Assets\DeploySalesMenue.png" />
     <Resource Include="Assets\Logo.png" />
+    <Resource Include="Assets\Purchases.png" />
     <Resource Include="Assets\R.jpg" />
     <Resource Include="Assets\OIP.jpg" />
+    <Resource Include="Assets\Return_Items.png" />
+    <Resource Include="Assets\Revenew.png" />
+    <Resource Include="Assets\sale.png" />
+    <Resource Include="Assets\StorageContent.png" />
+    <Resource Include="Assets\supplier.png" />
   </ItemGroup>
 
   <ItemGroup>
