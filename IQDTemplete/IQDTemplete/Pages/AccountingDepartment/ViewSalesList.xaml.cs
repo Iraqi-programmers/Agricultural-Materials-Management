@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using Interface.Pages.UserControl;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace Interface.Pages.AccountingDepartment
@@ -17,7 +18,7 @@ namespace Interface.Pages.AccountingDepartment
             public string CustomerName { get; set; }
             public string InvoiceDate { get; set; }
             public decimal TotalAmount { get; set; }
-            public decimal Profit { get; set; }
+            public decimal LisrNum { get; set; }
             public string UserName { get; set; }
             public string UserPhone { get; set; }
         }
@@ -28,14 +29,14 @@ namespace Interface.Pages.AccountingDepartment
             // بيانات تجريبية
             var invoices = new List<Invoice>
             {
-                new Invoice { CustomerName = "محمد أحمد", InvoiceDate = "2023-10-01", TotalAmount = 1500, Profit = 300, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "سارة خالد", InvoiceDate = "2023-10-02", TotalAmount = 2000, Profit = 400, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "يوسف سعيد", InvoiceDate = "2023-10-03", TotalAmount = 2500, Profit = 500, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "زيون الكئيب", InvoiceDate = "2023-10-03", TotalAmount = 2500, Profit = 500, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "سند الحزين", InvoiceDate = "2023-10-03", TotalAmount = 2500, Profit = 500, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "محمد علي كلاي", InvoiceDate = "2023-10-03", TotalAmount = 2500, Profit = 500, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "علي حسن", InvoiceDate = "2023-10-03", TotalAmount = 2500, Profit = 500, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "علي حسن", InvoiceDate = "2023-10-03", TotalAmount = 2500, Profit = 500, UserName = "علي محمود", UserPhone = "0123456789" }
+                new Invoice { CustomerName = "محمد أحمد", InvoiceDate = "2023-10-01", TotalAmount = 1500, LisrNum = 1, UserName = "علي محمود", UserPhone = "0123456789" },
+                new Invoice { CustomerName = "سارة خالد", InvoiceDate = "2023-10-02", TotalAmount = 2000, LisrNum = 4, UserName = "علي محمود", UserPhone = "0123456789" },
+                new Invoice { CustomerName = "يوسف سعيد", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum = 50, UserName = "علي محمود", UserPhone = "0123456789" },
+                new Invoice { CustomerName = "زيون الكئيب", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum  = 500, UserName = "علي محمود", UserPhone = "0123456789" },
+                new Invoice { CustomerName = "سند الحزين", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum = 9, UserName = "علي محمود", UserPhone = "0123456789" },
+                new Invoice { CustomerName = "محمد علي كلاي", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum = 40, UserName = "علي محمود", UserPhone = "0123456789" },
+                new Invoice { CustomerName = "علي حسن", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum = 20, UserName = "علي محمود", UserPhone = "0123456789" },
+                new Invoice { CustomerName = "علي حسن", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum = 25, UserName = "علي محمود", UserPhone = "0123456789" }
             };
 
       
@@ -57,7 +58,7 @@ namespace Interface.Pages.AccountingDepartment
                     return invoice.CustomerName.Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
                            invoice.InvoiceDate.Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
                            invoice.TotalAmount.ToString().Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
-                           invoice.Profit.ToString().Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
+                           invoice.LisrNum.ToString().Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
                            invoice.UserName.Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
                            invoice.UserPhone.Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase);
                 };
@@ -90,8 +91,8 @@ namespace Interface.Pages.AccountingDepartment
                 case "تاريخ القائمة":
                     e.Accepted = invoice.InvoiceDate.ToLower().Contains(filterText);
                     break;
-                case "ربح القائمة":
-                    e.Accepted = invoice.Profit.ToString().Contains(filterText);
+                case "رقم القائمة":
+                    e.Accepted = invoice.LisrNum.ToString().Contains(filterText);
                     break;
                 case "المبلغ الكلي":
                     e.Accepted = invoice.TotalAmount.ToString().Contains(filterText);
@@ -103,6 +104,16 @@ namespace Interface.Pages.AccountingDepartment
                     e.Accepted = true;
                     break;
             }
+        }
+
+        private void MenuItem_Details_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new ctrlSalesListDetails());
+        }
+
+        private void MenuItem_Export_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
         }
     }
     
