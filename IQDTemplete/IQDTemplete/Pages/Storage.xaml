@@ -90,7 +90,7 @@
                                  BackgroundColor="Transparent"
                                  IconSource="/Assets/StorageContent.png" 
                                  Margin="0,0,0,0"
-                               
+                                MouseDown="Suppliers_MouseDown"
                                    
                                    />
 

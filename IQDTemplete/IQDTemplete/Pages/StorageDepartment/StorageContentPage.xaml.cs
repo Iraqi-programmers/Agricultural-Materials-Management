@@ -12,24 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Interface.Pages.StorageDepartment;
-using IQDTemplete;
 
-namespace Interface.Pages
+namespace Interface.Pages.StorageDepartment
 {
     /// <summary>
-    /// Interaction logic for Storage.xaml
+    /// Interaction logic for StorageContentPage.xaml
     /// </summary>
-    public partial class Storage : Page
+    public partial class StorageContentPage : Page
     {
-        public Storage()
+        public StorageContentPage()
         {
             InitializeComponent();
-        }
-
-        private void Suppliers_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            MainWindow.MainFrameInstance.Content = new StorageContentPage();
         }
     }
 }
