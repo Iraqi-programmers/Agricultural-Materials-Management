@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Interface.Pages.StorageDepartment;
+using IQDTemplete;
 
 namespace Interface.Pages
 {
@@ -23,6 +25,11 @@ namespace Interface.Pages
         public Storage()
         {
             InitializeComponent();
+        }
+
+        private void Suppliers_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MainWindow.MainFrameInstance.Content = new StorageContentPage();
         }
     }
 }
