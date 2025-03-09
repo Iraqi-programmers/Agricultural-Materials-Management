@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interface.Pages.UserControl;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -104,6 +105,8 @@ namespace Interface.Pages.AccountingDepartment
         private void MenuItem_Details_Click(object sender, RoutedEventArgs e)
         {
 
+
+            NavigationService?.Navigate(new ctrlPurchesesListDetils());
         }
     }
 }
