@@ -34,7 +34,7 @@ namespace Interface.Pages
 
         private void StorageContent_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            MainWindow.MainFrameInstance.Content = new Supplier();
+
         }
 
         private void DeploySalesMenue_MouseDown(object sender, MouseButtonEventArgs e)
