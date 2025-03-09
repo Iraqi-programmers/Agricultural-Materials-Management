@@ -159,6 +159,21 @@ namespace IQDTemplete.Pages
             }
         }
 
+        //private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    var textBox = sender as TextBox;
+
+        //    if (string.IsNullOrEmpty(textBox.Text))
+        //    {
+        //        VisualStateManager.GoToState(textBox, "Empty", true);
+        //    }
+        //    else
+        //    {
+        //        VisualStateManager.GoToState(textBox, "Normal", true);
+        //    }
+        //}
+
+
         private void CreateBackup_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(FolderPathTextBox.Text))
