@@ -93,7 +93,7 @@ namespace Interface.Pages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Interface;component/pages/storage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Interface;V1.0.0.0;component/pages/storage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Pages\Storage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

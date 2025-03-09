@@ -41,7 +41,7 @@
                                    TextColor="{DynamicResource TertiaryTextColor}"
                                    BackgroundColor="Transparent"
                                    IconSource="/Assets/supplier.png"
-                                   
+                                   MouseDown="StorageContent_MouseDown"
                                    />
             </Grid>
         </Border>
@@ -140,7 +140,7 @@ Grid.Row="1"
                             BackgroundColor="Transparent"
                             IconSource="/Assets/DeploySalesMenue.png"
                             Margin="0,0,0,0"
-                          
+                            MouseDown="DeploySalesMenue_MouseDown"
                               
                               />
 
