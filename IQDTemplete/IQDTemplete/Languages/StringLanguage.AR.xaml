@@ -36,5 +36,16 @@
     <system:String x:Key="AddMenuetoStorage">اضافة قائمة للمخزن</system:String>
     <system:String x:Key="Suppliers">الموردون</system:String>
     <system:String x:Key="ReturnItemToStorage">مرجعات المخزن</system:String>
-   
+
+
+
+    <!--Yousif Words -->
+    <system:String x:Key="rdSalesInventory">جرد المبيعات</system:String>
+    <system:String x:Key="rdProductInventory">جرد المنتجات</system:String>
+    <system:String x:Key="rdPurchasIinventory">جرد المشتريات</system:String>
+    <system:String x:Key="rdDebtInventory">جرد الديون</system:String>
+
+
+
+
 </ResourceDictionary>

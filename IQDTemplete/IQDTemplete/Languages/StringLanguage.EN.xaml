@@ -38,5 +38,30 @@
     <system:String x:Key="AddMenuetoStorage">Add Menue To Storage</system:String>
     <system:String x:Key="Suppliers">Suppliers</system:String>
     <system:String x:Key="ReturnItemToStorage">Returned Items</system:String>
+
+    <!--Yousif Words Inventory page -->
+    <system:String x:Key="rdSalesInventory">Sales Inventory</system:String>
+    <system:String x:Key="rdProductInventory">Product Inventory</system:String>
+    <system:String x:Key="rdPurchasIinventory">Purchase inventory</system:String>
+    <system:String x:Key="rdDebtInventory">Debt inventory</system:String>
+
+    <!--Yousif Words Product Inventory page -->
+    <system:String x:Key="lblProductInventoryTitle">Product Inventory</system:String>
     
+            <!--Yousif Words Product Inventory page -->
+             <system:String x:Key="dgvhProductId">Product id </system:String>
+             <system:String x:Key="dgvhQuantity">Quantity</system:String>
+             <system:String x:Key="dgvhTotalPrice">Total price</system:String>
+             <system:String x:Key="dgvhProductName">Product name</system:String>
+             <system:String x:Key="dgvhStatus">Status</system:String>
+
+
+
+
+
+
+
+
+
+
 </ResourceDictionary>
