@@ -1,13 +1,10 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using Interface.Pages;
+﻿using Interface.Pages;
+using Interface.Pages.InventoryDepartment;
+using Interface.Properties;
 using IQDTemplete.Languages;
 using IQDTemplete.Pages;
-using IQDTemplete.Themes;
-using System.IO;
-using System.Windows.Media;
-using Interface.Properties;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace IQDTemplete
 {
@@ -54,6 +51,7 @@ namespace IQDTemplete
 
         private void rdInventory_Click(object sender, RoutedEventArgs e)
         {
+            
             frameContent.Navigate(new Inventory());
         }
 

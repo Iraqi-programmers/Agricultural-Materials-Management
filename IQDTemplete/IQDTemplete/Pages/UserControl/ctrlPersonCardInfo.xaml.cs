@@ -145,7 +145,7 @@ namespace Interface.Pages.UserControl
         }
 
 
-        private async Task btnSave_Click(object sender, RoutedEventArgs e)
+        private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             person = new clsPerson(txtName.Text, txtNationalID.Text, txtPhoneNumber.Text, txtAddress.Text);
 
@@ -167,5 +167,7 @@ namespace Interface.Pages.UserControl
             ChangeProparteUI(title:"تعديل البيانات");
             _mod = Mod.Update;
         }
+
+       
     }
 }

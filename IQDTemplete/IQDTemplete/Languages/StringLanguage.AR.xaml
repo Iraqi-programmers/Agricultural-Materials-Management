@@ -45,7 +45,15 @@
     <system:String x:Key="rdPurchasIinventory">جرد المشتريات</system:String>
     <system:String x:Key="rdDebtInventory">جرد الديون</system:String>
 
+    <!--Yousif Words Product Inventory page -->
+    <system:String x:Key="lblProductInventoryTitle">ما اعرف شكتب</system:String>
 
+    <!--Yousif Words Product Inventory page -->
+    <system:String x:Key="dgvhProductId">رقم المنتج</system:String>
+    <system:String x:Key="dgvhQuantity">الكمية</system:String>
+    <system:String x:Key="dgvhTotalPrice">اجمالي المبلغ</system:String>
+    <system:String x:Key="dgvhProductName">اسم المنتج</system:String>
+    <system:String x:Key="dgvhStatus">الحالة</system:String>
 
 
 </ResourceDictionary>

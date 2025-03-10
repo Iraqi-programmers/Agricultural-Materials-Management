@@ -39,6 +39,7 @@
     <system:String x:Key="Suppliers">Suppliers</system:String>
     <system:String x:Key="ReturnItemToStorage">Returned Items</system:String>
 
+    
     <!--Yousif Words Inventory page -->
     <system:String x:Key="rdSalesInventory">Sales Inventory</system:String>
     <system:String x:Key="rdProductInventory">Product Inventory</system:String>

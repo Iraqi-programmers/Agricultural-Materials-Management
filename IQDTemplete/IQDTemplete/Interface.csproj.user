@@ -16,6 +16,12 @@
     <Compile Update="Pages\Home1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\InventoryDepartment\Inventory.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\InventoryDepartment\ProductInventory.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Setting1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

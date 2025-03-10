@@ -38,7 +38,6 @@
                 <local:BorderAnimation x:Name="Purchases"
                                        Text="{DynamicResource rdPurchases}"
                                        TextColor="{DynamicResource TertiaryTextColor}"
-                                       BackgroundColor="Transparent"
                                        IconSource="/Assets/Purchases.png"
                                        MouseDown="Purchases_MouseDown"
                                        />
@@ -60,7 +59,6 @@
                 <local:BorderAnimation x:Name="Sales"
                                      Text="{DynamicResource rdSales}"
                                      TextColor="{DynamicResource TertiaryTextColor}"
-                                     BackgroundColor="Transparent"
                                      IconSource="/Assets/sale.png"
                                      Margin="0,0,0,0"
                                        MouseDown="Sales_MouseDown"
@@ -85,7 +83,6 @@
                 <local:BorderAnimation x:Name="Debts"
                                      Text="{DynamicResource rdDebts}"
                                      TextColor="{DynamicResource TertiaryTextColor}"
-                                     BackgroundColor="Transparent"
                                      IconSource="/Assets/Debits3.png"
                                      Margin="0,0,0,0"
                                        
@@ -109,7 +106,6 @@
                 <local:BorderAnimation x:Name="Revenue"
                                        Text="{DynamicResource rdRevenue}"
                                        TextColor="{DynamicResource TertiaryTextColor}"
-                                       BackgroundColor="Transparent"
                                        IconSource="/Assets/Revenew.png"
                                        Margin="0,-7,0,0"
                                        

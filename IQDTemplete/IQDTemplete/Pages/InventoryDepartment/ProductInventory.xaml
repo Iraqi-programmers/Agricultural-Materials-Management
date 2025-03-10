@@ -1,0 +1,109 @@
+﻿<Page x:Class="Interface.Pages.InventoryDepartment.ProductInventory"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Interface.Pages.UserControl"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      >
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="401*"/>
+            <ColumnDefinition Width="399*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="{DynamicResource lblProductInventoryTitle}" Grid.Row="0"
+              FontSize="35"
+              Background="{DynamicResource PrimaryBackgroundColor}"
+              FontWeight="ExtraLight"
+              Foreground="{DynamicResource PrimaryTextColor}"
+              Margin="5,0,0,10" Grid.ColumnSpan="2"
+               />
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" Margin="0,0,0,330" Grid.RowSpan="2">
+            <ComboBox x:Name="FilterComboBox" 
+          Width="200"
+          Height="40"
+          FontSize="16"
+          Padding="55,8,0,0"
+          Margin="4,12,0,11"
+          FontWeight="ExtraLight"
+          SelectedIndex="0">
+                <ComboBoxItem Content="رقم القائمة"/>
+                <ComboBoxItem Content="تاريخ القائمة" />
+                <ComboBoxItem Content="القوائم المدانة" />
+                <ComboBoxItem Content="القوائم المكتملة" />
+
+            </ComboBox>
+        </StackPanel>
+
+        <TextBox x:Name="SearchTextBox" Grid.Row="1"
+          Width="300"
+          Height="40"
+          FontSize="15"
+          Padding="10"
+          FontWeight="ExtraLight"
+          TextAlignment="Center"
+          HorizontalAlignment="Left"
+          TextChanged="SearchTextBox_TextChanged_1"
+          Margin="205,12,0,11"
+          ToolTip="{Binding SelectedItem.Content, ElementName=FilterComboBox, StringFormat='بحث باستخدام {0}'}" Grid.ColumnSpan="2"                         />
+
+        <DataGrid x:Name="InvoiceDataGrid" Grid.Row="2" FlowDirection="{DynamicResource AppFlowDirection}"
+           AutoGenerateColumns="False"
+           HeadersVisibility="Column"
+           IsReadOnly="True"
+           SelectionMode="Single"
+           SelectionUnit="FullRow"
+           GridLinesVisibility="Horizontal"
+           RowBackground="White"
+           AlternatingRowBackground="#FF97ACCE"
+           BorderThickness="1"
+           Margin="2,5,2,0"
+           FontSize="20"
+            Grid.ColumnSpan="2">
+
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{DynamicResource dgvhProductId}"   Width="*" />
+                <DataGridTextColumn Header="{DynamicResource dgvhProductName}"  Width="*" />
+                <DataGridTextColumn Header="{DynamicResource dgvhStatus}"  Width="*" />
+                <DataGridTextColumn Header="{DynamicResource dgvhQuantity}" Width="*" />
+                <DataGridTextColumn Header="{DynamicResource dgvhTotalPrice}" Width="*" />
+            </DataGrid.Columns>
+
+            <DataGrid.ContextMenu>
+                <ContextMenu Width="auto" Height="auto" BorderThickness="2" BorderBrush="Gray">
+                    <!--  "تفاصيل القائمة" -->
+                    <MenuItem Header="تفاصيل القائمة" Click="MenuItem_Details_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Logo.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <Separator Background="Gray"  Margin="5" />
+
+                    <!-- عنصر "تصدير إلى Excel" -->
+                    <MenuItem Header="تصدير إلى Excel" Click="MenuItem_Export_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Logo.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+        </DataGrid>
+
+    </Grid>
+
+
+
+</Page>
