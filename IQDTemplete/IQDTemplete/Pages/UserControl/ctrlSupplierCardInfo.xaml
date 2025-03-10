@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="Interface.Pages.UserControl.ctrlSupplierCardInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Interface.Pages.UserControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="315" d:DesignWidth="400"
+             FlowDirection="{DynamicResource SPAppFlowDirection}" Loaded="UserControl_Loaded"
+             >
+    <Border Background="#FFE0E0E0" CornerRadius="10" Padding="10" BorderBrush="#FFA0A0A0" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- العنوان -->
+                <RowDefinition Height="Auto"/>
+                <!-- معرف المورد -->
+                <RowDefinition Height="Auto"/>
+                <!-- اسم المورد -->
+                <RowDefinition Height="Auto"/>
+                <!-- هل هو شخص -->
+                <RowDefinition Height="Auto"/>
+                <!-- رقم الهاتف -->
+                <RowDefinition Height="Auto"/>
+                <!-- العنوان -->
+                <RowDefinition Height="Auto"/>
+                <!-- زر الحفظ -->
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- العنوان -->
+            <TextBlock Text="{Binding titleName}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                       VerticalAlignment="Center" HorizontalAlignment="Center" 
+                       Margin="0,0,0,10" FontSize="16" FontWeight="Bold" Foreground="#FF0078D7"/>
+
+            <!-- Supplier ID -->
+            <TextBlock Text="معرف المورد:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
+            <TextBox x:Name="txtSupplierID" Style="{DynamicResource ModernTextBoxStyle}" Height="25" Grid.Row="1" Grid.Column="1" Margin="5" Padding="5" Background="White" BorderBrush="#FFA0A0A0" BorderThickness="1"/>
+
+            <!-- Supplier Name -->
+            <TextBlock Text="اسم المورد:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
+            <TextBox x:Name="txtSupplierName" Grid.Row="2" Grid.Column="1" Margin="5" Padding="5" Background="White" BorderBrush="#FFA0A0A0" BorderThickness="1"/>
+
+            <!-- Is Person -->
+            <TextBlock Text="هل هو شخص:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
+            <CheckBox x:Name="chkIsPerson" Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center"/>
+
+            <!-- Phone Number -->
+            <TextBlock Text="رقم الهاتف:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
+            <TextBox x:Name="txtPhoneNumber" Grid.Row="4" Grid.Column="1" Margin="5" Padding="5" Background="White" BorderBrush="#FFA0A0A0" BorderThickness="1"/>
+
+            <!-- Address -->
+            <TextBlock Text="العنوان:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
+            <TextBox x:Name="txtAddress" Grid.Row="5" Grid.Column="1" Margin="5" Padding="5" Background="White" BorderBrush="#FFA0A0A0" BorderThickness="1" Height="60" TextWrapping="Wrap" AcceptsReturn="True"/>
+
+            <!-- Save Button -->
+
+            <StackPanel Grid.Row="6" Grid.Column="1"  Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                
+                <Button x:Name="btnSave" Grid.Row="6" Grid.Column="1" Content="حفظ" Style="{StaticResource ModernButtonStyle}" Width="120" Height="35" Visibility="{Binding visibalBtnSave}" Click="btnSave_Click"/>
+                <Button x:Name="btnEdit" Grid.Row="6" Grid.Column="1" Content="تعديل" Style="{StaticResource ModernButtonStyle}" Width="120" Height="35" Visibility="{Binding visibalBtnEdit}" Click="btnEdit_Click"/>
+
+            </StackPanel>
+            
+        </Grid>
+    </Border>
+</UserControl>
