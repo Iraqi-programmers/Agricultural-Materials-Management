@@ -15,7 +15,7 @@ namespace Interface.Pages.UserControl
         public enum Mod { AddNew,Update,View}
         public Mod _mod;
 
-        private string? __title;
+        private string __title;
         public string Title
         {
             get { return __title; }
@@ -73,7 +73,7 @@ namespace Interface.Pages.UserControl
         private clsPerson? person;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -86,11 +86,13 @@ namespace Interface.Pages.UserControl
             __PersonId = personId;
             _mod = mod;
             Task.Run(() => ChooseMod());
+            __title = "tt";
         }
 
         public ctrlPersonCardInfo()
         {
             InitializeComponent();
+            __title = "tt";
 
         }
 
@@ -106,11 +108,11 @@ namespace Interface.Pages.UserControl
         {
             person = await clsPerson.GetByIdAsync(1);
 
-            txtPersonID.Text = person.Id.ToString();
-            txtName.Text = person.FullName;
-            txtPhoneNumber.Text = person.PhoneNumber;
-            txtNationalID.Text = person.NationalNum;
-            txtAddress.Text = person.Address;
+            txtPersonID.Text = person?.Id.ToString();
+            txtName.Text = person?.FullName;
+            txtPhoneNumber.Text = person?.PhoneNumber;
+            txtNationalID.Text = person?.NationalNum;
+            txtAddress.Text = person?.Address;
         }
 
         private async Task ChooseMod()
@@ -145,7 +147,7 @@ namespace Interface.Pages.UserControl
         }
 
 
-        private async Task btnSave_Click(object sender, RoutedEventArgs e)
+        private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             person = new clsPerson(txtName.Text, txtNationalID.Text, txtPhoneNumber.Text, txtAddress.Text);
 
