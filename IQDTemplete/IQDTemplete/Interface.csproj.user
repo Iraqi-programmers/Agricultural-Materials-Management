@@ -25,10 +25,19 @@
     <Compile Update="Pages\UserControl\ctrlModernLoadingControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\UserControl\ctrlPersonCardInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\UserControl\ctrlPurchesesListDetils.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\UserControl\ctrlSalesListDetails.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\UserControl\ctrlSupplierCardInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\UserControl\ctrlUserCardInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

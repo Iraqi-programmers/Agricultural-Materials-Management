@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="Interface.Pages.UserControl.ctrlPersonCardInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Interface.Pages.UserControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="370" d:DesignWidth="400"
+             FlowDirection="{DynamicResource AppFlowDirection}"
+              >
+
+
+    <UserControl.Resources>
+        <!--Text Block-->
+        <Style TargetType="TextBlock" x:Key="txtblock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Foreground" Value="{DynamicResource TertiaryTextColor}"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+
+        <!--Text Box-->
+        <Style  x:Key="txtBox" TargetType="TextBox" BasedOn="{StaticResource ModernTextBoxStyle}">
+            <Setter Property="IsReadOnly" Value="{Binding ReadOnly }"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+            <Setter Property="Height" Value="35"/>
+
+        </Style>
+
+    </UserControl.Resources>
+    
+    <Border   Padding="15" >
+        <Grid  VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- العنوان -->
+                <RowDefinition Height="Auto"/>
+                <!-- معرف الشخص -->
+                <RowDefinition Height="Auto"/>
+                <!-- الاسم -->
+                <RowDefinition Height="Auto"/>
+                <!-- الرقم الوطني -->
+                <RowDefinition Height="Auto"/>
+                <!-- رقم الهاتف -->
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- العنوان -->
+            <TextBlock Text="{Binding Title}" Grid.Row="0" Grid.ColumnSpan="10"  HorizontalAlignment="Center"
+                       Margin="0,0,0,20" FontSize="30" FontWeight="ExtraLight" Foreground="{DynamicResource PrimaryTextColor}"/>
+
+            <!-- معرف الشخص -->
+            <TextBlock Text="معرف الشخص :" Grid.Row="1" Grid.Column="0" Style="{StaticResource txtblock}"/>
+            <TextBox x:Name="txtPersonID" Style="{StaticResource txtBox}" IsReadOnly="True" Grid.Row="1" Grid.Column="1" />
+
+            <!-- الاسم -->
+            <TextBlock Text="الاسم :" Grid.Row="2"  Style="{StaticResource txtblock}"/>
+            <TextBox x:Name="txtName" Style="{StaticResource txtBox}"  Grid.Row="2" Grid.Column="1"/>
+
+            <!-- الرقم الوطني -->
+            <TextBlock Text="الرقم الوطني :" Grid.Row="3" Style="{StaticResource txtblock}"/>
+            <TextBox x:Name="txtNationalID" Style="{StaticResource txtBox}"  Grid.Row="3" Grid.Column="1" />
+
+            <!-- رقم الهاتف -->
+            <TextBlock Text="رقم الهاتف :" Grid.Row="4" Style="{StaticResource txtblock}"/>
+            <TextBox x:Name="txtPhoneNumber"  Grid.Row="4" Grid.Column="1" Style="{StaticResource txtBox}" />
+
+            <!-- العنوان -->
+            <TextBlock Text="العنوان :" Grid.Row="5" Style="{StaticResource txtblock}"/>
+            <TextBox x:Name="txtAddress"  Grid.Row="5" Grid.Column="1" Style="{StaticResource txtBox}" Height="60" TextWrapping="Wrap" AcceptsReturn="False"/>
+
+            <!-- Save Button -->
+                <Button x:Name="btnSave" Grid.Row="6" Grid.Column="1" Content="حفظ" Margin="0,20,60,0"  Style="{StaticResource ModernButtonStyle}" Width="170"  Height="40" Visibility="{Binding visibalBtnSave}" Click="btnSave_Click"/>
+                <Button x:Name="btnEdit" Grid.Row="6" Grid.Column="1" Content="تعديل" Margin="0,20,60,0"  Style="{StaticResource ModernButtonStyle}" Width="170" Height="40" Visibility="{Binding visibalBtnEdit}" Click="btnEdit_Click"/>
+
+        </Grid>
+    </Border>
+</UserControl>
