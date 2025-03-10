@@ -13,14 +13,13 @@ namespace Interface.Pages.UserControl
 
         private  void UserInfo_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            LoadingControl.Visibility = Visibility.Visible;
-            MessageBox.Show("User Info");
+            LoadingControl.StartAnimation();
         }
 
       
         private void SupplierName_Click(object sender, RoutedEventArgs e)
         {
-            LoadingControl.Visibility = Visibility.Visible;
+            LoadingControl.StopAnimation();
         }
 
       

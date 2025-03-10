@@ -9,18 +9,28 @@ namespace Interface.Pages.UserControl
         public ctrlModernLoadingControl()
         {
             InitializeComponent();
-            this.Loaded += OnLoaded; 
+           // this.Loaded += OnLoaded; 
         }
 
-        private void StartAnimation()
+        public void StartAnimation()
         {
             var storyboard = (Storyboard)Resources["RotateAnimation"];
             storyboard.Begin();
+            this.Visibility = Visibility.Visible;
+            
+        }
+
+        public void StopAnimation()
+        {
+            var storyboard = (Storyboard)Resources["RotateAnimation"];
+            storyboard.Stop();
+            this.Visibility = Visibility.Collapsed;
+
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            StartAnimation(); 
+          //  StartAnimation(); 
         }
     }
 }

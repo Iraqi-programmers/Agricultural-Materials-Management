@@ -104,9 +104,9 @@ namespace Interface.Pages.AccountingDepartment
 
         private void MenuItem_Details_Click(object sender, RoutedEventArgs e)
         {
+            NavigationService?.Navigate(new ctrlPersonCardInfo(ctrlPersonCardInfo.Mod.AddNew,null));
 
-
-            NavigationService?.Navigate(new ctrlPurchesesListDetils());
+          //  NavigationService?.Navigate(new ctrlPurchesesListDetils());
         }
     }
 }
