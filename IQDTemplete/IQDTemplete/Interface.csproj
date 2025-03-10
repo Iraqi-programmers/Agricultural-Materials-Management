@@ -23,6 +23,7 @@
     <None Remove="Assets\Debits3.png" />
     <None Remove="Assets\DebitsMangment.png" />
     <None Remove="Assets\DeploySalesMenue.png" />
+    <None Remove="Assets\inventory.png" />
     <None Remove="Assets\Logo.png" />
     <None Remove="Assets\OIP.jpg" />
     <None Remove="Assets\Purchases.png" />
@@ -43,6 +44,7 @@
     <Resource Include="Assets\Debits3.png" />
     <Resource Include="Assets\DebitsMangment.png" />
     <Resource Include="Assets\DeploySalesMenue.png" />
+    <Resource Include="Assets\inventory.png" />
     <Resource Include="Assets\Logo.png" />
     <Resource Include="Assets\Purchases.png" />
     <Resource Include="Assets\R.jpg" />
