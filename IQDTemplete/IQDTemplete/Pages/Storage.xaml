@@ -9,8 +9,8 @@
       Title="Storage"
         FlowDirection="{DynamicResource AppFlowDirection}"
       FontFamily="Poppins">
-
-    <Grid  Background="{DynamicResource SecundaryBackgroundColor}">
+    <Border CornerRadius="8" Background="{DynamicResource PrimaryBackgroundColor}">
+        <Grid  Background="{DynamicResource SecundaryBackgroundColor}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition  Width="*"/>
@@ -18,13 +18,13 @@
 
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="164"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!--المشتريات-->
+            <!--المشتريات-->
         <Border
      Grid.Column="0"
      CornerRadius="20"
@@ -75,7 +75,7 @@
         <Border
      Grid.Column="2"
      CornerRadius="20"
-     Margin="7,4,7,0"
+     Margin="7,2,7,0"
      Height="150"
      VerticalAlignment="Top"
      Background="{DynamicResource TertiaryBackgroundColor}"
@@ -100,7 +100,7 @@
         <Border
 Grid.Column="0"
 CornerRadius="20"
- Margin="7,-40,7,0"
+ Margin="7,0,7,0"
 Height="150"
 VerticalAlignment="Top"
 Background="{DynamicResource TertiaryBackgroundColor}"
@@ -125,7 +125,7 @@ Grid.Row="1"
         <Border
 Grid.Column="1"
 CornerRadius="20"
- Margin="7,-40,7,0"
+ Margin="7,0,7,0"
 Height="150"
 VerticalAlignment="Top"
 Background="{DynamicResource TertiaryBackgroundColor}"
@@ -151,4 +151,5 @@ Grid.Row="1"
 
 
     </Grid>
+        </Border>
 </Page>
