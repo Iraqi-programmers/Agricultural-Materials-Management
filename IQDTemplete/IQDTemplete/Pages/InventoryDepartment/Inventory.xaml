@@ -8,102 +8,122 @@
       d:DesignHeight="450" d:DesignWidth="800"
       >
 
-    <Border CornerRadius="8" Background="{DynamicResource PrimaryBackgroundColor}">
+    <Border Background="{DynamicResource SecundaryBackgroundColor}" CornerRadius="30" Padding="20" >
+        <Border.Effect>
+            <DropShadowEffect Color="Black"  Opacity="0.5"/>
+        </Border.Effect>
+
+
         <Grid FlowDirection="{DynamicResource AppFlowDirection}" >
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition  Width="*"/>
-                <ColumnDefinition  Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
 
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="164"/>
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="190"/>
+                <RowDefinition Height="190"/>
             </Grid.RowDefinitions>
 
             <!--PurchasIinventory-->
             <Border
-         Grid.Column="0"
-         CornerRadius="20"
-         Margin="7,7,7,0"
-         Height="150"
-         VerticalAlignment="Top"
-         Background="{DynamicResource SecundaryBackgroundColor}"
-         Grid.Row="0"
-         Grid.RowSpan="1">
+     Grid.Column="0"
+     CornerRadius="20"
+     Margin="7,4,7,0"
+     Height="150"
+     VerticalAlignment="Top"
+     Background="{DynamicResource TertiaryBackgroundColor}"
+     Grid.Row="0"
+     >
 
                 <Grid>
                     <local:BorderAnimation x:Name="PurchaseInventory"
-                                       Text="{DynamicResource rdPurchasIinventory}"
-                                       TextColor="{DynamicResource TertiaryTextColor}"
-                                       IconSource="/Assets/Purchases.png"
-                                       MouseDown="PurchaseInventory_MouseDown_1"
-                                       />
+                                   Text="{DynamicResource rdPurchasIinventory}"
+                                   TextColor="{DynamicResource TertiaryTextColor}"
+                                   BackgroundColor="Transparent"
+                                   IconSource="/Assets/Purchases.png"
+                                   MouseDown="PurchaseInventory_MouseDown"
+                                   />
                 </Grid>
             </Border>
-            
+
+
             <!--SalesInventory-->
             <Border
-         Grid.Column="1"
-         CornerRadius="20"
-         Margin="7,7,7,0" 
-         Height="150"
-         VerticalAlignment="Top"
-         Background="{DynamicResource SecundaryBackgroundColor}"
-         Grid.Row="0"
-         Grid.RowSpan="1">
+     Grid.Column="1"
+     CornerRadius="20"
+     Margin="7,4,7,0"
+     Height="150"
+     VerticalAlignment="Top"
+     Background="{DynamicResource TertiaryBackgroundColor}"
+     Grid.Row="0"
+     >
 
                 <Grid>
-                    <local:BorderAnimation x:Name="SalesInventory"
-                                       Text="{DynamicResource rdSalesInventory}"
-                                       TextColor="{DynamicResource TertiaryTextColor }"                               
-                                       IconSource="/Assets/sale.png"
-                                       MouseDown="SaleInventory_MouseDown"
-                                       />
+                    <local:BorderAnimation x:Name="SalesInvntory"
+                                   Text="{DynamicResource rdSalesInventory}"
+                                   TextColor="{DynamicResource TertiaryTextColor}"
+                                   BackgroundColor="Transparent"
+                                   IconSource="/Assets/Sale.png"
+                                   MouseDown="SalesInvntory_MouseDown"
+                                   />
                 </Grid>
+                
             </Border>
-            
+
+
+
             <!--DebtInventory-->
+            
             <Border
-         Grid.Column="0"
+         Grid.Column="2"
          CornerRadius="20"
-         Margin="7,0,7,0"
+         Margin="7,4,7,0"
          Height="150"
          VerticalAlignment="Top"
-         Background="{DynamicResource SecundaryBackgroundColor}"
-         Grid.Row="1"
-         Grid.RowSpan="1">
+         Background="{DynamicResource TertiaryBackgroundColor}"
+         Grid.Row="0"
+         >
 
                 <Grid>
                     <local:BorderAnimation x:Name="DebtInventory"
-                                       Text="{DynamicResource rdDebtInventory}"
-                                       TextColor="{DynamicResource TertiaryTextColor}"                                       IconSource="/Assets/DebitsMangment.png"
-                                       MouseDown="DebtInventory_MouseDown"
-                                       />
+                                   Text="{DynamicResource rdDebtInventory}"
+                                   TextColor="{DynamicResource TertiaryTextColor}"
+                                   BackgroundColor="Transparent"
+                                   IconSource="/Assets/Debits3.png"
+                                   MouseDown="DebtInventory_MouseDown_1"
+                                   />
                 </Grid>
+
             </Border>
+
 
             <!--ProductInventory-->
             <Border
-Grid.Column="2"
-CornerRadius="20"
-Margin="7,0,7,0"
-Height="150"
-Background="{DynamicResource SecundaryBackgroundColor}"
-Grid.Row="0"
-
->
+         Grid.Column="0"
+         CornerRadius="20"
+         Margin="7,4,7,0"
+         Height="150"
+         VerticalAlignment="Top"
+         Background="{DynamicResource TertiaryBackgroundColor}"
+         Grid.Row="1"
+         >
 
                 <Grid>
-                    <local:BorderAnimation x:Name="Koko"
-                              Text="{DynamicResource rdProductInventory}"
-                              TextColor="{DynamicResource TertiaryTextColor}"                                      
-                              IconSource="/Assets/inventory.png"
-                              />
+                    <local:BorderAnimation x:Name="ProductsInventory"
+                                   Text="{DynamicResource rdProductInventory}"
+                                   TextColor="{DynamicResource TertiaryTextColor}"
+                                   BackgroundColor="Transparent"
+                                   IconSource="/Assets/addmenue (2).png"
+                                   MouseDown="ProductsInventory_MouseDown"
+                                   />
                 </Grid>
+
             </Border>
+
+
 
 
         </Grid>

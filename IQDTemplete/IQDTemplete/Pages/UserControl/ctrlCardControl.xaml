@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="Interface.Pages.UserControl.ctrlCardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Interface.Pages.UserControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="170" d:DesignWidth="550" FlowDirection="{DynamicResource AppFlowDirection}">
+
+    <UserControl.Resources>
+        
+        <!-- Storyboard لتكبير العنصر -->
+        <Storyboard x:Key="MouseEnterAnimation">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                             To="1.1" Duration="0:0:0.2" />
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                             To="1.1" Duration="0:0:0.2" />
+            <ColorAnimation Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                             To="Transparent" Duration="0:0:0.2" />
+        </Storyboard>
+
+        <!-- Storyboard لإعادة العنصر إلى حالته الأصلية -->
+        <Storyboard x:Key="MouseLeaveAnimation">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                             To="1" Duration="0:0:0.2" />
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                             To="1" Duration="0:0:0.2" />
+            <ColorAnimation Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                             To="Transparent" Duration="0:0:0.2" />
+        </Storyboard>
+    </UserControl.Resources>
+
+
+
+    <Border x:Name="Card1" Style="{StaticResource ThreeDCardStyle4}" 
+               Height="170" CornerRadius="30" VerticalAlignment ="Top" HorizontalAlignment="Stretch"   >
+
+        <Border.RenderTransform>
+            <ScaleTransform />
+        </Border.RenderTransform>
+        <Border.Triggers>
+            <!-- تنشيط الانيميشن عند دخول الماوس -->
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard Storyboard="{StaticResource MouseEnterAnimation}" />
+            </EventTrigger>
+            <!-- تنشيط الانيميشن عند مغادرة الماوس -->
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard Storyboard="{StaticResource MouseLeaveAnimation}" />
+            </EventTrigger>
+        </Border.Triggers>
+
+
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FF7A8CC8" Offset="0"/>
+                <!-- وردي فاتح -->
+                <GradientStop Color="#FFFFFF" Offset="1"/>
+                <!-- أبيض -->
+            </LinearGradientBrush>
+        </Border.Background>
+        <Border.Effect>
+            <DropShadowEffect Color="Black" ShadowDepth="2" Opacity="0.6"/>
+        </Border.Effect>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="5" Foreground="{DynamicResource TertiaryTextColor}">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="4" Opacity="0.7"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock Text="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}}" FontSize="14" HorizontalAlignment="Center" Margin="5" Foreground="Black">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="4" Opacity="0.7"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            <Viewbox Height="50" Width="50" Margin="5">
+                <Image Source="{Binding IconSource, RelativeSource={RelativeSource AncestorType=UserControl}}" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image.Effect>
+                        <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="4" Opacity="0.7" Direction="225"/>
+                    </Image.Effect>
+                </Image>
+            </Viewbox>
+        </StackPanel>
+    </Border>
+    
+</UserControl>

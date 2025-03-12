@@ -28,6 +28,9 @@
     <Compile Update="Pages\UserControl\BorderAnimation.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\UserControl\ctrlCardControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\UserControl\ctrlModernLoadingControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -55,6 +58,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Setting1.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\UserControl\ctrlCardControl.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

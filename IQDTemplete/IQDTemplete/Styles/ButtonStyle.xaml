@@ -364,5 +364,88 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    
+    <!--كارد احترافي ثريدي-->
+    <Style TargetType="Border" x:Key="ThreeDCardStyle4">
+        <!-- عرض الستايل بشكل عصري وأنيق -->
+        <Setter Property="Width" Value="240"/>
+        <Setter Property="Height" Value="140"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Padding" Value="15"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+
+        <!-- استخدام تدرجات الألوان الخلفية لتوفير مظهر عصري -->
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{Binding PrimaryColor, FallbackValue=#4CAF50}" Offset="0"/>
+                    <GradientStop Color="{Binding SecondaryColor, FallbackValue=#8BC34A}" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+
+        <!-- إضافة تأثير الظل الناعم للـ Border -->
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#000000" BlurRadius="25" ShadowDepth="15" Opacity="0.5" />
+            </Setter.Value>
+        </Setter>
+
+        <!-- إضافة التأثيرات الإنسيابية عند التفاعل -->
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    <RotateTransform Angle="0"/>
+                </TransformGroup>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <!-- Trigger عند مرور الفأرة (Mouse Over) -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <!-- تحسين تأثير الظل عند المرور بالفأرة -->
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect Color="#000000" BlurRadius="35" ShadowDepth="20" Opacity="0.8" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                            <RotateTransform Angle="3"/>
+                        </TransformGroup>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+
+            <!-- EventTrigger عند الضغط على العنصر -->
+            <EventTrigger RoutedEvent="UIElement.PreviewMouseLeftButtonDown">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" To="0.98" Duration="0:0:0.1"/>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" To="0.98" Duration="0:0:0.1"/>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(RotateTransform.Angle)" To="-2" Duration="0:0:0.1"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+
+            <!-- EventTrigger عند رفع زر الفأرة (Mouse Up) -->
+            <EventTrigger RoutedEvent="UIElement.PreviewMouseLeftButtonUp">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.1"/>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.1"/>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(RotateTransform.Angle)" To="0" Duration="0:0:0.1"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
 
 </ResourceDictionary>

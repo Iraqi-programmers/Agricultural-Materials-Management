@@ -57,7 +57,7 @@
           Margin="205,12,0,11"
           ToolTip="{Binding SelectedItem.Content, ElementName=FilterComboBox, StringFormat='بحث باستخدام {0}'}" Grid.ColumnSpan="2"                         />
 
-        <DataGrid x:Name="InvoiceDataGrid" Grid.Row="2" FlowDirection="{DynamicResource AppFlowDirection}"
+        <DataGrid ItemsSource="{Binding Products}" x:Name="dgvProductInventory" Grid.Row="2" FlowDirection="{DynamicResource AppFlowDirection}"
            AutoGenerateColumns="False"
            HeadersVisibility="Column"
            IsReadOnly="True"
@@ -73,11 +73,11 @@
 
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{DynamicResource dgvhProductId}"   Width="*" />
-                <DataGridTextColumn Header="{DynamicResource dgvhProductName}"  Width="*" />
-                <DataGridTextColumn Header="{DynamicResource dgvhStatus}"  Width="*" />
-                <DataGridTextColumn Header="{DynamicResource dgvhQuantity}" Width="*" />
-                <DataGridTextColumn Header="{DynamicResource dgvhTotalPrice}" Width="*" />
+                <DataGridTextColumn Header="{DynamicResource dgvhProductId}"  Binding="{Binding Id}" Width="*" />
+                <DataGridTextColumn Header="{DynamicResource dgvhProductName}" Binding="{Binding Name}" Width="*" />
+                <DataGridTextColumn Header="{DynamicResource dgvhStatus}" Binding="{Binding Status}" Width="*" />
+                <DataGridTextColumn Header="{DynamicResource dgvhQuantity}" Binding="{Binding Quantity}" Width="*" />
+                <DataGridTextColumn Header="{DynamicResource dgvhTotalPrice}" Binding="{Binding TotalPrice}" Width="*" />
             </DataGrid.Columns>
 
             <DataGrid.ContextMenu>
