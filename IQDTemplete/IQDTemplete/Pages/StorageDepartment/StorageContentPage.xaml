@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Interface.Pages.StorageDepartment"
+    
+      xmlns:local="clr-namespace:IQD_UI_Library;assembly=IQD_UI_Library"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StorageContentPage"
@@ -22,81 +23,69 @@
         <StackPanel  Orientation="Horizontal" Name="MainContainer" Grid.Row="1" Background="{DynamicResource SecundaryBackgroundColor}" Margin="0,4,0,14" >
 
 
-            <Menu Background="{DynamicResource SecundaryBackgroundColor}" Height="40" Width="800">
+            <Menu Background="{DynamicResource SecundaryBackgroundColor}" Height="40" Width="auto">
 
-                <MenuItem Background="{DynamicResource SecundaryBackgroundColor}"  Width="98" Height="40">
+                <MenuItem Background="{DynamicResource SecundaryBackgroundColor}"  Width="auto" Height="40">
                     <MenuItem.Header >
-                        <StackPanel Orientation="Horizontal" Width="100" Height="40">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Height="40">
 
-                            <Path  Fill="{DynamicResource PrimaryTextColor}" Data="{StaticResource ADD}" Stretch="Fill" Width="15" RenderTransformOrigin="0.846,0.447" Height="16" Margin="5"/>
+                            <Image Source="/Assets/addmenue (2).png" Margin="2"/>
 
-                            <TextBlock VerticalAlignment="Center" Text="Add" FontSize="15" Foreground="{DynamicResource PrimaryTextColor}" Width="74"/>
+                            <TextBlock VerticalAlignment="Center" Text="Add" FontSize="15" Foreground="{DynamicResource PrimaryTextColor}" Margin="10,0,0,0" HorizontalAlignment="Stretch"/>
                         </StackPanel>
                     </MenuItem.Header>
                 </MenuItem>
 
-                <MenuItem Background="{DynamicResource SecundaryBackgroundColor}"  Width="98" Height="40">
+                <MenuItem Background="{DynamicResource SecundaryBackgroundColor}"  Width="auto" Height="40">
                     <MenuItem.Header >
-                        <StackPanel Orientation="Horizontal" Width="100" Height="40">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Height="40">
 
-                            <Path Fill="{DynamicResource PrimaryTextColor}" Data="{StaticResource Update}" Stretch="Fill" Width="15" RenderTransformOrigin="0.846,0.447" Height="16" Margin="5"/>
+                            <Image Source="/Assets/add.png" Margin="2"/>
 
-                            <TextBlock VerticalAlignment="Center" Text="Update" FontSize="15" Foreground="{DynamicResource PrimaryTextColor}" Width="74"/>
+                            <TextBlock VerticalAlignment="Center" Text="Update" FontSize="15" Foreground="{DynamicResource PrimaryTextColor}" Margin="10,0,0,0" HorizontalAlignment="Stretch"/>
                         </StackPanel>
                     </MenuItem.Header>
                 </MenuItem>
-
-                <MenuItem Background="{DynamicResource SecundaryBackgroundColor}"  Width="98" Height="40">
+                <MenuItem Background="{DynamicResource SecundaryBackgroundColor}"  Width="auto" Height="40">
                     <MenuItem.Header >
-                        <StackPanel Orientation="Horizontal" Width="100" Height="40">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Height="40">
 
-                            <Path Fill="{DynamicResource PrimaryTextColor}" Data="{StaticResource Delete2}" Stretch="Fill" Width="15" RenderTransformOrigin="0.846,0.447" Height="16" Margin="5"/>
+                            <Image Source="/Assets/add.png" Margin="2"/>
 
-                            <TextBlock VerticalAlignment="Center" Text="Delete" FontSize="15" Foreground="{DynamicResource PrimaryTextColor}" Width="74"/>
+                            <TextBlock VerticalAlignment="Center" Text="Delete" FontSize="15" Foreground="{DynamicResource PrimaryTextColor}" Margin="10,0,0,0" HorizontalAlignment="Stretch"/>
                         </StackPanel>
                     </MenuItem.Header>
                 </MenuItem>
-
-
-
-
-
-
-
 
             </Menu>
 
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal">
-            
-            <ComboBox x:Name="FilterComboBox" 
-      Width="200"
-      Height="40"
-      FontSize="16"
-      Padding="55,8,0,0"
-      Margin="4,12,0,11"
-      FontWeight="ExtraLight"
-      SelectedIndex="0">
+
+            <ComboBox Margin="6,0,0,0" Height="40" Width="150"  Tag="اسم المنتج" Style="{StaticResource ComboBoxStyle1}" x:Name="FilterComboBox" 
+     >
                 <ComboBoxItem Content="أسم المنتج"/>
                 <ComboBoxItem Content="السعر" />
                 <ComboBoxItem Content="الضمان" />
                
             </ComboBox>
 
-            <TextBox x:Name="SearchTextBox" Grid.Row="1"
-Width="300"
-Height="40"
-FontSize="15"
-Padding="10"
-FontWeight="ExtraLight"
-TextAlignment="Center"
-VerticalAlignment="Stretch"
-HorizontalAlignment="Left"
+            <local:IQD_TextBox x:Name="SearchTextBox" Grid.Row="1"
+                               Width="300"
+                               Height="40"
+                               FontSize="15"
+                               Padding="2"
+                               FontWeight="Bold" 
+                               BorderBrushes="DarkBlue"
+                              
+                               TextAlignment="Center"
+                               VerticalAlignment="Stretch"
+                               HorizontalAlignment="Left"
+                               
+                               Margin="10,1,0,0"
+                               ToolTip="{Binding SelectedItem.Content, ElementName=FilterComboBox, StringFormat='بحث باستخدام {0}'}"                         >
 
-Margin="10,1,0,0"
-ToolTip="{Binding SelectedItem.Content, ElementName=FilterComboBox, StringFormat='بحث باستخدام {0}'}"                         >
-
-            </TextBox>
+            </local:IQD_TextBox>
 
 
         </StackPanel>

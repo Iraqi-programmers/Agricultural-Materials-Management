@@ -67,6 +67,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="IQD_UI_Library">
+      <HintPath>..\..\WPF_UI_Library\IQD UI Library\bin\Debug\net8.0-windows\IQD_UI_Library.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>

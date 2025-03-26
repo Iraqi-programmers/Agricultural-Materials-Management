@@ -12,7 +12,7 @@
         ResizeMode="NoResize" WindowState="Normal" FontFamily="Poppins"
         FlowDirection="{DynamicResource AppFlowDirection}">
 
-    <Border CornerRadius="10" Background="{DynamicResource PrimaryBackgroundColor}">
+    <Border MouseLeftButtonDown="Border_MouseLeftButtonDown" CornerRadius="10" Background="{DynamicResource PrimaryBackgroundColor}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="190"/>

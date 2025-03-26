@@ -89,6 +89,11 @@ namespace IQDTemplete
             string logoPath = Settings.Default.LogoPath;
             Application.Current.Resources["AppLogo"] = new System.Windows.Media.Imaging.BitmapImage(new Uri(logoPath, UriKind.RelativeOrAbsolute));
         }
+
+        private void Border_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 
     //public partial class MainWindow : Window
