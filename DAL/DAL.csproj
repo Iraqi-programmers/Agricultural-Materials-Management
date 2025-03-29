@@ -8,13 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="MyLib_DotNet">
-      <HintPath>..\net8.0\MyLib_DotNet.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\RealProject\MyLibraries\MyLib_DotNet\bin\Debug\net8.0\MyLib_DotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
 

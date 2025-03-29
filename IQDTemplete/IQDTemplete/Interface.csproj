@@ -33,7 +33,7 @@
     <None Remove="Assets\sale.png" />
     <None Remove="Assets\StorageContent.png" />
     <None Remove="Assets\supplier.png" />
-    <None Remove="jsconfig1.json" />
+    <None Remove="Assets\User.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,12 +54,17 @@
     <Resource Include="Assets\sale.png" />
     <Resource Include="Assets\StorageContent.png" />
     <Resource Include="Assets\supplier.png" />
+    <Resource Include="Assets\User.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="jsconfig1.json">
+    <EmbeddedResource Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.EventLog" Version="9.0.3" />
   </ItemGroup>
 
   <ItemGroup>

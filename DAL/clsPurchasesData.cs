@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using MyLib_DotNet.DatabaseExecutor;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace DAL
 {
@@ -78,7 +79,60 @@ namespace DAL
             return await CRUD.GetAllAsDataTableAsync("SP_GetPurchasesByDateRange", parameters);
         }
 
-        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("GetAllPurchases");
+
+        public static async Task<DataTable?> GetAllAsync()
+        {
+            IConfiguration _configuration;
+
+            var builder = new ConfigurationBuilder()
+           .SetBasePath(Directory.GetCurrentDirectory())
+           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            _configuration = builder.Build();
+
+
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            // إعداد استعلام SQL
+            string storedProcedure = "SP_GetAllPurchases";
+
+            // إنشاء الاتصال بالقاعدة
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    // فتح الاتصال
+                    await connection.OpenAsync();
+
+                    // إنشاء الكوماند (الاستعلام)
+                    using (SqlCommand command = new SqlCommand(storedProcedure, connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // استخدام SqlDataAdapter لتحميل البيانات
+                        SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
+
+                        // إنشاء DataTable لتخزين النتائج
+                        DataTable dataTable = new DataTable();
+
+                        // تعبئة الـ DataTable بالبيانات من الاستعلام
+                        await Task.Run(() => dataAdapter.Fill(dataTable));
+
+                        // إرجاع البيانات
+                        return dataTable;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // معالجة الاستثناءات (يمكنك إضافة سجل الأخطاء هنا)
+                    Console.WriteLine($"Error: {ex.Message}");
+                    return null;
+                }
+            }
+        }
+
+
+
+       //  public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchases");
 
         public static async Task<bool> UpdateAsync(string details, DateTime purchaseDate, int? purchaseId, int? supplierId, double totalPrice, double? totalPaid, bool isDebt, int? userId)
         {

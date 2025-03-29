@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Diagnostics;
 using DAL;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
@@ -66,37 +67,101 @@ namespace BLL
 
         public async Task<bool> DeleteAsync(bool returnToStock = false) => await DeleteAsync(Id, UserInfo?.Id, returnToStock);
 
+        //internal static clsSales FetchSaleData( ref Dictionary<string, object> dict)
+        //{
+        //    try
+        //    {
+
+
+        //        // عمل نسخة من القاموس إذا كنت تخشى التعديل على الأصل
+        //        var localDict = new Dictionary<string, object>(dict);
+
+        //        List<clsSalesDetails> salesDetailsList = new();
+
+        //        if (localDict.ContainsKey("SalesDetailsData") &&
+        //            localDict["SalesDetailsData"] is List<Dictionary<string, object>> detailsList)
+        //        {
+        //            foreach (var detail in detailsList)
+        //            {
+        //                // تمرير detail كقيمة عادية (بدون ref)
+        //                salesDetailsList.Add(new clsSalesDetails(
+        //                    (int)detail["DetailID"],
+        //                    (int)localDict["SealeID"],
+        //                    clsStocks.FetchStockData(ref localDict), // تعديل هذه الدالة لعدم استخدام ref
+        //                    (double)detail["Price"],
+        //                    (int)detail["Quantity"],
+        //                    (double)detail["TotalCost"],
+        //                    (double)detail["Profit"],
+        //                    detail.ContainsKey("WarrantyDate") ? (DateTime)detail["WarrantyDate"] : null
+        //                ));
+        //            }
+        //        }
+
+        //        return new clsSales(
+        //            (int)localDict["SealeID"],
+        //            salesDetailsList,
+        //            clsUsers.FetchUserData(ref localDict), // تعديل هذه الدالة لعدم استخدام ref
+        //            (DateTime)localDict["Date"],
+        //            (double)localDict["SaleTotalCost"],
+        //            (bool)localDict["IsDebt"],
+        //            (double)localDict["TotalProfit"],
+        //            localDict.ContainsKey("PaidAmount") ? (double?)localDict["PaidAmount"] : null,
+        //            clsPerson.FetchPersonData(ref localDict) // تعديل هذه الدالة لعدم استخدام ref
+        //        );
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine($"خطأ في تحويل بيانات البيع: {ex.Message}");
+        //        throw;
+        //    }
+        //}
+
+
         internal static clsSales FetchSaleData(ref Dictionary<string, object> dict)
         {
-            int id = (int)dict["SaleID"];
+            // معالجة SealeID بشكل آمن
+            int id = -1;
+            if (dict.TryGetValue("SalesData", out var salesDataObj) &&
+                salesDataObj is Dictionary<string, object> salesData)
+            {
+                if (salesData.TryGetValue("SealeID", out var sealeIdObj))
+                {
+                    id = Convert.ToInt32(sealeIdObj); // الطريقة الآمنة
+                }
+            }
 
             List<clsSalesDetails> salesDetailsList = new();
 
-            if (dict.ContainsKey("SalesDetailsData") && dict["SalesDetailsData"] is List<Dictionary<string, object>> detailsList)
+            if (dict.TryGetValue("SalesDetailsData", out var detailsData) &&
+                detailsData is List<Dictionary<string, object>> detailsList)
             {
                 foreach (var detail in detailsList)
                 {
                     salesDetailsList.Add(new clsSalesDetails(
-                        (int)detail["DetailID"], 
-                        id, 
-                        clsStocks.FetchStockData(ref dict), 
-                        (double)detail["Price"],
-                        (int)detail["Quantity"], 
-                        (double)detail["TotalCost"], 
-                        (double)detail["Profit"],
-                        detail.ContainsValue("WarrantyDate") ? (DateTime)detail["WarrantyDate"] : null
+                        Convert.ToInt32(detail["DetailID"]),
+                        id,
+                        clsStocks.FetchStockData(ref dict),
+                        Convert.ToDouble(detail["Price"]),
+                        Convert.ToInt32(detail["Quantity"]),
+                        Convert.ToDouble(detail["TotalCost"]),
+                        Convert.ToDouble(detail["Profit"]),
+                        detail.TryGetValue("WarrantyDate", out var warrantyDate) ?
+                            (DateTime?)Convert.ToDateTime(warrantyDate) : null
                     ));
                 }
             }
+
+            // معالجة باقي القيم بشكل آمن
             return new clsSales(
-                id, 
+                id,
                 salesDetailsList,
-                clsUsers.FetchUserData(ref dict), 
-                (DateTime)dict["Date"], 
-                (double)dict["SaleTotalCost"], 
-                (bool)dict["IsDebt"],
-                (double)dict["TotalProfit"],
-                dict.ContainsValue("PaidAmount") ? (double)dict["PaidAmount"] : null,
+                clsUsers.FetchUserData(ref dict),
+                Convert.ToDateTime(dict["Date"]),
+                Convert.ToDouble(dict["SaleTotalCost"]),
+                Convert.ToBoolean(dict["IsDebt"]),
+                Convert.ToDouble(dict["TotalProfit"]),
+                dict.TryGetValue("PaidAmount", out var paidAmount) ?
+                    Convert.ToDouble(paidAmount) : (double?)null,
                 clsPerson.FetchPersonData(ref dict)
             );
         }

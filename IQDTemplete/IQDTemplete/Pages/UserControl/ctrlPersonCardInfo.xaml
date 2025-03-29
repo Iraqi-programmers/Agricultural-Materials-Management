@@ -5,8 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Interface.Pages.UserControl"
              mc:Ignorable="d" 
-             d:DesignHeight="370" d:DesignWidth="400"
+             d:DesignHeight="415" d:DesignWidth="400"
              FlowDirection="{DynamicResource AppFlowDirection}"
+             Background="{DynamicResource PrimaryBackgroundColor}"
+             Loaded="UserControl_Loaded"
               >
 
 
@@ -17,7 +19,7 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="FontWeight" Value="Normal"/>
             <Setter Property="Foreground" Value="{DynamicResource TertiaryTextColor}"/>
-            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontSize" Value="18"/>
         </Style>
 
         <!--Text Box-->
@@ -33,53 +35,64 @@
     </UserControl.Resources>
     
     <Border   Padding="15" >
+        
         <Grid  VerticalAlignment="Top">
+           
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <!-- العنوان -->
                 <RowDefinition Height="Auto"/>
-                <!-- معرف الشخص -->
                 <RowDefinition Height="Auto"/>
-                <!-- الاسم -->
                 <RowDefinition Height="Auto"/>
-                <!-- الرقم الوطني -->
                 <RowDefinition Height="Auto"/>
-                <!-- رقم الهاتف -->
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <!--Close BTN-->
+            <Button x:Name="btnClose"
+                    Margin="3"
+                    Grid.ColumnSpan="2"
+                    Style="{StaticResource IconButtonsStyle}"
+                    Content="{DynamicResource close}" 
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="btnClose_Click"
+                    Tag="IsCloseButton"
+                      />
+
             <!-- العنوان -->
-            <TextBlock Text="{Binding Title}" Grid.Row="0" Grid.ColumnSpan="10"  HorizontalAlignment="Center"
-                       Margin="0,0,0,20" FontSize="30" FontWeight="ExtraLight" Foreground="{DynamicResource PrimaryTextColor}"/>
+            <TextBlock Text="{Binding Title}" Grid.Row="1" Grid.ColumnSpan="2"  HorizontalAlignment="Center"
+                  Margin="20,0,0,20"   FontSize="30" FontWeight="ExtraLight" Foreground="{DynamicResource PrimaryTextColor}"/>
 
             <!-- معرف الشخص -->
-            <TextBlock Text="معرف الشخص :" Grid.Row="1" Grid.Column="0" Style="{StaticResource txtblock}"/>
-            <TextBox x:Name="txtPersonID" Style="{StaticResource txtBox}" IsReadOnly="True" Grid.Row="1" Grid.Column="1" />
+            <TextBlock Text="معرف الشخص :" Grid.Row="2" Grid.Column="0" Style="{StaticResource txtblock}"/>
+            <TextBox x:Name="txtPersonID" Style="{StaticResource txtBox}" IsReadOnly="True" Grid.Row="2" Grid.Column="1" />
 
             <!-- الاسم -->
-            <TextBlock Text="الاسم :" Grid.Row="2"  Style="{StaticResource txtblock}"/>
-            <TextBox x:Name="txtName" Style="{StaticResource txtBox}"  Grid.Row="2" Grid.Column="1"/>
+            <TextBlock Text="الاسم :" Grid.Row="3"  Style="{StaticResource txtblock}"/>
+            <TextBox x:Name="txtName" Style="{StaticResource txtBox}"  Grid.Row="3" Grid.Column="1"/>
 
             <!-- الرقم الوطني -->
-            <TextBlock Text="الرقم الوطني :" Grid.Row="3" Style="{StaticResource txtblock}"/>
-            <TextBox x:Name="txtNationalID" Style="{StaticResource txtBox}"  Grid.Row="3" Grid.Column="1" />
+            <TextBlock Text="الرقم الوطني :" Grid.Row="4" Style="{StaticResource txtblock}"/>
+            <TextBox x:Name="txtNationalID" Style="{StaticResource txtBox}"  Grid.Row="4" Grid.Column="1" />
 
             <!-- رقم الهاتف -->
-            <TextBlock Text="رقم الهاتف :" Grid.Row="4" Style="{StaticResource txtblock}"/>
-            <TextBox x:Name="txtPhoneNumber"  Grid.Row="4" Grid.Column="1" Style="{StaticResource txtBox}" />
+            <TextBlock Text="رقم الهاتف :" Grid.Row="5" Style="{StaticResource txtblock}"/>
+            <TextBox x:Name="txtPhoneNumber"  Grid.Row="5" Grid.Column="1" Style="{StaticResource txtBox}" />
 
             <!-- العنوان -->
-            <TextBlock Text="العنوان :" Grid.Row="5" Style="{StaticResource txtblock}"/>
-            <TextBox x:Name="txtAddress"  Grid.Row="5" Grid.Column="1" Style="{StaticResource txtBox}" Height="60" TextWrapping="Wrap" AcceptsReturn="False"/>
+            <TextBlock Text="العنوان :" Grid.Row="6" Style="{StaticResource txtblock}"/>
+            <TextBox x:Name="txtAddress"  Grid.Row="6" Grid.Column="1" Style="{StaticResource txtBox}" Height="60" TextWrapping="Wrap" AcceptsReturn="False"/>
 
             <!-- Save Button -->
-                <Button x:Name="btnSave" Grid.Row="6" Grid.Column="1" Content="حفظ" Margin="0,20,60,0"  Style="{StaticResource ModernButtonStyle}" Width="170"  Height="40" Visibility="{Binding visibalBtnSave}" Click="btnSave_Click"/>
-                <Button x:Name="btnEdit" Grid.Row="6" Grid.Column="1" Content="تعديل" Margin="0,20,60,0"  Style="{StaticResource ModernButtonStyle}" Width="170" Height="40" Visibility="{Binding visibalBtnEdit}" Click="btnEdit_Click"/>
+                <Button x:Name="btnSave" Grid.Row="7" Grid.Column="1" Content="حفظ" Margin="20,20,60,0"  Style="{StaticResource ModernButtonStyle}" Width="170"  Height="40" Visibility="{Binding visibalBtnSave}" Click="btnSave_Click"/>
+                <Button x:Name="btnEdit" Grid.Row="7" Grid.Column="1" Content="تعديل" Margin="20,20,60,0"  Style="{StaticResource ModernButtonStyle}" Width="170" Height="40" Visibility="{Binding visibalBtnEdit}" Click="btnEdit_Click"/>
 
         </Grid>
     </Border>

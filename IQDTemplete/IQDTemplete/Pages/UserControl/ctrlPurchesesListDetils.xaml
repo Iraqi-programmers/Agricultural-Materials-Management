@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:Interface.Pages.UserControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             FlowDirection="{DynamicResource AppFlowDirection}">
+             FlowDirection="{DynamicResource AppFlowDirection}"
+             Background="{DynamicResource PrimaryBackgroundColor}"
+             >
 
     <UserControl.Resources>
         <Style x:Key="CustomText" TargetType="TextBlock">
@@ -21,87 +23,172 @@
 
     <!-- Grid رئيسي -->
     <Grid>
-        <Grid>
+        <Grid x:Name="MainGrid">
+            
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Border مع تفاصيل القائمة -->
-            <Border Grid.Row="0" BorderThickness="1" Padding="10" Margin="10" FlowDirection="{DynamicResource SPAppFlowDirection}">
+            <Border Grid.Row="0" BorderThickness="1" BorderBrush="{DynamicResource TertiaryTextColor}" Margin="10,0,10,0" >
                 <Grid>
+
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
 
-                    <!-- تفاصيل القائمة -->
-                    <TextBlock Grid.Row="0" Grid.Column="5" FontSize="22" FontWeight="ExtraBold" Style="{StaticResource CustomText}" Text="تفـاصـيل القائمة"/>
+                    <!--Close BTN-->
+                    <Button x:Name="btnClose"
+                   Margin="5"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="2"
+                   Style="{StaticResource IconButtonsStyle}"
+                   Content="{DynamicResource close}" 
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Click="btnClose_Click"
+                   Tag="IsCloseButton"
+                     />
 
-                    <!-- رقم القائمة -->
-                    <TextBlock Grid.Row="1" Grid.Column="5" Style="{StaticResource CustomText}" Text=": رقم القائمة"/>
-                    <TextBlock Grid.Row="1" Grid.Column="4" Style="{StaticResource CustomText}" Text="1" HorizontalAlignment="Right"/>
+                    <!--حاوية القائمة-->
+                    <Grid Grid.Column="0" >
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
 
-                    <!-- اسم المورد -->
-                    <TextBlock Grid.Row="2" Grid.Column="5" Style="{StaticResource CustomText}" Text=": اسم المورد"/>
-                    <TextBlock Grid.Row="2" Grid.Column="4" Style="{StaticResource CustomText}" HorizontalAlignment="Right">
-                        <Hyperlink x:Name="SupplierName" Click="SupplierName_Click" ToolTip="عرض تفاصيل المورد">علي صالح</Hyperlink>
-                    </TextBlock>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                  
+                        <!-- Header تفاصيل القائمة -->
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="40,0,0,0" FontSize="22" FontWeight="ExtraBold" Style="{StaticResource CustomText}" Text="تفـاصـيل القائمة"/>
 
-                    <!-- التاريخ -->
-                    <TextBlock Grid.Row="3" Grid.Column="5" Style="{StaticResource CustomText}" Text=": تاريخ القائمة"/>
-                    <TextBlock Grid.Row="3" Grid.Column="4" Style="{StaticResource CustomText}" Text="2025\12\12" HorizontalAlignment="Right"/>
+                        <!-- صورة للدخول لتفاصيل مدخل معلومات القائمة -->
+                        <Image x:Name="UserInfo"  Grid.Column="0" VerticalAlignment="Top" Margin="5,10,0,5" HorizontalAlignment="Left" Grid.Row="0" Width="40" Height="40" Source="/Assets/User.png" Cursor="Hand" MouseDown="UserInfo_MouseDown" ToolTip="تفاصيل مدخل القائمة"/>
 
-                    <!-- المبلغ الكلي -->
-                    <TextBlock Grid.Row="4" Grid.Column="5" Style="{StaticResource CustomText}" Text=": المبلغ الكلي"/>
-                    <TextBlock Grid.Row="4" Grid.Column="4" Style="{StaticResource CustomText}" Text="50.000" HorizontalAlignment="Right"/>
+                        <!--عناصر القائمة-->
+                        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+                            <!-- رقم القائمة -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="رقم القائمة"/>
+                            
+                            <!-- اسم المورد -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="اسم المورد"/>
 
-                    <!-- المبلغ المدفوع -->
-                    <TextBlock Grid.Row="5" Grid.Column="5" Style="{StaticResource CustomText}" Text=": المبلغ المدفوع"/>
-                    <TextBlock Grid.Row="5" Grid.Column="4" Style="{StaticResource CustomText}" Text="25.000" HorizontalAlignment="Right"/>
+                            <!-- التاريخ -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="تاريخ القائمة"/>
 
-                    <!-- تفاصيل المنتج -->
-                    <TextBlock Grid.Row="0" Grid.Column="3" FontSize="22" FontWeight="ExtraBold" Style="{StaticResource CustomText}" Text="تفـاصـيل المنتج"/>
+                            <!-- المبلغ الكلي -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="المبلغ الكلي"/>
 
-                    <!-- نوع المنتج -->
-                    <TextBlock Grid.Row="1" Grid.Column="3" Style="{StaticResource CustomText}" Text=": نوع المنتج"/>
-                    <TextBlock Grid.Row="1" Grid.Column="2" Style="{StaticResource CustomText}" Text="مرشات" HorizontalAlignment="Right"/>
+                            <!-- المبلغ المدفوع -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="المبلغ المدفوع"/>
 
-                    <!-- السعر -->
-                    <TextBlock Grid.Row="2" Grid.Column="3" Style="{StaticResource CustomText}" Text=": السعر"/>
-                    <TextBlock Grid.Row="2" Grid.Column="2" Style="{StaticResource CustomText}" Text="12.000" HorizontalAlignment="Right"/>
+                            <!-- هل القائمة مدانه؟ -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="القائمة مدانة؟"/>
+                        </StackPanel>
 
-                    <!-- الكمية -->
-                    <TextBlock Grid.Row="3" Grid.Column="3" Style="{StaticResource CustomText}" Text=": الكمية"/>
-                    <TextBlock Grid.Row="3" Grid.Column="2" Style="{StaticResource CustomText}" Text="10" HorizontalAlignment="Right"/>
+                        <!--متغيرات القائمة-->
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1">
+                            <!-- رقم القائمة -->
+                            <TextBlock x:Name="ListNum" Style="{StaticResource CustomText}" Text="{Binding ListNumber }" />
 
-                    <!-- السعر الكلي -->
-                    <TextBlock Grid.Row="4" Grid.Column="3" Style="{StaticResource CustomText}" Text=": السعر الكلي"/>
-                    <TextBlock Grid.Row="4" Grid.Column="2" Style="{StaticResource CustomText}" Text="12.000.000" HorizontalAlignment="Right"/>
+                            <!-- اسم المورد -->
+                            <TextBlock  Style="{StaticResource CustomText}" HorizontalAlignment="Right">
+                                <Hyperlink x:Name="SupplierName" Click="SupplierName_Click" TextDecorations="None"  ToolTip="عرض تفاصيل المورد">علي صالح</Hyperlink>
+                            </TextBlock>
 
-                    <!-- تاريخ الضمان -->
-                    <TextBlock Grid.Row="5" Grid.Column="3" Style="{StaticResource CustomText}" Text=": تاريخ الضمان"/>
-                    <TextBlock Grid.Row="5" Grid.Column="2" Style="{StaticResource CustomText}" Text="2026/12/12" HorizontalAlignment="Right"/>
+                            <!-- التاريخ -->
+                            <TextBlock x:Name="ListDate"  Style="{StaticResource CustomText}" Text="{Binding ListDate}" />
 
-                    <!-- صورة المستخدم -->
-                    <Image x:Name="UserInfo" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="0" Width="40" Height="40" Source="/Assets/Logo.png" MouseDown="UserInfo_MouseDown" ToolTip="تفاصيل مدخل القائمة"/>
+                            <!-- المبلغ الكلي -->
+                            <TextBlock x:Name="TotleListPrice" Style="{StaticResource CustomText}" Text="{Binding TotalListAmount}" />
+
+                            <!-- المبلغ المدفوع -->
+                            <TextBlock x:Name="TotalPaid" Style="{StaticResource CustomText}" Text="{Binding ParidAmount}" />
+
+                            <!-- هل القائمة مدانه -->
+                            <TextBlock x:Name="txtIsDebt" Style="{StaticResource CustomText}" Text="{Binding IsDebt}" />
+
+
+                        </StackPanel>
+                  
+                    </Grid>
+                    
+                   <!--حاوية المنتج-->
+                    <Grid Grid.Column="1"  >
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="auto" MinWidth="130"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- تفاصيل المنتج Header -->
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"   Margin="0,13,0,15" FontSize="22"   FontWeight="ExtraBold" Style="{StaticResource CustomText}" Text="تفـاصـيل المنتج"/>
+
+                        <!--عنوايين المنتجات-->
+                        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+
+                            <!-- نوع المنتج -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="نوع المنتج"/>
+
+                            <!-- السعر -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="السعر"/>
+
+                            <!-- الكمية -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="الكمية"/>
+
+                            <!-- السعر الكلي -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="السعر الكلي"/>
+                           
+                            <!-- تاريخ الضمان -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="تاريخ الضمان"/>
+
+                            <!-- الحالة -->
+                            <TextBlock  Style="{StaticResource CustomText}" Text="الحالة"/>
+
+                        </StackPanel>
+
+                        <!--متغييرات المنتج-->
+                        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" >
+                            
+                            <!-- نوع المنتج -->
+                            <TextBlock x:Name="txtProductName" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.ProductType, ElementName=dgvProdect, Mode=TwoWay}"/>
+                           
+                            <!-- السعر -->
+                            <TextBlock x:Name="txtProductPrice" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.Price, ElementName=dgvProdect, Mode=TwoWay}" />
+
+                            <!-- الكمية -->
+                            <TextBlock x:Name="txtQuantity" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.Quantity, ElementName=dgvProdect, Mode=TwoWay}" />
+
+                            <!-- السعر الكلي -->
+                            <TextBlock x:Name="txtTotalPrice" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.TotalPrice, ElementName=dgvProdect, Mode=TwoWay}" />
+
+                            <!-- تاريخ الضمان -->
+                            <TextBlock x:Name="txtWarraintyDate" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.WarrintyDate, ElementName=dgvProdect, Mode=TwoWay}" />
+
+                            <!-- الحالة -->
+                            <TextBlock x:Name="txtStutes" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.Status, ElementName=dgvProdect, Mode=TwoWay}" />
+
+
+                        </StackPanel>
+                        
+                    </Grid>
+
                 </Grid>
             </Border>
 
             <!-- DataGrid للقوائم الفرعية -->
-            <DataGrid Grid.Row="1" FlowDirection="{DynamicResource SPAppFlowDirection}"
+            <DataGrid Grid.Row="1" x:Name="dgvProdect"
+                      FlowDirection="{DynamicResource SPAppFlowDirection}"
                       AutoGenerateColumns="False"
                       HeadersVisibility="Column"
                       IsReadOnly="True"
@@ -114,18 +201,24 @@
                       Margin="10"
                       FontSize="16"
                       FontFamily="Segoe UI"
-                      ItemsSource="{Binding SubInvoices}">
+                      ItemsSource="{Binding ProdectList}"
+                      SelectedItem="{Binding SelectedProduct ,Mode=TwoWay}"
+                      MouseLeftButtonUp="DataGrid_MouseLeftButtonUp"
+                      >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="رقم القائمة" Binding="{Binding InvoiceNumber}" Width="*" MinWidth="100"/>
-                    <DataGridTextColumn Header="نـوع المنتج" Width="*" MinWidth="150"/>
-                    <DataGridTextColumn Header="العـدد" Width="*" MinWidth="80"/>
-                    <DataGridTextColumn Header="السـعر" Width="*" MinWidth="100"/>
-                    <DataGridTextColumn Header="التاريخ" Binding="{Binding Date}" Width="*" MinWidth="120"/>
+                    <DataGridTextColumn Header="رقم القائمة" Binding="{Binding ListNum}" Width="*" MinWidth="100"/>
+                    <DataGridTextColumn Header="نـوع المنتج" Width="*" MinWidth="150" Binding="{Binding ProductType}"/>
+                    <DataGridTextColumn Header="حالة المنتج" Binding="{Binding Status}" Width="*" MinWidth="120"/>
+                    <DataGridTextColumn Header="العـدد" Width="*" MinWidth="80" Binding="{Binding Quantity }"/>
+                    <DataGridTextColumn Header="السـعر" Width="*" MinWidth="100" Binding="{Binding Price }"/>
+                    <DataGridTextColumn Header="السعر الكلي" Binding="{Binding TotalPrice}" Width="*" MinWidth="120"/>
                 </DataGrid.Columns>
             </DataGrid>
+        
         </Grid>
 
-        <!-- LoadingControl فوق كل العناصر -->
-        <local:ctrlModernLoadingControl x:Name="LoadingControl" Visibility="Collapsed" Panel.ZIndex="1" VerticalAlignment="Top"/>
+        <!--حاوية باقي الشاشاتٍ-->
+        <Grid x:Name="SubGrid" Visibility="Collapsed" Panel.ZIndex="1"></Grid>
+       
     </Grid>
 </UserControl>

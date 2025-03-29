@@ -61,6 +61,16 @@ namespace BLL
 
         internal static clsStocks FetchStockData(ref Dictionary<string, object> dict)
         {
+            if (dict.TryGetValue("StockID", out var stockIdObj)) // تأكد من أن الاسم صحيح
+            {
+                int stockId = Convert.ToInt32(stockIdObj);
+                // استخدم stockId هنا
+            }
+            else
+            {
+                Console.WriteLine("Warning: 'StockID' not found in dictionary!");
+                // يمكنك تعيين قيمة افتراضية أو إدارة الخطأ بطريقة أخرى
+            }
             return new clsStocks(
                 (int)dict["StiockID"],
                 (int)dict["Quantity"],

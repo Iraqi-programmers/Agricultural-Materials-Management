@@ -6,11 +6,13 @@
       xmlns:local="clr-namespace:Interface.Pages.AccountingDepartment"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ViewPurchasesList"
       FlowDirection="{DynamicResource AppFlowDirection}"
->
+      Background="{DynamicResource PrimaryBackgroundColor}">
 
     <Grid>
+
+       
+        <Grid x:Name="MainGrid">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
@@ -18,74 +20,75 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Grid.Resources>
-                <!-- CollectionViewSource للفلترة -->
-                <CollectionViewSource x:Key="FilteredInvoices" Source="{Binding Invoices}" Filter="CollectionViewSource_Filter" />
-            </Grid.Resources>
-
             <TextBlock Text="قائمة المشتريات" Grid.Row="0"
               FontSize="35"
               Background="{DynamicResource PrimaryBackgroundColor}"
               FontWeight="ExtraLight"
               Foreground="{DynamicResource PrimaryTextColor}"
               Margin="5,0,0,10"
+              TextAlignment="Center"
                />
 
-            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                
                 <ComboBox x:Name="FilterComboBox" 
-          Width="200"
-          Height="40"
-          FontSize="16"
-          Padding="55,8,0,0"
-          Margin="4,12,0,11"
-          FontWeight="ExtraLight"
-          SelectedIndex="0">
-                    <ComboBoxItem Content="رقم القائمة"/>
+                       Width="200"
+                       Height="40"
+                       FontSize="16"
+                       Padding="55,8,0,0"
+                       Margin="4,12,0,11"
+                       FontWeight="ExtraLight"
+                       SelectedIndex="0"
+                      SelectionChanged="FilterComboBox_SelectionChanged"
+                      >
+                    <ComboBoxItem Content="رقم القائمة" IsSelected="True"/>
                     <ComboBoxItem Content="تاريخ القائمة" />
+                    <ComboBoxItem Content="اسم المورد" />
                     <ComboBoxItem Content="القوائم المدانة" />
                     <ComboBoxItem Content="القوائم المكتملة" />
                    
                 </ComboBox>
+
+                <TextBox x:Name="SearchTextBox" Grid.Row="1"
+                          Visibility="{Binding VisibltyText,Mode=OneWay}"
+                          Width="300"
+                          Height="40"
+                          FontSize="15"
+                          Padding="3"
+                          FontWeight="ExtraLight"
+                          TextAlignment="Center"
+                          TextChanged="SearchTextBox_TextChanged"
+                          Style="{StaticResource ModernTextBoxStyle}"
+                          Margin="4,0,0,0"
+                          ToolTip="{Binding SelectedItem.Content, ElementName=FilterComboBox, StringFormat='بحث باستخدام {0}'}"                         >
+               
+                </TextBox>
+            
             </StackPanel>
 
-            <TextBox x:Name="SearchTextBox" Grid.Row="1"
-          Width="300"
-          Height="40"
-          FontSize="15"
-          Padding="10"
-          FontWeight="ExtraLight"
-          TextAlignment="Center"
-          VerticalAlignment="Stretch"
-          HorizontalAlignment="Left"
-          TextChanged="SearchTextBox_TextChanged"
-          Margin="205,1,0,0"
-          ToolTip="{Binding SelectedItem.Content, ElementName=FilterComboBox, StringFormat='بحث باستخدام {0}'}"                         >
+            <DataGrid x:Name="InvoiceDataGrid" Grid.Row="2"
+                       ItemsSource="{Binding ShoppingLists}"
+                       AutoGenerateColumns="False"
+                       HeadersVisibility="Column"
+                       IsReadOnly="True"
+                       SelectionMode="Single"
+                       SelectionUnit="FullRow"
+                       GridLinesVisibility="Horizontal"
+                       RowBackground="White"
+                       AlternatingRowBackground="#FF97ACCE"
+                       BorderThickness="1"
+                       Margin="2,5,2,0"
+                       FontSize="20">
 
-            </TextBox>
-
-        <DataGrid x:Name="InvoiceDataGrid" Grid.Row="2" FlowDirection="{DynamicResource AppFlowDirection}"
-           AutoGenerateColumns="False"
-           HeadersVisibility="Column"
-           IsReadOnly="True"
-           SelectionMode="Single"
-           SelectionUnit="FullRow"
-           GridLinesVisibility="Horizontal"
-           RowBackground="White"
-           AlternatingRowBackground="#FF97ACCE"
-           BorderThickness="1"
-           Margin="2,5,2,0"
-           FontSize="20"
-           ItemsSource="{Binding Source={StaticResource FilteredInvoices}}">
-
-
-            <DataGrid.Columns>
+                <DataGrid.Columns>
                 <DataGridTextColumn Header="رقم القائمة" Binding="{Binding ListNum}"  Width="*" />
-                <DataGridTextColumn Header="المبلغ الكلي" Binding="{Binding PirdAmount }" Width="*" />
-                <DataGridTextColumn Header="المبلغ المدفوع" Binding="{Binding TotalAmount}" Width="*" />
+                <DataGridTextColumn Header="المبلغ الكلي" Binding="{Binding TotalAmount  }" Width="*" />
+                <DataGridTextColumn Header="المبلغ المدفوع" Binding="{Binding PirdAmount}" Width="*" />
+                <DataGridTextColumn Header="اسم المورد" Binding="{Binding SupplierName}" Width="*" />
                 <DataGridTextColumn Header="التاريخ" Binding="{Binding InvoiceDate}" Width="*" />
             </DataGrid.Columns>
 
-            <DataGrid.ContextMenu>
+                <DataGrid.ContextMenu>
                 <ContextMenu Width="auto" Height="auto" BorderThickness="2" BorderBrush="Gray">
                     <!--  "تفاصيل القائمة" -->
                     <MenuItem Header="تفاصيل القائمة" Click="MenuItem_Details_Click">
@@ -97,16 +100,26 @@
                     <Separator Background="Gray"  Margin="5" />
 
                     <!-- عنصر "تصدير إلى Excel" -->
-                    <MenuItem Header="تصدير إلى Excel" Click="MenuItem_Export_Click">
+                    <MenuItem Header="تصدير إلى PDF" Click="MenuItem_Export_Click">
                         <MenuItem.Icon>
                             <Image Source="/Assets/Logo.png" Width="16" Height="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                </ContextMenu>
+
+                    <MenuItem Header="حفـظ القائمة">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Logo.png" Width="16" Height="16"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                    </ContextMenu>
             </DataGrid.ContextMenu>
 
-        </DataGrid>
-
-    </Grid>
+            </DataGrid>
         
+        </Grid>
+
+        <Grid x:Name="SubGrid" Visibility="Collapsed"></Grid>
+    </Grid>
+
 </Page>
