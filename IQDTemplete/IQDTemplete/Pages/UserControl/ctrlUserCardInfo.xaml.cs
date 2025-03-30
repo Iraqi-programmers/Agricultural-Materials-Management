@@ -24,7 +24,7 @@ namespace Interface.Pages.UserControl
 
         private clsUsers? __UserInfo = null;
 
-        private System.Windows.Controls.UserControl __PurchesesListDetils;
+        private System.Windows.Controls.UserControl _UserControlCall;
 
 
         private string? __title;
@@ -34,7 +34,7 @@ namespace Interface.Pages.UserControl
             set 
             { 
                 __title = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(Title));
             }
         }
 
@@ -45,7 +45,7 @@ namespace Interface.Pages.UserControl
             get { return __visibleBtnEdit; }
             set 
             { __visibleBtnEdit = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(VisibleBtnEdit));
             }
         }
 
@@ -57,7 +57,7 @@ namespace Interface.Pages.UserControl
             set 
             { 
                 __VisblteBtnSave = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(VisibleBtnSave));
             }
         }
 
@@ -75,7 +75,7 @@ namespace Interface.Pages.UserControl
             DataContext = this;
             __UserId = userId;
             this.mod = mod;
-            __PurchesesListDetils = purchesesListDetils;
+            _UserControlCall = purchesesListDetils;
         }
 
         private void LoadPersonCardUI()
@@ -103,13 +103,13 @@ namespace Interface.Pages.UserControl
                     return;
 
                 __UserInfo = await clsUsers.GetByIdAsync(__UserId ?? -1);
-                
                 if (__UserInfo == null)
                     return;
 
                 txtUsername.Text = __UserInfo.UserName;
                 txtPassword.Password = __UserInfo.Password;
                 __PersonId = __UserInfo?.Person?.Id;
+                chkIsActive.IsChecked =  __UserInfo!.IsActive? chkIsActive.IsChecked=true : false;
                 return;
             }
             __UserInfo = new clsUsers(txtUsername.Text,txtPassword.Password,new clsPerson(""));
@@ -124,10 +124,13 @@ namespace Interface.Pages.UserControl
             {
                 txtPassword.IsEnabled = false;
                 txtUsername.IsReadOnly = true;
+                chkIsActive.IsEnabled = false;
                 return;
             }
             txtUsername.IsReadOnly = false;
             txtPassword.IsEnabled = true;
+            chkIsActive.IsEnabled = true;
+
         }
 
         private void ChangeProperties(Visibility btnSave,Visibility btnEdit,string Title)
@@ -152,14 +155,14 @@ namespace Interface.Pages.UserControl
                 
                 case Mod.Update:
                     {
-                        ChangeProperties(Visibility.Visible, Visibility.Collapsed, "تعـديل معلومات المستخـدم");
+                        ChangeProperties(Visibility.Visible, Visibility.Collapsed, "تعـديل بيانات التسجيل");
 
                     }
                     break;
                 
                 case Mod.View:
                     {
-                        ChangeProperties(Visibility.Collapsed, Visibility.Visible, "معـلـومات المستخدم");
+                        ChangeProperties(Visibility.Collapsed, Visibility.Visible, "بيانات المستخدم");
 
                     }
                     break;
@@ -167,6 +170,14 @@ namespace Interface.Pages.UserControl
         }
 
 
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            await ModUIView();  
+          // await LoadUserCradInfo();
+            LoadPersonCardUI();
+
+        }
+        
         private async void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             btnEdit.Visibility = Visibility.Collapsed;
@@ -196,8 +207,9 @@ namespace Interface.Pages.UserControl
             {
                 __UserInfo.UserName = txtUsername.Text;
                 __UserInfo.Password = txtPassword.Password;
+                __UserInfo.IsActive = chkIsActive.IsChecked ?? true;
 
-                if (await __UserInfo.SaveAsync())
+                if (!await __UserInfo.SaveAsync())
                 {
                     MessageBox.Show(mod == Mod.AddNew ? "تم الإضافة بنجاح" : "تم التحديث بنجاح", "تم");
                 }
@@ -209,23 +221,25 @@ namespace Interface.Pages.UserControl
 
             ctrlPersonCard?.btnSave_Click(sender, e);
 
-        }
-
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadPersonCardUI();
-            await ModUIView();  
+            btnClose_Click(sender, e);
 
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility= Visibility.Collapsed;
-            if(__PurchesesListDetils is ctrlPurchesesListDetils ctrlPurchesesListDetils)
+          //  this.Visibility= Visibility.Collapsed;
+            if(_UserControlCall is ctrlPurchesesListDetils ctrlPurchesesListDetils)
             {
                 ctrlPurchesesListDetils.MainGrid.Visibility= Visibility.Visible;
                 ctrlPurchesesListDetils.SubGrid.Visibility = Visibility.Collapsed;
 
+            }
+
+            if(_UserControlCall is ctrlSalesListDetails ctrlSalesListDetails)
+            {
+                ctrlSalesListDetails.LoadDataAsync();
+                ctrlSalesListDetails.MainGrid.Visibility= Visibility.Visible;
+                ctrlSalesListDetails.SubGrid.Visibility = Visibility.Collapsed;
             }
         }
     }

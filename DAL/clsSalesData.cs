@@ -240,54 +240,101 @@ END;
         //    return dict;
         //}
 
+        //public static async Task<Dictionary<string, object>?> GetByIdAsync(int saleId)
+        //{
+        //    var dict = await CRUD.GetByColumnValueAsync("sp_GetSalesById", "SalesID", saleId);
+
+        //    if (dict == null) return null;
+
+        //    // استخراج السلسلة JSON الكاملة من النتيجة
+        //    string jsonResult = dict.Values.FirstOrDefault()?.ToString()!;
+
+        //    if (string.IsNullOrEmpty(jsonResult))
+        //    {
+        //        return null;
+        //    }
+
+        //    try
+        //    {
+
+
+        //        // تحويل النتيجة إلى ديكشنري
+        //        var resultDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonResult);
+
+        //        if (resultDict == null) return null;
+
+        //        //// معالجة SalesJson
+        //        //if (resultDict.ContainsKey("SalesJson") && resultDict["SalesJson"] != null)
+        //        //{
+        //        //    string salesJson = resultDict["SalesJson"].ToString()!;
+        //        //    resultDict["SalesData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(salesJson!)!;
+        //        //}
+
+        //        //// معالجة SalesDetailsJson
+        //        //if (resultDict.ContainsKey("SalesDetailsJson") && resultDict["SalesDetailsJson"] != null)
+        //        //{
+        //        //    string detailsJson = resultDict["SalesDetailsJson"].ToString()!;
+        //        //    resultDict["SalesDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson)!;
+        //        //}
+
+        //        //// معالجة UserJson
+        //        //if (resultDict.ContainsKey("UserJson") && resultDict["UserJson"] != null)
+        //        //{
+        //        //    string userJson = resultDict["UserJson"].ToString()!;
+        //        //    resultDict["UserData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(userJson)!;
+        //        //}
+
+        //        return resultDict;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // يمكنك تسجيل الخطأ هنا للتصحيح
+        //        Console.WriteLine($"Error parsing JSON: {ex.Message}");
+        //        return null;
+        //    }
+        //}
+
+
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int saleId)
         {
             var dict = await CRUD.GetByColumnValueAsync("sp_GetSalesById", "SalesID", saleId);
 
             if (dict == null) return null;
 
-            // استخراج السلسلة JSON الكاملة من النتيجة
             string jsonResult = dict.Values.FirstOrDefault()?.ToString()!;
-
-            if (string.IsNullOrEmpty(jsonResult))
-            {
-                return null;
-            }
+            if (string.IsNullOrEmpty(jsonResult)) return null;
 
             try
             {
-                // تحويل النتيجة إلى ديكشنري
                 var resultDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonResult);
-
                 if (resultDict == null) return null;
 
-                // معالجة SalesJson
-                if (resultDict.ContainsKey("SalesJson") && resultDict["SalesJson"] != null)
+                Dictionary<string, object> finalResult = new();
+
+                if (resultDict.TryGetValue("SalesJson", out var salesJson) && salesJson != null)
                 {
-                    string salesJson = resultDict["SalesJson"].ToString()!;
-                    resultDict["SalesData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(salesJson!)!;
+                    finalResult["SalesData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(salesJson.ToString()!)!;
                 }
 
-                // معالجة SalesDetailsJson
-                if (resultDict.ContainsKey("SalesDetailsJson") && resultDict["SalesDetailsJson"] != null)
+                if (resultDict.TryGetValue("SalesDetailsJson", out var detailsJson) && detailsJson != null)
                 {
-                    string detailsJson = resultDict["SalesDetailsJson"].ToString()!;
-                    resultDict["SalesDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson)!;
+                    finalResult["SalesDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson.ToString()!)!;
                 }
 
-                // معالجة UserJson
-                if (resultDict.ContainsKey("UserJson") && resultDict["UserJson"] != null)
+                if (resultDict.TryGetValue("PaymentsJson", out var paymentsJson) && paymentsJson != null)
                 {
-                    string userJson = resultDict["UserJson"].ToString()!;
-                    resultDict["UserData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(userJson)!;
+                    finalResult["PaymentsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(paymentsJson.ToString()!)!;
                 }
 
-                return resultDict;
+                if (resultDict.TryGetValue("UserJson", out var userJson) && userJson != null)
+                {
+                    finalResult["UserData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(userJson.ToString()!)!;
+                }
+
+                return finalResult;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // يمكنك تسجيل الخطأ هنا للتصحيح
-                Console.WriteLine($"Error parsing JSON: {ex.Message}");
                 return null;
             }
         }

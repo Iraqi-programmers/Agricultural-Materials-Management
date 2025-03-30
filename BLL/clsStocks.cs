@@ -21,7 +21,7 @@ namespace BLL
             SellingPrice = sellingPrice;
         }
 
-        private clsStocks(int stockId, int quantity, string status, double purchasePrice, double sellingPrice, clsProduct productInfo)
+        internal clsStocks(int stockId, int quantity, string status, double purchasePrice, double sellingPrice, clsProduct productInfo)
         {
             Id = stockId;
             Quantity = quantity;
@@ -61,24 +61,20 @@ namespace BLL
 
         internal static clsStocks FetchStockData(ref Dictionary<string, object> dict)
         {
-            if (dict.TryGetValue("StockID", out var stockIdObj)) // تأكد من أن الاسم صحيح
-            {
-                int stockId = Convert.ToInt32(stockIdObj);
-                // استخدم stockId هنا
-            }
-            else
-            {
-                Console.WriteLine("Warning: 'StockID' not found in dictionary!");
-                // يمكنك تعيين قيمة افتراضية أو إدارة الخطأ بطريقة أخرى
-            }
-            return new clsStocks(
+            //if (dict.TryGetValue("SalesDetailsData", out var detailsData) && detailsData is List<Dictionary<string, object>> detailsList)
+            //{
+            //    foreach (var detail in detailsList)
+            //    {
+                    return new clsStocks(
                 (int)dict["StiockID"],
                 (int)dict["Quantity"],
                 (string)dict["Status"],
                 (double)dict["PurchasePrice"],
                 (double)dict["SellingPrice"],
-                clsProduct.FetchProductData(dict) 
+                clsProduct.FetchProductData(dict)
             );
+                
+            
         }
     }
 }

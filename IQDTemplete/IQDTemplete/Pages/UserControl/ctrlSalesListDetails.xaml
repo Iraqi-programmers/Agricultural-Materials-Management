@@ -43,6 +43,7 @@
          Tag="IsCloseButton"
            />
 
+            <Image x:Name="UserInfo"  ToolTip="تفاصيل مدخل القائمة"  Margin="10,0,0,0" HorizontalAlignment="Left" Grid.Row="0" Width="40" Height="40" Source="/Assets/User.png" MouseDown="UserInfo_MouseDown" Grid.Column="1" />
 
             <!-- معلومات القائمة -->
             <Border Grid.Row="1" 
@@ -51,7 +52,8 @@
                 Padding="10"
                 Margin="10">
             <StackPanel>
-                <TextBlock Text="تفاصيل القائمة" Foreground="{DynamicResource TertiaryTextColor}" FontSize="22" FontWeight="ExtraBold" Margin="0,0,0,10"/>
+
+                    <TextBlock Text="تفاصيل القائمة" Foreground="{DynamicResource TertiaryTextColor}" FontSize="22" FontWeight="ExtraBold" Margin="0,0,0,10"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -65,14 +67,16 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
+                    
+                    
                     <!-- رقم القائمة -->
                     
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="رقم القائمة :" Style="{StaticResource CustoimTxt}" />
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SaleInfo.ListNum,Mode=OneWay}" Style="{StaticResource CustoimTxt}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding saleInfo.ListNum,Mode=OneWay}" Style="{StaticResource CustoimTxt}"/>
 
                     <!-- تاريخ القائمة -->
                     <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource CustoimTxt}" Text="تاريخ القائمة :" />
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SaleInfo.ListDate,Mode=OneWay}" Style="{StaticResource CustoimTxt}" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding saleInfo.ListDate,Mode=OneWay}" Style="{StaticResource CustoimTxt}" />
 
                     <!-- اسم الزبون -->
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="اسم الزبون :" Style="{StaticResource CustoimTxt}"/>
@@ -80,17 +84,18 @@
 
                     <!-- المبلغ المدفوع -->
                     <TextBlock Grid.Row="3" Grid.Column="0" Text="المبلغ المدفوع :" Style="{StaticResource CustoimTxt}"/>
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SaleInfo.PairdAmount,Mode=OneWay}" Style="{StaticResource CustoimTxt}" />
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding saleInfo.PairdAmount,Mode=OneWay}" Style="{StaticResource CustoimTxt}" />
 
                     <!-- المبلغ الكلي -->
                     <TextBlock Grid.Row="4" Grid.Column="0" Text="المبلغ الكلي :" Style="{StaticResource CustoimTxt}"/>
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SaleInfo.TotalCost,Mode=OneWay}" Style="{StaticResource CustoimTxt}" />
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding saleInfo.TotalCost,Mode=OneWay}" Style="{StaticResource CustoimTxt}" />
                 </Grid>
             </StackPanel>
         </Border>
 
             <!--تفاصيل المنتج-->
             <StackPanel Grid.Row="1" Margin="400,20,0,0" >
+                
             <TextBlock Text="تفاصيل المنتج" Foreground="{DynamicResource TertiaryTextColor}" FontSize="22" FontWeight="ExtraBold" Margin="0"/>
             <Grid Margin="0,12,0,0">
                 <Grid.ColumnDefinitions>
@@ -123,23 +128,22 @@
 
                 <!-- المبلغ الكلي -->
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="المبلغ الكلي :" Style="{StaticResource CustoimTxt}"/>
-                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding CurrentProduct.TotalCostBaseOnProdect,Mode=OneWay}" Style="{StaticResource CustoimTxt}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding CurrentProduct.TotalCost,Mode=OneWay}" Style="{StaticResource CustoimTxt}"/>
 
-                <Image x:Name="UserInfo"  ToolTip="تفاصيل مدخل القائمة"  Margin="0,0,15,0" HorizontalAlignment="Right" Grid.Row="0" Width="40" Height="40" Source="/Assets/Logo.png" MouseDown="UserInfo_MouseDown" Grid.Column="1" />
 
             </Grid>
 
 
         </StackPanel>
 
-            <ProgressBar IsIndeterminate="True" Grid.Row="3" Background="Black"
+            <ProgressBar IsIndeterminate="True" Grid.Row="3" Background="Black" Opacity="0.8" Width="850"
                 Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Height="10" VerticalAlignment="Top"/>
 
 
             <!-- DataGrid للقوائم الفرعية -->   
             <DataGrid Grid.Row="3"
-                      FlowDirection="{DynamicResource SPAppFlowDirection}"
+                   
                   AutoGenerateColumns="False"
                   HeadersVisibility="Column"
                   IsReadOnly="True"
@@ -149,19 +153,20 @@
                   RowBackground="White"
                   AlternatingRowBackground="#FF97ACCE"
                   BorderThickness="1"
+                  SelectedIndex="0"
                   Margin="10"
                   FontSize="16"
                   FontFamily="Segoe UI"
-                  ItemsSource="{Binding PropertyInfos}"
-                   SelectedItem="{Binding SelectedDetail, Mode=TwoWay}"
+                  ItemsSource="{Binding ProductInfos}"
+                   SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
                       >
             <DataGrid.Columns>
 
-                    <DataGridTextColumn Header="رقم القائمة" Binding="{Binding ListNum}" Width="95"/>
+                    <DataGridTextColumn Header="رقم القائمة" Binding="{Binding DetilsId}" Width="100"/>
                  <DataGridTextColumn Header="نـوع المنتج"   Width="*" Binding="{Binding ProdectType}"/>
-                    <DataGridTextColumn Header="العـدد"   Width="90" Binding="{Binding Quantity}"/>
-                    <DataGridTextColumn Header="السـعر"   Width="*" Binding="{Binding Price}" />
-                    <DataGridTextColumn Header="الربح"   Width="*" Binding="{Binding Profit}"/>
+                    <DataGridTextColumn Header="العـدد"   Width="100" Binding="{Binding Quantity}"/>
+                    <DataGridTextColumn Header="السـعر"   Width="100" Binding="{Binding Price}" />
+                    <DataGridTextColumn Header="الربح"   Width="100" Binding="{Binding Profit}"/>
                     <DataGridTextColumn Header="المبلغ الكلي"  Binding="{Binding TotalCost}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>

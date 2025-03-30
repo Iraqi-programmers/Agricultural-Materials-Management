@@ -18,7 +18,7 @@ namespace BLL
             Address = address;
         }
 
-        private clsPerson(int? personId, string fullName, string? nationalNum = null, string? phoneNumber = null, string? address = null)
+        internal clsPerson(int? personId, string fullName, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
             Id = personId;
             FullName = fullName;
@@ -81,11 +81,11 @@ namespace BLL
         internal static clsPerson FetchPersonData(ref Dictionary<string, object> dict)
         {
             return new clsPerson(
-                (int)dict["PersonID"],
-                (string)dict["FullName"],
-                dict.ContainsValue("NationalNum") ? (string)dict["NationalNum"] : null,
-                dict.ContainsValue("PhoneNumber") ? (string)dict["PhoneNumber"] : null,
-                dict.ContainsValue("Address") ? (string)dict["Address"] : null
+                Convert.ToInt32(dict["PersonID"]),
+                (string)dict["UserFullName"],
+                dict.ContainsValue("UserNationalNum") ?  null: (string)dict["UserNationalNum"],
+                dict.ContainsValue("UserPhoneNumber") ? null : (string)dict["UserPhoneNumber"] ,
+                dict.ContainsValue("UserAddress") ? null : (string)dict["UserAddress"]
             );
         }
     }

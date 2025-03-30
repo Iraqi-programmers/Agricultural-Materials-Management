@@ -24,8 +24,6 @@ namespace Interface.Pages.UserControl
             { 
                 __title = value;
                 OnPropertyChanged(nameof(Title));
-
-
             }
         }
 
@@ -36,7 +34,7 @@ namespace Interface.Pages.UserControl
             set
             {
                 __visibalBtnSave = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(visibalBtnSave));
             }
         }
 
@@ -47,7 +45,7 @@ namespace Interface.Pages.UserControl
             set
             {
                 __visibalBtnEdit = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(visibalBtnEdit));
 
             }
         }
@@ -115,6 +113,7 @@ namespace Interface.Pages.UserControl
             txtPhoneNumber.Text = person?.PhoneNumber;
             txtNationalID.Text = person?.NationalNum;
             txtAddress.Text = person?.Address;
+
         }
 
         public  async Task ChooseMode()
@@ -124,34 +123,41 @@ namespace Interface.Pages.UserControl
             {
                 case Mod.AddNew:
                     {
-                        ChangeProparteUI();
                         person = new clsPerson(txtName.Text);
+                        ChangeProparteUI();
                     }
                     break; 
 
                 case Mod.Update:
                     {
-                        ChangeProparteUI(title:"تعديل بيانات");
                        await LoadData();
+                        ChangeProparteUI(title:"تعديل معلومات");
                     }
                     break;
 
                 case Mod.View:
                     {
-                        ChangeProparteUI(Visibility.Hidden, Visibility.Visible, "عرض معلومات الشخص");
                        await LoadData();
+                        ChangeProparteUI(Visibility.Hidden, Visibility.Visible, "عرض معلومات");
                     }
                     break;
                    
             }
         }
 
+        
         private bool IsDataUnchanged()
         {
             return txtName.Text == person?.FullName &&
                    txtNationalID.Text == person?.NationalNum &&
                    txtPhoneNumber.Text == person?.PhoneNumber &&
                    txtAddress.Text == person?.Address;
+        }
+        
+        public async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            await LoadData();
+            await ChooseMode();
         }
 
         public async void btnSave_Click(object sender, RoutedEventArgs e)
@@ -166,14 +172,19 @@ namespace Interface.Pages.UserControl
           
             if (IsDataUnchanged())
             {
-                MessageBox.Show("لا يوجد أي تغيير لحفظه!");
+                //MessageBox.Show("لا يوجد أي تغيير لحفظه!");
                 return;
             }
 
+            person!.FullName = txtName.Text;
+            person.NationalNum=txtNationalID.Text;
+            person.PhoneNumber=txtPhoneNumber.Text;
+            person.Address=txtAddress.Text;
+
+
             
-            if (await person!.SaveAsync())
+            if (!await person!.SaveAsync())
             {
-                person = new clsPerson(txtName.Text, txtNationalID.Text, txtPhoneNumber.Text, txtAddress.Text);
                 MessageBox.Show("تم الحفظ بنجاح");
             }
             else
@@ -194,11 +205,6 @@ namespace Interface.Pages.UserControl
             
         }
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            await LoadData();
-            await ChooseMode();
-        }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {

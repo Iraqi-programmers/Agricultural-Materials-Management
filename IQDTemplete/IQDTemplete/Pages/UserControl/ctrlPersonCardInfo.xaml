@@ -24,11 +24,11 @@
 
         <!--Text Box-->
         <Style  x:Key="txtBox" TargetType="TextBox" BasedOn="{StaticResource ModernTextBoxStyle}">
-            <Setter Property="IsReadOnly" Value="{Binding ReadOnly }"/>
             <Setter Property="Padding" Value="3"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="TextBlock.TextAlignment" Value="Center"/>
             <Setter Property="Height" Value="35"/>
+            <Setter Property="FontWeight" Value="Normal"/>
 
         </Style>
 
@@ -71,23 +71,23 @@
                   Margin="20,0,0,20"   FontSize="30" FontWeight="ExtraLight" Foreground="{DynamicResource PrimaryTextColor}"/>
 
             <!-- معرف الشخص -->
-            <TextBlock Text="معرف الشخص :" Grid.Row="2" Grid.Column="0" Style="{StaticResource txtblock}"/>
-            <TextBox x:Name="txtPersonID" Style="{StaticResource txtBox}" IsReadOnly="True" Grid.Row="2" Grid.Column="1" />
+            <TextBlock Text="معرف الشخص " Grid.Row="2" Grid.Column="0" Style="{StaticResource txtblock}" ToolTip="للقراءة فقط!!"/>
+            <TextBox x:Name="txtPersonID"  Style="{StaticResource txtBox}"  Grid.Row="2" Grid.Column="1" />
 
             <!-- الاسم -->
-            <TextBlock Text="الاسم :" Grid.Row="3"  Style="{StaticResource txtblock}"/>
+            <TextBlock Text="الاسم " Grid.Row="3"  Style="{StaticResource txtblock}"/>
             <TextBox x:Name="txtName" Style="{StaticResource txtBox}"  Grid.Row="3" Grid.Column="1"/>
 
             <!-- الرقم الوطني -->
-            <TextBlock Text="الرقم الوطني :" Grid.Row="4" Style="{StaticResource txtblock}"/>
+            <TextBlock Text="الرقم الوطني " Grid.Row="4" Style="{StaticResource txtblock}"/>
             <TextBox x:Name="txtNationalID" Style="{StaticResource txtBox}"  Grid.Row="4" Grid.Column="1" />
 
             <!-- رقم الهاتف -->
-            <TextBlock Text="رقم الهاتف :" Grid.Row="5" Style="{StaticResource txtblock}"/>
+            <TextBlock Text="رقم الهاتف " Grid.Row="5" Style="{StaticResource txtblock}"/>
             <TextBox x:Name="txtPhoneNumber"  Grid.Row="5" Grid.Column="1" Style="{StaticResource txtBox}" />
 
             <!-- العنوان -->
-            <TextBlock Text="العنوان :" Grid.Row="6" Style="{StaticResource txtblock}"/>
+            <TextBlock Text="العنوان " Grid.Row="6" Style="{StaticResource txtblock}"/>
             <TextBox x:Name="txtAddress"  Grid.Row="6" Grid.Column="1" Style="{StaticResource txtBox}" Height="60" TextWrapping="Wrap" AcceptsReturn="False"/>
 
             <!-- Save Button -->

@@ -58,13 +58,7 @@ namespace Interface.Pages.AccountingDepartment
 
         }
 
-        private async void ViewSalesList_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            await LoadDataToDGV();
-
-        }
-
-        private async Task LoadDataToDGV()
+        public async Task LoadDataToDGV()
         {
             IsLoading = true;
             try
@@ -96,24 +90,6 @@ namespace Interface.Pages.AccountingDepartment
                 IsLoading = false;
             }
         }
-
-        //private async Task LoadDataToDGV()
-        //{
-        //    dtSeals = await clsSales.GetAllAsync();
-        //    if (dtSeals == null || dtSeals.Rows.Count == 0)
-        //        return;
-
-        //    foreach(DataRow row in dtSeals.Rows)
-        //    {
-        //        Invoices.Add(new Invoice
-        //        {
-        //            LisrNum = row["SealeID"].ToString()!,
-        //            CustomerName = row["PersonName"].ToString()!,
-        //            TotalAmount = row["TotalCost"].ToString()!,
-        //            InvoiceDate = row["Date"].ToString()!
-        //        });
-        //    }
-        //}
 
         private void ApplyFilter()
         {
@@ -156,6 +132,27 @@ namespace Interface.Pages.AccountingDepartment
             }
         }
 
+
+        private async void ViewSalesList_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            await LoadDataToDGV();
+
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _filterTimer.Stop(); 
+            _filterTimer.Start(); 
+           // ApplyFilter();
+
+        }
+
+        private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFilter();
+
+        }
+      
         private void MenuItem_Details_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var selectedInvoice = (Invoice)InvoiceDataGrid.SelectedItem;
@@ -164,8 +161,7 @@ namespace Interface.Pages.AccountingDepartment
             {
                 MainGrid.Visibility = Visibility.Collapsed;
                 SubGrid.Children.Clear();
-
-                var detailsControl = new ctrlSalesListDetails(int.Parse(selectedInvoice.ListNum));
+                var detailsControl = new ctrlSalesListDetails(int.Parse(selectedInvoice.ListNum),this);
                 SubGrid.Children.Add(detailsControl);
                 SubGrid.Visibility = Visibility.Visible;
             }
@@ -180,23 +176,9 @@ namespace Interface.Pages.AccountingDepartment
 
         }
        
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            _filterTimer.Stop(); 
-            _filterTimer.Start(); 
-           // ApplyFilter();
-
-        }
-
-        private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ApplyFilter();
-
-        }
-
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigationService?.GoBack();
         }
     }
     

@@ -81,18 +81,18 @@
 
                 <!--المتغيرات-->
                 <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical"  HorizontalAlignment="Center" >
-                    
-                    <TextBox x:Name="txtUsername" Margin="10" Style="{StaticResource ProTextBoxStyle}"  Padding="1"   />
 
-                    <PasswordBox x:Name="txtPassword" Style="{StaticResource ProPasswordBoxStyle}"  Margin="10" Width="290" Padding="1"/>
+                    <TextBox x:Name="txtUsername"   Margin="10" Style="{StaticResource ProTextBoxStyle}"  Padding="1"   />
 
-                    <CheckBox x:Name="chkIsActive"   Style="{StaticResource ToggleButtonStyle}"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,25,0,0"  />
+                    <PasswordBox x:Name="txtPassword" FontWeight="Normal" Style="{StaticResource ProPasswordBoxStyle}"  Margin="10" Width="290" Padding="1"/>
+
+                    <CheckBox x:Name="chkIsActive" Background="DarkBlue"   Style="{StaticResource ToggleButtonStyle}"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,25,0,0"  />
 
                 </StackPanel>
 
-                <!-- Save and Edit Button -->  
-                <Button x:Name="btnSave" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0"  Content="حفظ" Style="{StaticResource ModernButtonStyle}" Width="120" Height="35" Visibility="{Binding visibalBtnSave}" Click="btnSave_Click"/>
-                <Button x:Name="btnEdit" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" Content="تعديل" Style="{StaticResource ModernButtonStyle}" Width="120" Height="35" Visibility="{Binding visibalBtnEdit}" Click="btnEdit_Click"/>
+                <!-- Save and Edit Button -->
+                <Button x:Name="btnSave" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0"  Content="حفظ" Style="{StaticResource ModernButtonStyle}" Width="170" Height="37" Visibility="{Binding VisibleBtnSave}" Click="btnSave_Click"/>
+                <Button x:Name="btnEdit" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" Content="تعديل" Style="{StaticResource ModernButtonStyle}" Width="170" Height="37" Visibility="{Binding VisibleBtnEdit}" Click="btnEdit_Click"/>
             </Grid>
 
             <!-- PersonCardInfo -->
