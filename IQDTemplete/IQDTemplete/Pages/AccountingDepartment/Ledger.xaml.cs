@@ -5,9 +5,7 @@ using System.Windows.Input;
 
 namespace Interface.Pages
 {
-    /// <summary>
-    /// Interaction logic for Ledger.xaml
-    /// </summary>
+    
     public partial class Ledger : Page
     {
         public Ledger()
