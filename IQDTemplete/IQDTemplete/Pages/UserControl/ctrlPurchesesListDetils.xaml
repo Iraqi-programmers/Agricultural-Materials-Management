@@ -94,24 +94,26 @@
                         <!--متغيرات القائمة-->
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1">
                             <!-- رقم القائمة -->
-                            <TextBlock x:Name="ListNum" Style="{StaticResource CustomText}" Text="{Binding ListNumber }" />
+                            <TextBlock x:Name="ListNum" Style="{StaticResource CustomText}" Text="{Binding SelectedListInfo.ListNum }" />
 
                             <!-- اسم المورد -->
-                            <TextBlock  Style="{StaticResource CustomText}" HorizontalAlignment="Right">
-                                <Hyperlink x:Name="SupplierName" Click="SupplierName_Click" TextDecorations="None"  ToolTip="عرض تفاصيل المورد">علي صالح</Hyperlink>
+                            <TextBlock Style="{StaticResource CustomText}" HorizontalAlignment="Right">
+                                <Hyperlink x:Name="SupplierName" Click="SupplierName_Click" TextDecorations="None" ToolTip="عرض تفاصيل المورد">
+                                    <Run Text="{Binding SelectedListInfo.SupplierName}"/>
+                                </Hyperlink>
                             </TextBlock>
 
                             <!-- التاريخ -->
-                            <TextBlock x:Name="ListDate"  Style="{StaticResource CustomText}" Text="{Binding ListDate}" />
+                            <TextBlock x:Name="ListDate"  Style="{StaticResource CustomText}" Text="{Binding SelectedListInfo.ListDate}" />
 
                             <!-- المبلغ الكلي -->
-                            <TextBlock x:Name="TotleListPrice" Style="{StaticResource CustomText}" Text="{Binding TotalListAmount}" />
+                            <TextBlock x:Name="TotleListPrice" Style="{StaticResource CustomText}" Text="{Binding SelectedListInfo.TotalListAmount}" />
 
                             <!-- المبلغ المدفوع -->
-                            <TextBlock x:Name="TotalPaid" Style="{StaticResource CustomText}" Text="{Binding ParidAmount}" />
+                            <TextBlock x:Name="TotalPaid" Style="{StaticResource CustomText}" Text="{Binding SelectedListInfo.ParidAmount}" />
 
                             <!-- هل القائمة مدانه -->
-                            <TextBlock x:Name="txtIsDebt" Style="{StaticResource CustomText}" Text="{Binding IsDebt}" />
+                            <TextBlock x:Name="txtIsDebt" Style="{StaticResource CustomText}" Text="{Binding SelectedListInfo.IsDebt}" />
 
 
                         </StackPanel>
@@ -161,22 +163,22 @@
                         <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" >
                             
                             <!-- نوع المنتج -->
-                            <TextBlock x:Name="txtProductName" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.ProductType, ElementName=dgvProdect, Mode=TwoWay}"/>
+                            <TextBlock x:Name="txtProductName" Style="{StaticResource CustomText}" Text="{Binding SelectedProduct.ProductType, Mode=TwoWay}"/>
                            
                             <!-- السعر -->
-                            <TextBlock x:Name="txtProductPrice" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.Price, ElementName=dgvProdect, Mode=TwoWay}" />
+                            <TextBlock x:Name="txtProductPrice" Style="{StaticResource CustomText}" Text="{Binding SelectedProduct.Price,  Mode=TwoWay}" />
 
                             <!-- الكمية -->
-                            <TextBlock x:Name="txtQuantity" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.Quantity, ElementName=dgvProdect, Mode=TwoWay}" />
+                            <TextBlock x:Name="txtQuantity" Style="{StaticResource CustomText}" Text="{Binding SelectedProduct.Quantity,  Mode=TwoWay}" />
 
                             <!-- السعر الكلي -->
-                            <TextBlock x:Name="txtTotalPrice" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.TotalPrice, ElementName=dgvProdect, Mode=TwoWay}" />
+                            <TextBlock x:Name="txtTotalPrice" Style="{StaticResource CustomText}" Text="{Binding SelectedProduct.TotalPrice, Mode=TwoWay}" />
 
                             <!-- تاريخ الضمان -->
-                            <TextBlock x:Name="txtWarraintyDate" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.WarrintyDate, ElementName=dgvProdect, Mode=TwoWay}" />
+                            <TextBlock x:Name="txtWarraintyDate" Style="{StaticResource CustomText}" Text="{Binding SelectedProduct.WarrintyDate,  Mode=TwoWay}" />
 
                             <!-- الحالة -->
-                            <TextBlock x:Name="txtStutes" Style="{StaticResource CustomText}" Text="{Binding SelectedItem.Status, ElementName=dgvProdect, Mode=TwoWay}" />
+                            <TextBlock x:Name="txtStutes" Style="{StaticResource CustomText}" Text="{Binding SelectedProduct.Status, Mode=TwoWay}" />
 
 
                         </StackPanel>
@@ -188,7 +190,7 @@
 
             <!-- DataGrid للقوائم الفرعية -->
             <DataGrid Grid.Row="1" x:Name="dgvProdect"
-                      FlowDirection="{DynamicResource SPAppFlowDirection}"
+                     
                       AutoGenerateColumns="False"
                       HeadersVisibility="Column"
                       IsReadOnly="True"
@@ -201,12 +203,13 @@
                       Margin="10"
                       FontSize="16"
                       FontFamily="Segoe UI"
-                      ItemsSource="{Binding ProdectList}"
+                      ItemsSource="{Binding ObProdectInfo}"
                       SelectedItem="{Binding SelectedProduct ,Mode=TwoWay}"
                       MouseLeftButtonUp="DataGrid_MouseLeftButtonUp"
+                      SelectedIndex="0"
                       >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="رقم القائمة" Binding="{Binding ListNum}" Width="*" MinWidth="100"/>
+                    <DataGridTextColumn Header="رقم القائمة" Binding="{Binding ListProdectDetilsId}" Width="*" MinWidth="100"/>
                     <DataGridTextColumn Header="نـوع المنتج" Width="*" MinWidth="150" Binding="{Binding ProductType}"/>
                     <DataGridTextColumn Header="حالة المنتج" Binding="{Binding Status}" Width="*" MinWidth="120"/>
                     <DataGridTextColumn Header="العـدد" Width="*" MinWidth="80" Binding="{Binding Quantity }"/>

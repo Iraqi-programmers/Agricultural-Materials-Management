@@ -3,11 +3,8 @@ using Interface.Pages.UserControl;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace Interface.Pages.AccountingDepartment
 {
@@ -157,6 +154,7 @@ namespace Interface.Pages.AccountingDepartment
 
         private void MenuItem_Export_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("ستتوفر هذه الميزة قريبا..", "قريبا", MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
 

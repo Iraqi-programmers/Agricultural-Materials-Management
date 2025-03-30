@@ -8,7 +8,7 @@
              d:DesignHeight="335" d:DesignWidth="400"
              FlowDirection="{DynamicResource AppFlowDirection}" 
              Background="{DynamicResource PrimaryBackgroundColor}"
-             Loaded="UserControl_Loaded">
+             >
 
     <UserControl.Resources>
         <Style x:Key="txtBlock" TargetType="TextBlock">
@@ -16,8 +16,8 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="FontWeight" Value="ExtraLight"></Setter>
-            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Normal"></Setter>
+            <Setter Property="FontSize" Value="16"/>
 
         </Style>
 
@@ -29,6 +29,8 @@
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="Width" Value="290"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Normal"/>
         </Style>
     </UserControl.Resources>
     
@@ -100,7 +102,7 @@
                 
                  <!-- Is Person -->
                  <TextBlock Text="هل هو شخص" Grid.Row="4" Grid.Column="0" Style="{StaticResource txtBlock}"/>
-                 <CheckBox x:Name="chkIsPerson" Grid.Row="4" Grid.Column="1" Style="{StaticResource ToggleButtonStyle}" Margin="5"  HorizontalAlignment="Left"/>
+                 <CheckBox x:Name="chkIsPerson" Grid.Row="4" Grid.Column="1" Style="{StaticResource ToggleButtonStyle}" Margin="5,5,0,0"  Background="Black"  HorizontalAlignment="Left"/>
                 
                  <!-- Phone Number -->
                  <TextBlock Text="رقم الهاتف" Grid.Row="5" Grid.Column="0" Style="{StaticResource txtBlock}"/>

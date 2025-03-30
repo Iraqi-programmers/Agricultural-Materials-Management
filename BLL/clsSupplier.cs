@@ -18,7 +18,7 @@ namespace BLL
             Address = address;
         }
 
-        private clsSupplier(int supplierId, string supplierName, string phone, bool isPerson, string address)
+        internal clsSupplier(int supplierId, string supplierName, string phone, bool isPerson, string address)
         {
             Id = supplierId;
             SupplierName = supplierName;
@@ -74,11 +74,12 @@ namespace BLL
         internal static clsSupplier FetchSupplierData(ref Dictionary<string, object> dict)
         {
             return new clsSupplier(
-                (int)dict["SupplierID"],
+                (int)dict["SupllierID"],
                 (string)dict["SupplierName"],
                 (string)dict["Phone"],
                 (bool)dict["IsPerson"],
                 (string)dict["Address"]
+
             );
         }
     }
