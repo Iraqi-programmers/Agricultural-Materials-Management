@@ -2,22 +2,19 @@
 using Interface.Pages.AccountingDepartment;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using static Interface.Pages.UserControl.ctrlPurchesesListDetils;
 
 namespace Interface.Pages.UserControl
 {
    
     public partial class ctrlPurchesesListDetils : System.Windows.Controls.UserControl ,INotifyPropertyChanged
     {
-        public class PageInfo : INotifyPropertyChanged
+        public class ListInfo : INotifyPropertyChanged
         {
-            public event PropertyChangedEventHandler? PropertyChanged;
             //تفاصيل القائمة
             private string _ListNum;
             private string _supplierName;
@@ -26,16 +23,7 @@ namespace Interface.Pages.UserControl
             private string _paidAmount;
             private int _userID;
             private string _IsDebt;
-            //تفاصيل المنتج
-            private string _productType;
-            private string _totalPrice;
-            private string _price;
-            private string _quantity;
-            private string _warrantyDate;
-            private string _Status;
-
-
-
+           
 
             public string IsDebt
             {
@@ -47,69 +35,11 @@ namespace Interface.Pages.UserControl
                 }
             }
 
-            public string Status
-            {
-                get { return _Status; }
-                set { _Status = value; OnPropertyChanged(nameof(Status)); }
-            }
-
             public string ListNum
             {
                 get { return _ListNum; }
                 set { _ListNum = value; OnPropertyChanged(nameof(ListNum)); }
             }
-
-            public string ProductType
-            {
-                get => _productType;
-                set
-                {
-                    _productType = value;
-                    OnPropertyChanged(nameof(ProductType));
-                }
-            }
-
-            public string Price
-            {
-                get => _price;
-                set
-                {
-                    _price = value;
-                    OnPropertyChanged(nameof(Price));
-                }
-            }
-
-            public string Quantity
-            {
-                get => _quantity;
-                set
-                {
-                    _quantity = value;
-                    OnPropertyChanged(nameof(Quantity));
-                }
-            }
-
-            public string TotalPrice
-            {
-                get => _totalPrice;
-                set
-                {
-                    _totalPrice = value;
-                    OnPropertyChanged(nameof(TotalPrice));
-                }
-            }
-
-            public string WarrintyDate
-            {
-                get => _warrantyDate;
-                set
-                {
-                    _warrantyDate = value;
-                    OnPropertyChanged(nameof(WarrintyDate));
-                }
-            }
-
-          
 
             public string SupplierName
             {
@@ -161,21 +91,106 @@ namespace Interface.Pages.UserControl
                 }
             }
 
+            public event PropertyChangedEventHandler? PropertyChanged;
+
             protected void OnPropertyChanged(string propertyName)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
-        public ObservableCollection<PageInfo> ProdectList { get; set; } = new ObservableCollection<PageInfo>();
+        public class ProdectInfo:INotifyPropertyChanged
+        {
+            //تفاصيل المنتج
+            private string _productType;
+            private string _totalPrice;
+            private string _price;
+            private string _quantity;
+            private string _warrantyDate;
+            private string _Status;
+            private string _ListProdectDetils;
+
+
+
+            public string ListProdectDetilsId
+            {
+                get { return _ListProdectDetils; }
+                set { _ListProdectDetils = value; OnPropertyChanged(nameof(ListProdectDetilsId)); }
+            }
+
+            public string Status
+            {
+                get { return _Status; }
+                set { _Status = value; OnPropertyChanged(nameof(Status)); }
+            }
+
+            public string ProductType
+            {
+                get => _productType;
+                set
+                {
+                    _productType = value;
+                    OnPropertyChanged(nameof(ProductType));
+                }
+            }
+            
+            public string Price
+            {
+                get => _price;
+                set
+                {
+                    _price = value;
+                    OnPropertyChanged(nameof(Price));
+                }
+            }
+
+            public string Quantity
+            {
+                get => _quantity;
+                set
+                {
+                    _quantity = value;
+                    OnPropertyChanged(nameof(Quantity));
+                }
+            }
+
+            public string TotalPrice
+            {
+                get => _totalPrice;
+                set
+                {
+                    _totalPrice = value;
+                    OnPropertyChanged(nameof(TotalPrice));
+                }
+            }
+
+            public string WarrintyDate
+            {
+                get => _warrantyDate;
+                set
+                {
+                    _warrantyDate = value;
+                    OnPropertyChanged(nameof(WarrintyDate));
+                }
+            }
+            public event PropertyChangedEventHandler? PropertyChanged;
+
+            protected void OnPropertyChanged(string propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private ListInfo _selectedListDetils;
+        private ProdectInfo _selectedProduct;
+
+        public ObservableCollection<ProdectInfo> ObProdectInfo { get; set; } = new();
        
+
         private clsPurchases? __Purchases = null;
-
         private int ? __PurchasesId = null;
-
         private Page __Page;
 
-        private PageInfo _selectedProduct;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged(string? PropName=null)
@@ -183,10 +198,24 @@ namespace Interface.Pages.UserControl
             PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(PropName));
         }
 
-        public PageInfo SelectedProduct
+        //خاص في ملف Xmal
+        public ProdectInfo SelectedProduct
         {
             get => _selectedProduct;
-            set { _selectedProduct = value; OnPropertyChanged(nameof(SelectedProduct)); }
+            set 
+            { 
+                _selectedProduct = value; 
+                OnPropertyChanged(nameof(SelectedProduct));
+            }
+        }
+        public ListInfo SelectedListInfo
+        {
+            get => _selectedListDetils;
+            set
+            {
+                _selectedListDetils = value;
+                OnPropertyChanged(nameof(SelectedListInfo));
+            }
         }
 
 
@@ -199,23 +228,64 @@ namespace Interface.Pages.UserControl
             Loaded += async (s, e) => await LoadListDetils();
         }
 
-        private void UserInfo_MouseDown(object sender, MouseButtonEventArgs e)
+        private async Task LoadListDetils()
         {
-           
-            MainGrid.Visibility = Visibility.Collapsed;
-            SubGrid.Children.Clear();
-            SubGrid.Children.Add(new ctrlUserCardInfo(ctrlUserCardInfo.Mod.View, __Purchases?.UserInfo?.Id ?? -1,this));
-            SubGrid.Visibility = Visibility.Visible;
-        }
+            try
+            {
+                __Purchases = await clsPurchases.GetByIdAsync(__PurchasesId ?? -1);
+                if (__Purchases == null)
+                    return;
 
-        private void SupplierName_Click(object sender, RoutedEventArgs e)
+                //تحميل تفاصيل القائمة الثابته
+                SelectedListInfo = new ListInfo()
+                {
+                    ListNum = __PurchasesId.ToString()!,
+                    ListDate = __Purchases.Date.ToString("yyyy/MM/dd"),
+                    TotalListAmount = __Purchases.TotalPrice.ToString(),
+                    ParidAmount=__Purchases.TotalPaid.ToString()!,
+                    IsDebt=__Purchases.IsDebt?"نعم":"لا",
+                    UserID=__Purchases.UserInfo!.Id!.Value,
+                    SupplierName=__Purchases.SupplierInfo.SupplierName
+                };
+
+                ObProdectInfo.Clear();
+
+                //تحميل الداتا الى الداتا جرد فيو 
+                foreach (var item in __Purchases.PurchaseDetailsList)
+                {
+                    ObProdectInfo.Add( new ProdectInfo()
+                    {
+                        ListProdectDetilsId=item.Id.ToString()!,
+                        ProductType=item.Product.ProductType.TypeName,
+                        Price=item.Price.ToString(),
+                        Quantity=item.Quantity.ToString(),
+                        TotalPrice=(item.Quantity * item.Price).ToString(),
+                        WarrintyDate=item.WarrantyDate.ToString("yyyy/MM/dd"),
+                        Status=item.Status
+
+                    });
+                }
+
+               
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"حدث خطأ أثناء تحميل البيانات: {ex.Message}", "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+       
+        private void UpdateSupplierName(string newName)
         {
-            MainGrid.Visibility = Visibility.Collapsed;
-            SubGrid.Children.Clear();
-            SubGrid.Children.Add(new ctrlSupplierCardInfo(ctrlSupplierCardInfo.Mod.View,__Purchases?.SupplierInfo.Id ?? -1,this));
-            SubGrid.Visibility = Visibility.Visible;
-        }
+            if (SupplierName.Inlines.Count > 0)
+            {
+                SupplierName.Inlines.Clear(); 
+            }
 
+            SupplierName.Inlines.Add(new Run(newName));
+        }
+        
         private void ReturnProcess()
         {
             //if (__UserControl != null)
@@ -233,67 +303,28 @@ namespace Interface.Pages.UserControl
             //    }
             //}
         }
-
-
-        private void UpdateSupplierName(string newName)
+        
+        
+        private void UserInfo_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (SupplierName.Inlines.Count > 0)
-            {
-                SupplierName.Inlines.Clear(); 
-            }
-
-            SupplierName.Inlines.Add(new Run(newName));
+           
+            MainGrid.Visibility = Visibility.Collapsed;
+            SubGrid.Children.Clear();
+            SubGrid.Children.Add(new ctrlUserCardInfo(ctrlUserCardInfo.Mod.View, __Purchases?.UserInfo?.Id ?? -1,this));
+            SubGrid.Visibility = Visibility.Visible;
         }
 
-        private async Task LoadListDetils()
+        private void SupplierName_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                __Purchases = await clsPurchases.GetByIdAsync(__PurchasesId ?? -1);
-                if (__Purchases == null)
-                    return;
-
-                ListNum.Text = __Purchases.Id.ToString();
-                UpdateSupplierName(__Purchases.SupplierInfo.SupplierName);
-                ListDate.Text = __Purchases.Date.ToString();
-                TotleListPrice.Text = __Purchases.TotalPrice.ToString();
-                TotalPaid.Text = __Purchases.TotalPaid.ToString();
-                _selectedProduct.IsDebt = __Purchases.IsDebt ? "نعم" : "لا";
-
-                LoadProdectDetiles();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"حدث خطأ أثناء تحميل البيانات: {ex.Message}", "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void LoadProdectDetiles()
-        {
-
-            foreach (var item in __Purchases!.PurchaseDetailsList)
-            {
-                var productInfo = new PageInfo
-                {
-                    ProductType = item.Product.ProductType.TypeName,
-                    Price = item.Price.ToString(),
-                    Quantity = item.Quantity.ToString(),
-                    TotalPrice = (item.Quantity * item.Price).ToString(),
-                    WarrintyDate = item.WarrantyDate.ToString(),
-                    ListNum = item.Id.ToString()!,
-                    Status = item.Status
-                };
-
-                ProdectList.Add(productInfo);
-            }
-
-           // dgvProdect.SetBinding(DataGrid.SelectedItemProperty, new Binding(nameof(SelectedProduct)) { Mode = BindingMode.TwoWay });
-
+            MainGrid.Visibility = Visibility.Collapsed;
+            SubGrid.Children.Clear();
+            SubGrid.Children.Add(new ctrlSupplierCardInfo(ctrlSupplierCardInfo.Mod.View,__Purchases?.SupplierInfo.Id ?? -1,this));
+            SubGrid.Visibility = Visibility.Visible;
         }
 
         private void DataGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //if (dgvProdect.SelectedItem is PageInfo selectedRow)
+            //if (dgvProdect.SelectedItem is ObListInfo selectedRow)
             //{
             //    txtProductName.Text = selectedRow.ProductType;
             //    txtProductPrice.Text = selectedRow.Price;

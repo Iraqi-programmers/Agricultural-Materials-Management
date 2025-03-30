@@ -1,8 +1,7 @@
-﻿using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using MyLib_DotNet.DatabaseExecutor;
 using Newtonsoft.Json;
-using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace DAL
 {
@@ -29,46 +28,49 @@ namespace DAL
 
             if (dict == null || dict.Count == 0) return null;
 
-            if (dict.ContainsKey("PurchaseJson") && dict["PurchaseJson"] != DBNull.Value)
-            {
-                string purchaseJson = dict["PurchaseJson"].ToString()!;
-                dict["PurchaseData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(purchaseJson) ?? new Dictionary<string, object>();
-            }
 
-            if (dict.ContainsKey("PurchaseDetailsJson") && dict["PurchaseDetailsJson"] != DBNull.Value)
-            {
-                string detailsJson = dict["PurchaseDetailsJson"].ToString()!;
-                dict["PurchaseDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
-            }
+            string JsoinResult = dict.Values.FirstOrDefault()?.ToString()!;
 
-            if (dict.ContainsKey("SupplierPaymentsJson") && dict["SupplierPaymentsJson"] != DBNull.Value)
-            {
-                string paymentsJson = dict["SupplierPaymentsJson"].ToString()!;
-                dict["SupplierPaymentsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(paymentsJson) ?? new List<Dictionary<string, object>>();
-            }
+            if(string.IsNullOrEmpty(JsoinResult)||JsoinResult == null) return null;
 
-            if (dict.ContainsKey("PersonJson") && dict["PersonJson"] != DBNull.Value)
+            try
             {
-                string personJson = dict["PersonJson"].ToString()!;
-                dict["PersonData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(personJson) ?? new Dictionary<string, object>();
+                var ResultDic = JsonConvert.DeserializeObject<Dictionary<string, object>> (JsoinResult);
+                if (ResultDic == null || ResultDic.Count == 0) return null;
+                
+                Dictionary<string, object> finalResult = new();
+
+                if (ResultDic.TryGetValue("PurchaseJson", out var PurchesesJson) && PurchesesJson != null) 
+                {
+                    finalResult["PurchaseData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(PurchesesJson.ToString()!)!;
+                }
+
+                if (ResultDic.TryGetValue("PurchaseDetailsJson", out var PurchaseDetails) && PurchaseDetails != null)
+                {
+                    finalResult["PurchaseDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object >>>(PurchaseDetails.ToString()!)!;
+                }
+
+                if (ResultDic.TryGetValue("SupplierPaymentsJson", out var SupplierPaymentsJson) && SupplierPaymentsJson != null)
+                {
+                    finalResult["SupplierPaymentsData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(SupplierPaymentsJson.ToString()!)!;
+                }
+
+                if (ResultDic.TryGetValue("PersonJson", out var PersonJson) && PersonJson != null)
+                {
+                    finalResult["PersonData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(PersonJson.ToString()!)!;
+                }
+
+                return finalResult;
             }
-            return dict;
+            catch (Exception )
+            {
+                return null;
+            }
+          
+           
         }
 
-        //public static async Task<Dictionary<string, object>?> GetByIdAsync(int purchaseId)
-        //{
-        //    var dict = await CRUD.GetByColumnValueAsync("SP_GetPurchaseWithDetailsById", "PurchaseID", purchaseId);
-
-        //    if (dict == null) return null;
-
-        //    if (dict.ContainsKey("PurchaseDetailsJson") && dict["PurchaseDetailsJson"] != DBNull.Value)
-        //    {
-        //        string detailsJson = dict["PurchaseDetailsJson"].ToString()!;
-        //        dict["PurchaseDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
-        //    }
-        //    return dict;
-        //}
-
+       
         public static async Task<DataTable?> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
         {
             SqlParameter[] parameters = 
@@ -79,60 +81,7 @@ namespace DAL
             return await CRUD.GetAllAsDataTableAsync("SP_GetPurchasesByDateRange", parameters);
         }
 
-
-        public static async Task<DataTable?> GetAllAsync()
-        {
-            IConfiguration _configuration;
-
-            var builder = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetCurrentDirectory())
-           .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            _configuration = builder.Build();
-
-
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-            // إعداد استعلام SQL
-            string storedProcedure = "SP_GetAllPurchases";
-
-            // إنشاء الاتصال بالقاعدة
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    // فتح الاتصال
-                    await connection.OpenAsync();
-
-                    // إنشاء الكوماند (الاستعلام)
-                    using (SqlCommand command = new SqlCommand(storedProcedure, connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-
-                        // استخدام SqlDataAdapter لتحميل البيانات
-                        SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
-
-                        // إنشاء DataTable لتخزين النتائج
-                        DataTable dataTable = new DataTable();
-
-                        // تعبئة الـ DataTable بالبيانات من الاستعلام
-                        await Task.Run(() => dataAdapter.Fill(dataTable));
-
-                        // إرجاع البيانات
-                        return dataTable;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // معالجة الاستثناءات (يمكنك إضافة سجل الأخطاء هنا)
-                    Console.WriteLine($"Error: {ex.Message}");
-                    return null;
-                }
-            }
-        }
-
-
-
-       //  public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchases");
+        public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllPurchases");
 
         public static async Task<bool> UpdateAsync(string details, DateTime purchaseDate, int? purchaseId, int? supplierId, double totalPrice, double? totalPaid, bool isDebt, int? userId)
         {

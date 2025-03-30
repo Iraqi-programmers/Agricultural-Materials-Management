@@ -78,33 +78,89 @@ namespace Interface.Pages.UserControl
             _mod = mod;
             __SupllierId = supllierID;
             _userControl = userControl;
-            MoodView();
+            LoadData();
         }
 
-       
-        private void EnableTextBox()
+
+        private async void LoadData()
         {
-            switch (_mod)
+            MoodView();
+            if ((_mod == Mod.View || _mod == Mod.Update) && (__SupllierId == null || __SupllierId == -1))
+                return;
+            else
             {
-                case Mod.View:
+
+                if (_mod == Mod.AddNew)
+                {
+                    __supplier = new clsSupplier(txtSupplierName.Text, txtPhoneNumber.Text, chkIsPerson.IsChecked ?? false, txtAddress.Text);
+                    return;
+                }
+
+                __supplier = await clsSupplier.GetByIdAsync(__SupllierId ?? -1);
+
+                if (__supplier == null)
+                    return;
+
+                txtSupplierName.Text = __supplier.SupplierName;
+                txtSupplierID.Text = __SupllierId.ToString();
+                txtAddress.Text = __supplier.Address;
+                txtPhoneNumber.Text = __supplier.Phone;
+                chkIsPerson.IsChecked = __supplier.IsPerson;
+
+            }
+        }
+        
+        private void MoodView()
+        {
+            switch(_mod)
+            {
+                case Mod.AddNew:
                     {
-                        txtAddress.IsReadOnly = true;
-                        txtPhoneNumber.IsReadOnly = true;
-                        txtSupplierName.IsReadOnly = true;
-                        chkIsPerson.IsEnabled = false;
+                        ProprteChange(" اضـافـة الـمـورد");
+
                     }
                     break;
 
-                default:
+                case Mod.Update:
                     {
-                        txtAddress.IsReadOnly = false;
-                        txtPhoneNumber.IsReadOnly = false;
-                        txtSupplierName.IsReadOnly = false;
-                        chkIsPerson.IsEnabled = true;
+                        ProprteChange("تحديث معلومات المورد");
+
+                    }
+                    break;
+
+                case Mod.View:
+                    {
+                        ProprteChange("معـلـومـات المـورد", Visibility.Collapsed, Visibility.Visible);
+
                     }
                     break;
             }
-           
+
+        }
+       
+        private void ProprteChange(string title,Visibility btnSave=Visibility.Visible,Visibility btnEdit = Visibility.Collapsed)
+        {
+            titleName = title;
+            visibalBtnEdit = btnEdit;
+            visibalBtnSave = btnSave;
+            EnableTextBox();
+        }
+       
+        private void EnableTextBox()
+        {
+            if (_mod == Mod.View)
+            {
+                txtAddress.IsReadOnly = true;
+                txtPhoneNumber.IsReadOnly = true;
+                txtSupplierName.IsReadOnly = true;
+                chkIsPerson.IsEnabled = false;
+                return;
+            }
+            txtAddress.IsReadOnly = false;
+            txtPhoneNumber.IsReadOnly = false;
+            txtSupplierName.IsReadOnly = false;
+            chkIsPerson.IsEnabled = true;
+
         }
 
         private void ReturnProcess()
@@ -125,45 +181,18 @@ namespace Interface.Pages.UserControl
                 }
             }
         }
+
+        private bool CheeckIfThereAnyChanged()
+        {
+            if (txtAddress.Text == __supplier?.Address &&
+                txtSupplierName.Text == __supplier.SupplierName &&
+                txtPhoneNumber.Text == __supplier.Phone &&
+                chkIsPerson.IsChecked == __supplier.IsPerson)
+                return true;
+
+            return false;
+        }
        
-        private void MoodView()
-        {
-            switch(_mod)
-            {
-                case Mod.AddNew:
-                    {
-                        ProprteChange(" اضـافـة الـمـورد");
-                        EnableTextBox();
-
-                    }
-                    break;
-
-                case Mod.Update:
-                    {
-                        ProprteChange("تحديث معلومات المورد");
-                        EnableTextBox();
-
-                    }
-                    break;
-
-                case Mod.View:
-                    {
-                        ProprteChange("معـلـومـات المـورد", Visibility.Collapsed, Visibility.Visible);
-                        EnableTextBox();
-
-                    }
-                    break;
-            }
-
-        }
-        
-        private void ProprteChange(string title,Visibility btnSave=Visibility.Visible,Visibility btnEdit = Visibility.Collapsed)
-        {
-            titleName = title;
-            visibalBtnEdit = btnEdit;
-            visibalBtnSave = btnSave;
-        }
-
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             _mod = Mod.Update;
@@ -172,7 +201,7 @@ namespace Interface.Pages.UserControl
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (txtAddress.Text == __supplier.Address && txtSupplierName.Text == __supplier.SupplierName && txtPhoneNumber.Text == __supplier.Phone && chkIsPerson.IsChecked == __supplier.IsPerson)
+            if(CheeckIfThereAnyChanged())
             {
                 ReturnProcess();
                 return;
@@ -189,15 +218,14 @@ namespace Interface.Pages.UserControl
                 if (_mod == Mod.AddNew)
                 {
                     MessageBox.Show("تم الاضــافة بنجاح", "تمت الاضافة");
-                    return;
 
                 }
                 else if (_mod == Mod.Update)
                 {
-                    MessageBox.Show("تم تحديث المعلومات بنجاح", "العملية تمت");
-                    return;
+                    MessageBox.Show("تم تحديث المعلومات بنجاح", "العملية تمت");  
                 }
                 ReturnProcess();
+                return;
             }
             else
                 MessageBox.Show("العملية فشلت ,لم يتم الحفظ بنجاح!!", "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -209,31 +237,5 @@ namespace Interface.Pages.UserControl
             ReturnProcess();
         }
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (_mod == Mod.View ||_mod==Mod.Update && __SupllierId == null || __SupllierId == -1)
-                return;
-            else
-            {
-
-                if (_mod == Mod.AddNew)
-                {
-                    __supplier = new clsSupplier(txtSupplierName.Text, txtPhoneNumber.Text, chkIsPerson.IsChecked ?? false, txtAddress.Text);
-                    return;
-                }
-
-                __supplier = await clsSupplier.GetByIdAsync(__SupllierId ?? -1);
-
-                if (__supplier == null)
-                    return;
-
-                txtSupplierName.Text = __supplier.SupplierName;
-                txtSupplierID.Text = __SupllierId.ToString();
-                txtAddress.Text= __supplier.Address;
-                txtPhoneNumber.Text = __supplier.Phone;
-                chkIsPerson.IsChecked = __supplier.IsPerson;
-
-            }
-        }
     }
 }

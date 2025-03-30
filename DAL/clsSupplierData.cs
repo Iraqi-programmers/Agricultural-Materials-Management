@@ -18,7 +18,7 @@ namespace DAL
             return await CRUD.AddAsync("SP_AddSupplier", parameters);
         }
 
-        public static async Task<Dictionary<string, object>?> GetByIdAsync(int supplierId) => await CRUD.GetByColumnValueAsync("SP_GetSupplierByID", "@SupplierID", supplierId);
+        public static async Task<Dictionary<string, object>?> GetByIdAsync(int supplierId) => await CRUD.GetByColumnValueAsync("SP_GetSupplierByID", "SupplierID", supplierId);
         public static async Task<Dictionary<string, object>?> GetByNameAsync(string supplierName) => await CRUD.GetByColumnValueAsync("SP_GetSupplierBySupplierName", "@SupplierName", supplierName);
         public static async Task<Dictionary<string, object>?> GetByPhoneAsync(string phone) => await CRUD.GetByColumnValueAsync("SP_GetSupplierByPhone", "@Phone", phone);
 

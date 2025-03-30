@@ -24,7 +24,7 @@ namespace BLL
             UserInfo = user;
         }
 
-        private clsPurchases(int purchasesId, List<clsPurchaseDetails> purchaseDetailsList, ref clsSupplier supplier, DateTime date, double totalPrice, bool isDebt, double? totalPaid, ref clsUsers user)
+        internal clsPurchases(int purchasesId, List<clsPurchaseDetails> purchaseDetailsList,  clsSupplier supplier, DateTime date, double totalPrice, bool isDebt, double? totalPaid,  clsUsers user)
         {
             Id = purchasesId;
             SupplierInfo = supplier;
@@ -63,49 +63,59 @@ namespace BLL
 
         public static async Task<bool> DeleteAsync(int purchaseId) => await clsPurchasesData.DeleteAsync(purchaseId);
 
-        //public async Task<bool> DeleteAsync() => await DeleteAsync(Id);
 
         internal static clsPurchases? FetchPurchaseData(ref Dictionary<string, object> dict)
         {
-            if (dict.ContainsKey("PurchaseData") && dict["PurchaseData"] is Dictionary<string, object> purchaseData)
+            try
             {
-                int id = (int)purchaseData["PurchaseID"]; 
+                var PurchaseData = (Dictionary<string, object>)dict["PurchaseData"];
+                int id = Convert.ToInt32(PurchaseData["PurchaseID"]);
 
-                clsSupplier supplier = new();
-                if (dict.ContainsKey("SupplierPaymentsData") && dict["SupplierPaymentsData"] is Dictionary<string, object> supplierData)
-                    supplier = clsSupplier.FetchSupplierData(ref supplierData);
+                List<clsPurchaseDetails> PurchaseDetilsList = new();
 
-                clsUsers user = new();
-                if (dict.ContainsKey("UserData") && dict["UserData"] is Dictionary<string, object> userData)
-                    user = clsUsers.FetchUserData(ref userData);
-
-                List<clsPurchaseDetails> purchaseDetailsList = new();
-                if (dict.ContainsKey("PurchaseDetailsData") && dict["PurchaseDetailsData"] is List<Dictionary<string, object>> detailsList)
+                if (dict.TryGetValue("PurchaseDetailsData", out var DetilsData) && DetilsData is List<Dictionary<string, object>> detilsList) 
                 {
-                    foreach (var detail in detailsList)
+
+                    foreach (var detail in detilsList)
                     {
-                        purchaseDetailsList.Add(new clsPurchaseDetails(
-                            id,
-                            clsProduct.FetchProductData(detail),
-                            (double)detail["Price"],
-                            (string)detail["Status"],
-                            (int)detail["Quantity"],
-                            (DateTime)detail["WarrantyDate"]
-                        ));
+                        PurchaseDetilsList.Add(new clsPurchaseDetails(
+                           Convert.ToInt32(detail["DetailID"]),
+                          new Product.clsProduct(Convert.ToInt32(detail["ProductID"]),
+                                    new clsCompany(Convert.ToInt32(detail["CompanyID"]), detail["Name"].ToString()!),
+                                    new clsProductType(Convert.ToInt32(detail["TypeID"]), detail["TypeName"].ToString()!),
+                                    new clsSize(Convert.ToInt32(detail["SizeID"]), Convert.ToDouble(detail["Size"])),
+                                    new clsThickness(Convert.ToInt32(detail["ThicknessID"]), Convert.ToDouble(detail["Thickness"])),
+                                    new clsWarrinty(Convert.ToInt32(detail["WarrintyID"]), Convert.ToUInt16(detail["Period"]))),
+                          (double)detail["Price"],
+                          (string)detail["Status"],
+                          Convert.ToInt32(detail["Quantity"]),
+                          (DateTime)Convert.ToDateTime(detail["WarrantyDate"])
+                       ));
+
                     }
                 }
+
+              
                 return new clsPurchases(
                     id,
-                    purchaseDetailsList,
-                    ref supplier,
-                    (DateTime)purchaseData["Date"],
-                    (double)purchaseData["TotalPrice"],
-                    (bool)purchaseData["IsDebt"],
-                    purchaseData.ContainsValue("TotalPaid") ? (double)purchaseData["TotalPaid"] : null,
-                    ref user
+                    PurchaseDetilsList,
+                     new  clsSupplier(Convert.ToInt32(PurchaseData["SupllierID"]), PurchaseData["SupplierName"].ToString()!, PurchaseData["SupplierPhone"].ToString()!,
+                    (bool)PurchaseData["IsPerson"], PurchaseData["SupplierAddress"].ToString()!),
+                    (DateTime)Convert.ToDateTime(PurchaseData["PurchaseDate"]),
+                    (double)PurchaseData["TotalPrice"],
+                    (bool)PurchaseData["IsDebt"],
+                    (double?)PurchaseData["TotalPaid"],
+                    clsUsers.FetchUserData(ref PurchaseData)
                 );
+
+
             }
-            return null;
+            catch (Exception)
+            {
+                return null;
+            }
+
+            
         }
     }
 }

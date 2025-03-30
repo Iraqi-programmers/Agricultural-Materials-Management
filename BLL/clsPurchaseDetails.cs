@@ -15,6 +15,7 @@ namespace BLL
 
         public clsPurchaseDetails(clsProduct product, double price, string status, int quantity, DateTime warrantyDate)
         {
+            
             Product = product;
             Price = price;
             Status = status;
@@ -22,9 +23,9 @@ namespace BLL
             WarrantyDate = warrantyDate;
         }
 
-        internal clsPurchaseDetails(int purchaseId, clsProduct product, double price, string status, int quantity, DateTime warrantyDate)
+        internal clsPurchaseDetails(int purchaseDetilsId, clsProduct product, double price, string status, int quantity, DateTime warrantyDate)
         {
-            PurchaseId = purchaseId;
+            Id = purchaseDetilsId;
             Product = product;
             Price = price;
             Status = status;
