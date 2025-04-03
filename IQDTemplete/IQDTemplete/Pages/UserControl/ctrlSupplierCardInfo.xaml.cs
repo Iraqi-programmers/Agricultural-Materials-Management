@@ -78,6 +78,7 @@ namespace Interface.Pages.UserControl
             _mod = mod;
             __SupllierId = supllierID;
             _userControl = userControl;
+            chkIsPerson.ApplyTemplate();
             LoadData();
         }
 

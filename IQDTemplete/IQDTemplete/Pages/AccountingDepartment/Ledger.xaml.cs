@@ -24,5 +24,10 @@ namespace Interface.Pages
             NavigationService?.Navigate(new ViewPurchasesList());
 
         }
+
+        private void Debts_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService?.Navigate(new ViewDebtsLists());
+        }
     }
 }

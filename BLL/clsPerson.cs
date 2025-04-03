@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using DAL;
 
 namespace BLL
@@ -77,15 +78,15 @@ namespace BLL
         public static async Task<bool> DeleteByNationalNumAsync(string nationalNum) => await clsPersonData.DeleteByNationalNumAsync(nationalNum);
 
         public async Task<bool> DeleteAsync() => await DeleteByIdAsync(Id);
-        
+
         internal static clsPerson FetchPersonData(ref Dictionary<string, object> dict)
         {
             return new clsPerson(
                 Convert.ToInt32(dict["PersonID"]),
                 (string)dict["UserFullName"],
-                dict.ContainsValue("UserNationalNum") ?  null: (string)dict["UserNationalNum"],
-                dict.ContainsValue("UserPhoneNumber") ? null : (string)dict["UserPhoneNumber"] ,
-                dict.ContainsValue("UserAddress") ? null : (string)dict["UserAddress"]
+                dict.ContainsKey("UserNationalNum") ? dict["UserNationalNum"].ToString() : "Not Set",
+                dict.ContainsKey("UserPhoneNumber") ? dict["UserPhoneNumber"].ToString() : "Not Set",
+                dict.ContainsKey("UserAddress") ? dict["UserAddress"].ToString() : "Not Set"
             );
         }
     }
