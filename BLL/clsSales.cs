@@ -111,7 +111,6 @@ namespace BLL
                 }
 
 
-
                 return new clsSales(
                     id,
                     salesDetailsList,
@@ -121,7 +120,7 @@ namespace BLL
                     Convert.ToBoolean(salesData["IsDebt"]),
                     Convert.ToDouble(salesData["TotalProfit"]),
                     (Double?)Convert.ToDouble(salesData["PaidAmount"]),
-                    new clsPerson(Convert.ToInt32(salesData["PersonID"]), salesData["PersonFullName"].ToString()!, salesData["PersonNationalNum"].ToString(), salesData["PersonPhoneNumber"].ToString(), salesData["PersonAddress"].ToString())
+                    clsPerson.FetchPersonData(ref userData)
                 );
             }catch(Exception ex)
             {
