@@ -28,7 +28,7 @@ namespace DAL
         }
 
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int userId)
-            => await CRUD.GetByColumnValueAsync("SP_GetAllUsers", "UserID", userId);
+            => await CRUD.GetByColumnValueAsync("SP_GetUsersByID", "UserID", userId);
 
         public static async Task<Dictionary<string, object>?> GetByUserNameAsync(string userName) 
             => await CRUD.GetByColumnValueAsync("SP_GetAllUsers", "UserName", userName);

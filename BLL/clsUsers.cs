@@ -19,10 +19,11 @@ namespace BLL
             Person = person;
         }
 
-        private clsUsers(int? userId, string userName, bool isActive, clsPerson person)
+        private clsUsers(int? userId, string userName, bool isActive,string? password, clsPerson person)
         {
             Id = userId;
             UserName = userName;
+            Password = password;
             IsActive = isActive;
             Person = person;
         }
@@ -64,11 +65,14 @@ namespace BLL
 
         internal static clsUsers FetchUserData(ref Dictionary<string, object> dict)
         {
+            string? password = dict.TryGetValue("Password", out var p) ? p?.ToString() : null;
+
             return new clsUsers(
-                (int)dict["UserID"],
+                Convert.ToInt32(dict["UserID"]),
                 (string)dict["UserName"],
                 (bool)dict["IsActive"],
-                clsPerson.FetchPersonData(ref dict)
+                password ,
+            clsPerson.FetchPersonData(ref dict)
             );
         }
     }

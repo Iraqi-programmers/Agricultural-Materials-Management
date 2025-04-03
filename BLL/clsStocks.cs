@@ -21,7 +21,7 @@ namespace BLL
             SellingPrice = sellingPrice;
         }
 
-        private clsStocks(int stockId, int quantity, string status, double purchasePrice, double sellingPrice, clsProduct productInfo)
+        internal clsStocks(int stockId, int quantity, string status, double purchasePrice, double sellingPrice, clsProduct productInfo)
         {
             Id = stockId;
             Quantity = quantity;
@@ -61,14 +61,20 @@ namespace BLL
 
         internal static clsStocks FetchStockData(ref Dictionary<string, object> dict)
         {
-            return new clsStocks(
+            //if (dict.TryGetValue("SalesDetailsData", out var detailsData) && detailsData is List<Dictionary<string, object>> detailsList)
+            //{
+            //    foreach (var detail in detailsList)
+            //    {
+                    return new clsStocks(
                 (int)dict["StiockID"],
                 (int)dict["Quantity"],
                 (string)dict["Status"],
                 (double)dict["PurchasePrice"],
                 (double)dict["SellingPrice"],
-                clsProduct.FetchProductData(dict) 
+                clsProduct.FetchProductData(dict)
             );
+                
+            
         }
     }
 }

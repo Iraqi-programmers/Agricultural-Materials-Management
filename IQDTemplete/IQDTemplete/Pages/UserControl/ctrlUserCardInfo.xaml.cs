@@ -1,38 +1,246 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using BLL;
+using Interface.Helper;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Interface.Pages.UserControl
 {
     /// <summary>
     /// Interaction logic for ctrlUserCardInfo.xaml
     /// </summary>
-    public partial class ctrlUserCardInfo : System.Windows.Controls.UserControl
+    public partial class ctrlUserCardInfo : System.Windows.Controls.UserControl ,INotifyPropertyChanged
     {
-        public ctrlUserCardInfo()
+       public enum Mod { AddNew,Update,View};
+       public Mod mod;
+
+        private ctrlPersonCardInfo? ctrlPersonCard {  get; set; }
+
+        private int? __UserId = null;
+
+        private int? __PersonId;
+
+        private clsUsers? __UserInfo = null;
+
+        private System.Windows.Controls.UserControl _UserControlCall;
+
+
+        private string? __title;
+        public string?  Title
+        {
+            get { return __title; }
+            set 
+            { 
+                __title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+
+            
+        private Visibility __visibleBtnEdit;
+        public Visibility VisibleBtnEdit
+        {
+            get { return __visibleBtnEdit; }
+            set 
+            { __visibleBtnEdit = value;
+                OnPropertyChanged(nameof(VisibleBtnEdit));
+            }
+        }
+
+        
+        private Visibility __VisblteBtnSave;
+        public Visibility VisibleBtnSave
+        {
+            get { return __VisblteBtnSave; }
+            set 
+            { 
+                __VisblteBtnSave = value;
+                OnPropertyChanged(nameof(VisibleBtnSave));
+            }
+        }
+
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+        public ctrlUserCardInfo(Mod mod,int userId, System.Windows.Controls.UserControl purchesesListDetils)
         {
             InitializeComponent();
+            DataContext = this;
+            __UserId = userId;
+            this.mod = mod;
+            _UserControlCall = purchesesListDetils;
         }
 
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        private void LoadPersonCardUI()
         {
+            var mode = mod == Mod.View ? ctrlPersonCardInfo.Mod.View :
+            mod == Mod.Update ? ctrlPersonCardInfo.Mod.Update :
+                                ctrlPersonCardInfo.Mod.AddNew;
+
+            ctrlPersonCard = new ctrlPersonCardInfo(mode, __PersonId);
+
+
+            ctrlPersonCard.btnSave.Visibility = Visibility.Collapsed;
+            ctrlPersonCard.btnEdit.Visibility = Visibility.Collapsed;
+            ctrlPersonCard.btnClose.Visibility = Visibility.Collapsed;
+            PersonInfoGrid.Children.Add(ctrlPersonCard);
+            PersonInfoGrid.Visibility = Visibility.Visible;
+
+        }
+       
+        private async Task LoadUserCradInfo()
+        {
+            if (mod == Mod.View || mod == Mod.Update)
+            {
+                if (__UserId == -1 || __UserId == null)
+                    return;
+
+                __UserInfo = await clsUsers.GetByIdAsync(__UserId ?? -1);
+                if (__UserInfo == null)
+                    return;
+
+                txtUsername.Text = __UserInfo.UserName;
+                txtPassword.Password = __UserInfo.Password;
+                __PersonId = __UserInfo?.Person?.Id;
+                chkIsActive.IsChecked =  __UserInfo!.IsActive? chkIsActive.IsChecked=true : false;
+                return;
+            }
+            __UserInfo = new clsUsers(txtUsername.Text,txtPassword.Password,new clsPerson(""));
+
+           
 
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private void ChangeVisblteText()
         {
+            if(mod==Mod.View)
+            {
+                txtPassword.IsEnabled = false;
+                txtUsername.IsReadOnly = true;
+                chkIsActive.IsEnabled = false;
+                return;
+            }
+            txtUsername.IsReadOnly = false;
+            txtPassword.IsEnabled = true;
+            chkIsActive.IsEnabled = true;
 
+        }
+
+        private void ChangeProperties(Visibility btnSave,Visibility btnEdit,string Title)
+        {
+            VisibleBtnSave=btnSave;
+            VisibleBtnEdit=btnEdit;
+            this.Title = Title;
+            ChangeVisblteText();
+        }
+
+        private async Task ModUIView()
+        {
+            await LoadUserCradInfo();
+
+            switch (mod)
+            {
+                case Mod.AddNew:
+                    {
+                        ChangeProperties(Visibility.Visible, Visibility.Collapsed, "اضافة مستخدم جديد");
+                    }
+                    break;
+                
+                case Mod.Update:
+                    {
+                        ChangeProperties(Visibility.Visible, Visibility.Collapsed, "تعـديل بيانات التسجيل");
+
+                    }
+                    break;
+                
+                case Mod.View:
+                    {
+                        ChangeProperties(Visibility.Collapsed, Visibility.Visible, "بيانات المستخدم");
+
+                    }
+                    break;
+            }
+        }
+
+
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            await ModUIView();  
+          // await LoadUserCradInfo();
+            LoadPersonCardUI();
+
+        }
+        
+        private async void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            btnEdit.Visibility = Visibility.Collapsed;
+            btnSave.Visibility = Visibility.Visible;
+            mod = Mod.Update;
+            await ModUIView();
+            ctrlPersonCard!._mod = ctrlPersonCardInfo.Mod.Update;
+            await ctrlPersonCard.ChooseMode();
+
+        }
+
+        private async void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (!clsValidationHelper.IsNotEmpty(txtUsername.Text) ||
+                !clsValidationHelper.IsNotEmpty(txtPassword.Password))
+            {
+                MessageBox.Show("الرجاء إدخال اسم المستخدم وكلمة المرور.", "تنبيه",MessageBoxButton.OK,MessageBoxImage.Warning);
+                return;
+            }
+
+            if (__UserInfo == null) return;
+
+            bool isUpdated = txtUsername.Text != __UserInfo.UserName ||
+                             txtPassword.Password != __UserInfo.Password;
+
+            if (isUpdated)
+            {
+                __UserInfo.UserName = txtUsername.Text;
+                __UserInfo.Password = txtPassword.Password;
+                __UserInfo.IsActive = chkIsActive.IsChecked ?? true;
+
+                if (!await __UserInfo.SaveAsync())
+                {
+                    MessageBox.Show(mod == Mod.AddNew ? "تم الإضافة بنجاح" : "تم التحديث بنجاح", "تم");
+                }
+                else
+                {
+                    MessageBox.Show("لم يتم حفظ البيانات!!", "خطأ");
+                }
+            }
+
+            ctrlPersonCard?.btnSave_Click(sender, e);
+
+            btnClose_Click(sender, e);
+
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+          //  this.Visibility= Visibility.Collapsed;
+            if(_UserControlCall is ctrlPurchesesListDetils ctrlPurchesesListDetils)
+            {
+                ctrlPurchesesListDetils.MainGrid.Visibility= Visibility.Visible;
+                ctrlPurchesesListDetils.SubGrid.Visibility = Visibility.Collapsed;
+
+            }
+
+            if(_UserControlCall is ctrlSalesListDetails ctrlSalesListDetails)
+            {
+                ctrlSalesListDetails.LoadDataAsync();
+                ctrlSalesListDetails.MainGrid.Visibility= Visibility.Visible;
+                ctrlSalesListDetails.SubGrid.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

@@ -8,85 +8,111 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ViewSalesList"
       FlowDirection="{DynamicResource AppFlowDirection}"
+      Background="{DynamicResource PrimaryBackgroundColor}"
       >
+
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Page.Resources>
+    
     <Grid>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        
-        <Grid.Resources>
-            <!-- CollectionViewSource للفلترة -->
-            <CollectionViewSource x:Key="FilteredInvoices" Source="{Binding Invoices}" Filter="CollectionViewSource_Filter" />
-        </Grid.Resources>
+        <Grid x:Name="MainGrid">
 
-        <TextBlock Text="قائمة المبيعات" Grid.Row="0"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+
+            <!--Close BTN-->
+            <Button x:Name="btnClose"
+                    Margin="3"
+                    Grid.ColumnSpan="2"
+                    Style="{StaticResource IconButtonsStyle}"
+                    Content="{DynamicResource close}" 
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="btnClose_Click"
+                    Tag="IsCloseButton"
+                      />
+
+
+            <TextBlock Text="قائمة المبيعات" Grid.Row="0"
                  FontSize="35"
                  FontWeight="ExtraLight"
                  Foreground="{DynamicResource PrimaryTextColor}"
                  Margin="5,0,0,10"
+                 HorizontalAlignment="Center"
                   />
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch"> 
-        <ComboBox x:Name="FilterComboBox" 
+            <StackPanel Orientation="Horizontal" Grid.Row="1" >
+
+                <ComboBox x:Name="FilterComboBox" 
              Width="200"
              Height="40"
              FontSize="16"
              Padding="55,8,0,0"
-             Margin="4,12,0,11"
+             Margin="4,12,0,10"
              FontWeight="ExtraLight"
-             SelectedIndex="0">
-            <ComboBoxItem Content="أسم المستخدم"/>
-            <ComboBoxItem Content="تاريخ القائمة" />
-            <ComboBoxItem Content="ربح القائمة" />
-            <ComboBoxItem Content="المبلغ الكلي" />
-            <ComboBoxItem Content="اسم الزبون" />
-        </ComboBox>
-        </StackPanel>
+             SelectedIndex="0"
+             SelectionChanged="FilterComboBox_SelectionChanged"
+                      >
 
-        <TextBox x:Name="SearchTextBox" Grid.Row="1"
+                    <ComboBoxItem Content="رقم القائمة"/>
+                    <ComboBoxItem Content="تاريخ القائمة" />
+                    <ComboBoxItem Content="المبلغ الكلي" />
+                    <ComboBoxItem Content="اسم الزبون" />
+                </ComboBox>
+
+                <TextBox x:Name="SearchTextBox"
              Width="300"
              Height="40"
+             Style="{StaticResource ModernTextBoxStyle}"
              FontSize="15"
-             Padding="10"
+             Padding="5"
              FontWeight="ExtraLight"
              TextAlignment="Center"
-             VerticalAlignment="Stretch"
-             HorizontalAlignment="Left"
              TextChanged="SearchTextBox_TextChanged"
-             Margin="205,1,0,0"
+             Margin="5,1,0,0"
              ToolTip="{Binding SelectedItem.Content, ElementName=FilterComboBox, StringFormat='بحث باستخدام {0}'}"                         >
 
-        </TextBox>
+                </TextBox>
 
-        <!-- DataGrid -->
-            <DataGrid x:Name="InvoiceDataGrid" Grid.Row="2" FlowDirection="{DynamicResource SPAppFlowDirection}"
-                      AutoGenerateColumns="False"
-                      HeadersVisibility="Column"
-                      IsReadOnly="True"
-                      SelectionMode="Single"
-                      SelectionUnit="FullRow"
-                      GridLinesVisibility="Horizontal"
-                      RowBackground="White"
-                      AlternatingRowBackground="#FF97ACCE"
-                      BorderThickness="1"
-                      Margin="2,5,2,0"
-                      FontSize="20"
-                      ItemsSource="{Binding Source={StaticResource FilteredInvoices}}">
+            </StackPanel>
 
-                <!-- الأعمدة -->
-                <DataGrid.Columns>
-                <DataGridTextColumn Header="اسم المستخدم" Binding="{Binding UserName}" Width="*" />
-                    <DataGridTextColumn Header="تاريخ القائمة" Binding="{Binding InvoiceDate}" Width="*" />
-                    <DataGridTextColumn Header="المبلغ الكلي" Binding="{Binding TotalAmount}" Width="*" />
-                    <DataGridTextColumn Header="اسم الزبون" Binding="{Binding CustomerName}" Width="*" />
-                    <DataGridTextColumn Header="رقم القائمة" Binding="{Binding LisrNum}" Width="*" />
+            <ProgressBar IsIndeterminate="True"  Grid.Row="2" Foreground="Black"
+                     Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                     Height="6" VerticalAlignment="Top"/>
+        
+            <!-- DataGrid -->
+            <DataGrid x:Name="InvoiceDataGrid" Grid.Row="3" FlowDirection="{StaticResource SPAppFlowDirection}"               
+                  AutoGenerateColumns="False"                 
+                  HeadersVisibility="Column"                    
+                  IsReadOnly="True"                   
+                  SelectionMode="Single"                 
+                  SelectionUnit="FullRow"                    
+                  GridLinesVisibility="Horizontal"
+                  RowBackground="White"                     
+                  AlternatingRowBackground="#FF97ACCE"                     
+                  BorderThickness="1" 
+                  Margin="2,5,2,0"    
+                  FontSize="20"    
+                  ItemsSource="{Binding Invoices}"
+                  >
 
+                 <!-- الأعمدة -->
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="تاريخ القائمة" Binding="{Binding InvoiceDate}" Width="*" />
+                <DataGridTextColumn Header="المبلغ الكلي" Binding="{Binding TotalAmount}" Width="*" />
+                <DataGridTextColumn Header="اسم الزبون" Binding="{Binding CustomerName}" Width="*" />
+                <DataGridTextColumn Header="رقم القائمة" Binding="{Binding ListNum }" Width="*" />
             </DataGrid.Columns>
 
             <DataGrid.ContextMenu>
+               
                 <ContextMenu Width="auto" Height="auto" BorderThickness="2" BorderBrush="Gray">
                     <!--  "تفاصيل القائمة" -->
                     <MenuItem Header="تفاصيل القائمة" Click="MenuItem_Details_Click">
@@ -103,8 +129,27 @@
                             <Image Source="/Assets/Logo.png" Width="16" Height="16"/>
                         </MenuItem.Icon>
                     </MenuItem>
+
+                    <MenuItem Header="حفـظ القائمـة">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Logo.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <Separator Background="Gray"  Margin="5" />
+
+                    <MenuItem Header="ارسال القائمة عبر الوتساب ">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Logo.png" Width="16" Height="16"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+               
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
+        
+        </Grid>
+
+        <Grid x:Name="SubGrid" Visibility="Collapsed"></Grid>
     </Grid>
 </Page>

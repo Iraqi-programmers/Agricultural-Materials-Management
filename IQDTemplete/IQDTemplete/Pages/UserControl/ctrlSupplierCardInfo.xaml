@@ -5,66 +5,122 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Interface.Pages.UserControl"
              mc:Ignorable="d" 
-             d:DesignHeight="315" d:DesignWidth="400"
-             FlowDirection="{DynamicResource SPAppFlowDirection}" Loaded="UserControl_Loaded"
+             d:DesignHeight="335" d:DesignWidth="400"
+             FlowDirection="{DynamicResource AppFlowDirection}" 
+             Background="{DynamicResource PrimaryBackgroundColor}"
              >
-    <Border Background="#FFE0E0E0" CornerRadius="10" Padding="10" BorderBrush="#FFA0A0A0" BorderThickness="1">
-        <Grid>
+
+    <UserControl.Resources>
+        <Style x:Key="txtBlock" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontWeight" Value="Normal"></Setter>
+            <Setter Property="FontSize" Value="16"/>
+
+        </Style>
+
+        <Style x:Key="txtbox" TargetType="TextBox" BasedOn="{StaticResource ModernTextBoxStyle}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Background" Value="WhiteSmoke"/>
+            <Setter Property="BorderBrush" Value="#FFA0A0A0"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="290"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Border  CornerRadius="10" Height="450" Width="430"  BorderBrush="#FFA0A0A0" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center"   >
+        
+
+            
+        <Grid x:Name="MainGrid" >
+
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <!-- العنوان -->
-                <RowDefinition Height="Auto"/>
-                <!-- معرف المورد -->
-                <RowDefinition Height="Auto"/>
-                <!-- اسم المورد -->
-                <RowDefinition Height="Auto"/>
-                <!-- هل هو شخص -->
-                <RowDefinition Height="Auto"/>
-                <!-- رقم الهاتف -->
-                <RowDefinition Height="Auto"/>
-                <!-- العنوان -->
-                <RowDefinition Height="Auto"/>
-                <!-- زر الحفظ -->
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
+            
+            <!--Close BTN-->
+            <Button x:Name="btnClose"
+                    Margin="5"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    Style="{StaticResource IconButtonsStyle}"
+                    Content="{DynamicResource close}" 
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Click="btnClose_Click"
+                    Tag="IsCloseButton"
+                         />
+
+            
+            <Grid x:Name="SubGrid" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                
+                <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+                            
+                <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- العنوان -->
-            <TextBlock Text="{Binding titleName}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
-                       VerticalAlignment="Center" HorizontalAlignment="Center" 
-                       Margin="0,0,0,10" FontSize="16" FontWeight="Bold" Foreground="#FF0078D7"/>
-
-            <!-- Supplier ID -->
-            <TextBlock Text="معرف المورد:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
-            <TextBox x:Name="txtSupplierID" Style="{DynamicResource ModernTextBoxStyle}" Height="25" Grid.Row="1" Grid.Column="1" Margin="5" Padding="5" Background="White" BorderBrush="#FFA0A0A0" BorderThickness="1"/>
-
-            <!-- Supplier Name -->
-            <TextBlock Text="اسم المورد:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
-            <TextBox x:Name="txtSupplierName" Grid.Row="2" Grid.Column="1" Margin="5" Padding="5" Background="White" BorderBrush="#FFA0A0A0" BorderThickness="1"/>
-
-            <!-- Is Person -->
-            <TextBlock Text="هل هو شخص:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
-            <CheckBox x:Name="chkIsPerson" Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center"/>
-
-            <!-- Phone Number -->
-            <TextBlock Text="رقم الهاتف:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
-            <TextBox x:Name="txtPhoneNumber" Grid.Row="4" Grid.Column="1" Margin="5" Padding="5" Background="White" BorderBrush="#FFA0A0A0" BorderThickness="1"/>
-
-            <!-- Address -->
-            <TextBlock Text="العنوان:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
-            <TextBox x:Name="txtAddress" Grid.Row="5" Grid.Column="1" Margin="5" Padding="5" Background="White" BorderBrush="#FFA0A0A0" BorderThickness="1" Height="60" TextWrapping="Wrap" AcceptsReturn="True"/>
-
-            <!-- Save Button -->
-
-            <StackPanel Grid.Row="6" Grid.Column="1"  Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                <!-- العنوان -->       
+                <TextBlock Text="{Binding titleName}"
+                       Style="{StaticResource txtBlock}"
+                       Grid.Row="1" Grid.Column="0"
+                       Grid.ColumnSpan="2" 
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Margin="20,0,0,30" FontSize="18" 
+                       Foreground="#FF0078D7"
+                       FontWeight="ExtraBold"    
+                           />
                 
-                <Button x:Name="btnSave" Grid.Row="6" Grid.Column="1" Content="حفظ" Style="{StaticResource ModernButtonStyle}" Width="120" Height="35" Visibility="{Binding visibalBtnSave}" Click="btnSave_Click"/>
-                <Button x:Name="btnEdit" Grid.Row="6" Grid.Column="1" Content="تعديل" Style="{StaticResource ModernButtonStyle}" Width="120" Height="35" Visibility="{Binding visibalBtnEdit}" Click="btnEdit_Click"/>
 
-            </StackPanel>
-            
+                
+                 <!-- Supplier ID -->
+                 <TextBlock Text="المعرف " Grid.Row="2" Grid.Column="0" Style="{StaticResource txtBlock}"/>
+                 <TextBox x:Name="txtSupplierID" Style="{StaticResource txtbox}"  Grid.Row="2" Grid.Column="1" IsReadOnly="True" ToolTip="للقراءة فقط" />
+                
+                 <!-- Supplier Name -->
+                 <TextBlock Text="اسم المورد " Grid.Row="3" Grid.Column="0" Style="{StaticResource txtBlock}"/>
+                 <TextBox x:Name="txtSupplierName" Grid.Row="3" Grid.Column="1" Style="{StaticResource txtbox}"/>
+                
+                 <!-- Is Person -->
+                 <TextBlock Text="هل هو شخص" Grid.Row="4" Grid.Column="0" Style="{StaticResource txtBlock}"/>
+                 <CheckBox x:Name="chkIsPerson" Grid.Row="4" Grid.Column="1" Style="{StaticResource ToggleButtonStyle}" Margin="5,5,0,0"  Background="Black"  HorizontalAlignment="Left"/>
+                
+                 <!-- Phone Number -->
+                 <TextBlock Text="رقم الهاتف" Grid.Row="5" Grid.Column="0" Style="{StaticResource txtBlock}"/>
+                 <TextBox x:Name="txtPhoneNumber" Grid.Row="5" Grid.Column="1" Style="{StaticResource txtbox}"/>
+                
+                 <!-- Address -->
+                 <TextBlock Text="العنوان" Grid.Row="6" Grid.Column="0" Style="{StaticResource txtBlock}"/>
+                 <TextBox x:Name="txtAddress" Grid.Row="6" Grid.Column="1" Style="{StaticResource txtbox}" Height="60" TextWrapping="Wrap" AcceptsReturn="True"/>
+                
+                 <!-- Save Button -->
+                <Button x:Name="btnSave" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,50,0" Content="حفظ" Style="{StaticResource ModernButtonStyle}" Width="120" Height="35" Visibility="{Binding visibalBtnSave}" Click="btnSave_Click"/>
+                <Button x:Name="btnEdit" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,50,0"  Content="تعديل" Style="{StaticResource ModernButtonStyle}" Width="120" Height="35" Visibility="{Binding visibalBtnEdit}" Click="btnEdit_Click"/>
+                
+            </Grid>
+        
+        
         </Grid>
+        
+        
     </Border>
 </UserControl>

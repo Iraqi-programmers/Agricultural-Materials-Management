@@ -12,19 +12,18 @@ namespace Interface.Pages.UserControl
     /// </summary>
     public partial class ctrlPersonCardInfo : System.Windows.Controls.UserControl , INotifyPropertyChanged
     {
+
         public enum Mod { AddNew,Update,View}
         public Mod _mod;
 
-        private string __title;
-        public string Title
+        private string? __title;
+        public string? Title
         {
             get { return __title; }
             set 
             { 
                 __title = value;
-                OnPropertyChanged();
-
-
+                OnPropertyChanged(nameof(Title));
             }
         }
 
@@ -35,7 +34,7 @@ namespace Interface.Pages.UserControl
             set
             {
                 __visibalBtnSave = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(visibalBtnSave));
             }
         }
 
@@ -46,31 +45,16 @@ namespace Interface.Pages.UserControl
             set
             {
                 __visibalBtnEdit = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(visibalBtnEdit));
 
             }
         }
 
-        private bool __ReadOnly;
-        public bool ReadOnly
-        {
-            get { return __ReadOnly; }
-            set
-            {
-                __ReadOnly = value;
-                OnPropertyChanged();
-            }
-        }
 
-        //براميتر البيرسون ايدي في دالة الجيت يجب ان يكون من نوع null
-        private int? __PersonId;
-        public int? PersonId
-        {
-            get { return __PersonId; }
-            set { __PersonId = value; }
-        }
+        private int? __PersonId = null;
+        
 
-        private clsPerson? person;
+        private clsPerson? person = null;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -85,43 +69,61 @@ namespace Interface.Pages.UserControl
             DataContext = this;
             __PersonId = personId;
             _mod = mod;
-            Task.Run(() => ChooseMod());
-            __title = "tt";
         }
 
-        public ctrlPersonCardInfo()
+       
+        private void ChangeTextVisblte()
         {
-            InitializeComponent();
-            __title = "tt";
+            if (_mod == Mod.View) 
+            {
+                txtAddress.IsReadOnly = true;
+                txtName.IsReadOnly = true;
+                txtNationalID.IsReadOnly = true;
+                txtPersonID.IsReadOnly = true;
+                txtPhoneNumber.IsReadOnly = true;
+                return;
+            }
+
+            txtAddress.IsReadOnly = false;
+            txtName.IsReadOnly = false;
+            txtNationalID.IsReadOnly = false;
+            txtPersonID.IsReadOnly = true;
+            txtPhoneNumber.IsReadOnly = false;
 
         }
-
-        private void ChangeProparteUI(Visibility btnSave = Visibility.Visible ,Visibility btnEdit = Visibility.Hidden, string title="اضافة شخص" , bool ReadOnly=false)
+       
+        private void ChangeProparteUI(Visibility btnSave = Visibility.Visible ,Visibility btnEdit = Visibility.Hidden, string title="اضافة شخص")
         {
             visibalBtnEdit = btnEdit;
             visibalBtnSave = btnSave;
             Title = title;
-            this.ReadOnly = ReadOnly;
+            ChangeTextVisblte();
         }
 
         private async Task LoadData()
         {
-            person = await clsPerson.GetByIdAsync(1);
+            if (__PersonId == null || __PersonId == -1)
+                return;
+            person = await clsPerson.GetByIdAsync(__PersonId ?? -1);
+            if (person == null)
+                return;
 
             txtPersonID.Text = person?.Id.ToString();
             txtName.Text = person?.FullName;
             txtPhoneNumber.Text = person?.PhoneNumber;
             txtNationalID.Text = person?.NationalNum;
             txtAddress.Text = person?.Address;
+
         }
 
-        private async Task ChooseMod()
+        public  async Task ChooseMode()
         {
 
             switch(_mod)
             {
                 case Mod.AddNew:
                     {
+                        person = new clsPerson(txtName.Text);
                         ChangeProparteUI();
                     }
                     break; 
@@ -129,47 +131,84 @@ namespace Interface.Pages.UserControl
                 case Mod.Update:
                     {
                        await LoadData();
-                        ChangeProparteUI(title:"تعديل بيانات");
-                       
-                        if (person == null)
-                            return;
+                        ChangeProparteUI(title:"تعديل معلومات");
                     }
                     break;
 
                 case Mod.View:
                     {
-                        await LoadData();
-                        ChangeProparteUI(Visibility.Hidden, Visibility.Visible, "عرض معلومات الشخص",true);
+                       await LoadData();
+                        ChangeProparteUI(Visibility.Hidden, Visibility.Visible, "عرض معلومات");
                     }
                     break;
                    
             }
         }
 
-
-        private async void btnSave_Click(object sender, RoutedEventArgs e)
+        
+        private bool IsDataUnchanged()
         {
-            person = new clsPerson(txtName.Text, txtNationalID.Text, txtPhoneNumber.Text, txtAddress.Text);
+            return txtName.Text == person?.FullName &&
+                   txtNationalID.Text == person?.NationalNum &&
+                   txtPhoneNumber.Text == person?.PhoneNumber &&
+                   txtAddress.Text == person?.Address;
+        }
+        
+        public async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            await LoadData();
+            await ChooseMode();
+        }
 
-            if (clsValidationHelper.IsNotEmpty(txtName.Text))
+        public async void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (!clsValidationHelper.IsNotEmpty(txtName.Text))
             {
-                if (await person.SaveAsync())
-                {
-                    MessageBox.Show("تم الحفظ بنجاح");
-                }
-                else
-                    MessageBox.Show("حدث خطـأ!!");
+                MessageBox.Show("الرجاء إدخال الاسم!");
+                return;
+            }
+
+          
+            if (IsDataUnchanged())
+            {
+                //MessageBox.Show("لا يوجد أي تغيير لحفظه!");
+                return;
+            }
+
+            person!.FullName = txtName.Text;
+            person.NationalNum=txtNationalID.Text;
+            person.PhoneNumber=txtPhoneNumber.Text;
+            person.Address=txtAddress.Text;
+
+
+            
+            if (!await person!.SaveAsync())
+            {
+                MessageBox.Show("تم الحفظ بنجاح");
+            }
+            else
+            {
+                MessageBox.Show("حدث خطأ أثناء الحفظ!");
+                return;
             }
 
 
         }
 
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        public  void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            ChangeProparteUI(title:"تعديل البيانات");
+            btnSave.Visibility = Visibility.Visible;
+            btnEdit.Visibility= Visibility.Collapsed;
             _mod = Mod.Update;
+           
+            
         }
 
-       
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

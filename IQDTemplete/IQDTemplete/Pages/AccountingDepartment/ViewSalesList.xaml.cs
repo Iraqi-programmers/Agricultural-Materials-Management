@@ -1,119 +1,184 @@
-﻿using Interface.Pages.UserControl;
+﻿using BLL;
+using Interface.Pages.UserControl;
+using Microsoft.Extensions.Configuration;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
+using System.Windows.Threading;
+
 
 namespace Interface.Pages.AccountingDepartment
 {
-    /// <summary>
-    /// Interaction logic for ViewSalesList.xaml
-    /// </summary>
-    /// 
-
-    public partial class ViewSalesList : Page
+    public partial class ViewSalesList : Page ,INotifyPropertyChanged
     {
-
-        private CollectionViewSource _invoiceViewSource;
+       
         public class Invoice
         {
+            public string ListNum { get; set; }
             public string CustomerName { get; set; }
             public string InvoiceDate { get; set; }
             public decimal TotalAmount { get; set; }
-            public decimal LisrNum { get; set; }
-            public string UserName { get; set; }
-            public string UserPhone { get; set; }
         }
+
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); }
+        }
+        private DispatcherTimer _filterTimer;
+
+        private DataTable? _dtSales;
+        private List<Invoice> _allInvoices = new();
+
+        private ObservableCollection<Invoice> _invoices = new();
+        public ObservableCollection<Invoice> Invoices
+        {
+            get => _invoices;
+            set { _invoices = value; OnPropertyChanged(); }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
 
         public ViewSalesList()
         {
             InitializeComponent();
-            // بيانات تجريبية
-            var invoices = new List<Invoice>
-            {
-                new Invoice { CustomerName = "محمد أحمد", InvoiceDate = "2023-10-01", TotalAmount = 1500, LisrNum = 1, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "سارة خالد", InvoiceDate = "2023-10-02", TotalAmount = 2000, LisrNum = 4, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "يوسف سعيد", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum = 50, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "زيون الكئيب", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum  = 500, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "سند الحزين", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum = 9, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "محمد علي كلاي", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum = 40, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "علي حسن", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum = 20, UserName = "علي محمود", UserPhone = "0123456789" },
-                new Invoice { CustomerName = "علي حسن", InvoiceDate = "2023-10-03", TotalAmount = 2500, LisrNum = 25, UserName = "علي محمود", UserPhone = "0123456789" }
-            };
+            DataContext = this;
+            Loaded += ViewSalesList_Loaded;
+            _filterTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
+            _filterTimer.Tick += (s, e) => { _filterTimer.Stop(); ApplyFilter(); };
 
-      
-            _invoiceViewSource = new CollectionViewSource { Source = invoices };
-            InvoiceDataGrid.ItemsSource = _invoiceViewSource.View;
+        }
+
+        public async Task LoadDataToDGV()
+        {
+            IsLoading = true;
+            try
+            {
+                
+                _dtSales = await clsSales.GetAllAsync();
+                if (_dtSales == null || _dtSales.Rows.Count == 0)
+                {
+                    MessageBox.Show("لا توجد فواتير لعرضها", "معلومة", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                _allInvoices = _dtSales.AsEnumerable().Select(row => new Invoice
+                {
+                    ListNum = row["SealeID"].ToString()!,
+                    CustomerName = row["PersonName"].ToString()!,
+                    TotalAmount = Convert.ToDecimal(row["TotalCost"]),
+                    InvoiceDate = Convert.ToDateTime(row["Date"]).ToString("yyyy-MM-dd")
+                }).ToList();
+
+                ApplyFilter();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"حدث خطأ أثناء تحميل البيانات: {ex.Message}", "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally 
+            { 
+                IsLoading = false;
+            }
+        }
+
+        private void ApplyFilter()
+        {
+
+            try
+            {
+                IsLoading = true;
+
+                // إذا كان صندوق البحث فارغاً، اعرض كل الفواتير بدون تصفية
+                if (string.IsNullOrWhiteSpace(SearchTextBox?.Text))
+                {
+                    Invoices = new ObservableCollection<Invoice>(_allInvoices);
+                    return;
+                }
+
+                var searchText = SearchTextBox.Text.Trim();
+                var filterType = (FilterComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
+
+                var filtered = _allInvoices.Where(invoice =>
+                {
+                    return filterType switch
+                    {
+                        "رقم القائمة" => invoice.ListNum.Contains(searchText, StringComparison.OrdinalIgnoreCase),
+                        "تاريخ القائمة" => invoice.InvoiceDate.Contains(searchText),
+                        "المبلغ الكلي" => invoice.TotalAmount.ToString().Contains(searchText),
+                        "اسم الزبون" => invoice.CustomerName.Contains(searchText, StringComparison.OrdinalIgnoreCase),
+                        _ => true
+                    };
+                }).ToList();
+
+                Invoices = new ObservableCollection<Invoice>(filtered);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+
+        private async void ViewSalesList_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            await LoadDataToDGV();
+
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // فلترة البيانات بناءً على نص البحث
-            if (_invoiceViewSource != null)
-            {
-                _invoiceViewSource.View.Filter = item =>
-                {
-                    var invoice = item as Invoice;
-                    if (invoice == null) return false;
+            _filterTimer.Stop(); 
+            _filterTimer.Start(); 
+           // ApplyFilter();
 
-                    // البحث في جميع الحقول
-                    return invoice.CustomerName.Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
-                           invoice.InvoiceDate.Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
-                           invoice.TotalAmount.ToString().Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
-                           invoice.LisrNum.ToString().Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
-                           invoice.UserName.Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) ||
-                           invoice.UserPhone.Contains(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase);
-                };
-            }
         }
 
-
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (NavigationService?.CanGoBack == true)
-            {
-                NavigationService.GoBack();
-            }
+            ApplyFilter();
+
         }
-
-        private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
-        {
-            // تطبيق الفلترة بناءً على البحث
-            var invoice = e.Item as Invoice; // استبدل Invoice بنوع البيانات الخاص بك
-            if (invoice == null) return;
-
-            string filterText = SearchTextBox.Text.ToLower();
-            string selectedFilter = (FilterComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
-
-            switch (selectedFilter)
-            {
-                case "اسم المستخدم":
-                    e.Accepted = invoice.UserName.ToLower().Contains(filterText);
-                    break;
-                case "تاريخ القائمة":
-                    e.Accepted = invoice.InvoiceDate.ToLower().Contains(filterText);
-                    break;
-                case "رقم القائمة":
-                    e.Accepted = invoice.LisrNum.ToString().Contains(filterText);
-                    break;
-                case "المبلغ الكلي":
-                    e.Accepted = invoice.TotalAmount.ToString().Contains(filterText);
-                    break;
-                case "اسم الزبون":
-                    e.Accepted = invoice.CustomerName.ToLower().Contains(filterText);
-                    break;
-                default:
-                    e.Accepted = true;
-                    break;
-            }
-        }
-
+      
         private void MenuItem_Details_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            NavigationService.Navigate(new ctrlSalesListDetails());
+            var selectedInvoice = (Invoice)InvoiceDataGrid.SelectedItem;
+
+            if (selectedInvoice != null)
+            {
+                MainGrid.Visibility = Visibility.Collapsed;
+                SubGrid.Children.Clear();
+                var detailsControl = new ctrlSalesListDetails(int.Parse(selectedInvoice.ListNum),this);
+                SubGrid.Children.Add(detailsControl);
+                SubGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MessageBox.Show("يجب تحديد قائمة أولاً!", "تحذير", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void MenuItem_Export_Click(object sender, System.Windows.RoutedEventArgs e)
         {
 
+        }
+       
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.GoBack();
         }
     }
     

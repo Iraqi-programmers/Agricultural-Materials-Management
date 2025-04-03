@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using System.Diagnostics;
+using BLL.Product;
 using DAL;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
@@ -68,37 +70,65 @@ namespace BLL
 
         internal static clsSales FetchSaleData(ref Dictionary<string, object> dict)
         {
-            int id = (int)dict["SaleID"];
-
-            List<clsSalesDetails> salesDetailsList = new();
-
-            if (dict.ContainsKey("SalesDetailsData") && dict["SalesDetailsData"] is List<Dictionary<string, object>> detailsList)
+            try
             {
-                foreach (var detail in detailsList)
+
+
+                var salesData = (Dictionary<string, object>)dict["SalesData"];
+                int id = Convert.ToInt32(salesData["SealeID"]);
+
+
+
+                List<clsSalesDetails> salesDetailsList = new();
+                if (dict.TryGetValue("SalesDetailsData", out var detailsData) && detailsData is List<Dictionary<string, object>> detailsList)
                 {
-                    salesDetailsList.Add(new clsSalesDetails(
-                        (int)detail["DetailID"], 
-                        id, 
-                        clsStocks.FetchStockData(ref dict), 
-                        (double)detail["Price"],
-                        (int)detail["Quantity"], 
-                        (double)detail["TotalCost"], 
-                        (double)detail["Profit"],
-                        detail.ContainsValue("WarrantyDate") ? (DateTime)detail["WarrantyDate"] : null
-                    ));
+
+                    foreach (var detail in detailsList)
+                    {
+                        salesDetailsList.Add(new clsSalesDetails(
+                            Convert.ToInt32(detail["DetailID"]), id,
+                            new clsStocks(Convert.ToInt32(detail["StockID"]), Convert.ToInt32(detail["Quantity"]), detail["Status"].ToString()!, Convert.ToDouble(detail["PurchasePrice"]), Convert.ToDouble(detail["SellingPrice"]),
+                                new Product.clsProduct(Convert.ToInt32(detail["ProductID"]),
+                                    new clsCompany(Convert.ToInt32(detail["CompanyID"]), detail["Name"].ToString()!),
+                                    new clsProductType(Convert.ToInt32(detail["TypeID"]), detail["TypeName"].ToString()!),
+                                    new clsSize(Convert.ToInt32(detail["SizeID"]), Convert.ToDouble(detail["Size"])),
+                                    new clsThickness(Convert.ToInt32(detail["ThicknessID"]), Convert.ToDouble(detail["Thickness"])),
+                                    new clsWarrinty(Convert.ToInt32(detail["WarrintyID"]), Convert.ToUInt16(detail["Period"])))),
+
+                            Convert.ToDouble(detail["Price"]),
+                            Convert.ToInt32(detail["Quantity"]),
+                            Convert.ToDouble(detail["TotalCost"]),
+                            Convert.ToDouble(detail["Profit"]),
+                            (DateTime?)Convert.ToDateTime(detail["WarrantyDate"])
+                        ));
+                    }
                 }
+
+                Dictionary<string, object>? userData = null;
+                if (dict.TryGetValue("UserData", out var userDataObj) && userDataObj is Dictionary<string, object> tempUserData)
+                {
+                    userData = tempUserData;
+                }
+
+
+                return new clsSales(
+                    id,
+                    salesDetailsList,
+                    clsUsers.FetchUserData(ref userData!),
+                    Convert.ToDateTime(salesData["Date"]),
+                    Convert.ToDouble(salesData["TotalCost"]),
+                    Convert.ToBoolean(salesData["IsDebt"]),
+                    Convert.ToDouble(salesData["TotalProfit"]),
+                    (Double?)Convert.ToDouble(salesData["PaidAmount"]),
+                    clsPerson.FetchPersonData(ref userData)
+                );
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
-            return new clsSales(
-                id, 
-                salesDetailsList,
-                clsUsers.FetchUserData(ref dict), 
-                (DateTime)dict["Date"], 
-                (double)dict["SaleTotalCost"], 
-                (bool)dict["IsDebt"],
-                (double)dict["TotalProfit"],
-                dict.ContainsValue("PaidAmount") ? (double)dict["PaidAmount"] : null,
-                clsPerson.FetchPersonData(ref dict)
-            );
+            return null;
         }
+
+
     }
 }

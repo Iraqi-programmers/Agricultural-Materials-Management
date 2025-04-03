@@ -195,37 +195,150 @@ BEGIN
 END;
 
          */
+        //public static async Task<Dictionary<string, object>?> GetByIdAsync(int saleId)
+        //{
+        //    var dict = await CRUD.GetByColumnValueAsync("sp_GetSalesById", "SalesID", saleId);
+
+        //    if (dict == null) return null;
+
+
+        //    //foreach (var kvp in dict)
+        //    //{
+
+        //    //    Console.WriteLine(kvp.Key);
+        //    //    Console.WriteLine(kvp.Value);
+        //    //    if (kvp.Key.Contains("SalesJson"))
+        //    //    {
+        //    //        string salesJson = dict["SalesJson"].ToString()!;
+        //    //        dict["SalesData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(salesJson) ?? new Dictionary<string, object>();
+        //    //    }
+        //    //}
+
+        //    if (dict.ContainsKey("SalesJson") && dict["SalesJson"] != DBNull.Value)
+        //    {
+        //        string salesJson = dict["SalesJson"].ToString()!;
+        //        dict["SalesData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(salesJson) ?? new Dictionary<string, object>();
+        //    }
+
+        //    if (dict.ContainsKey("SalesDetailsJson") && dict["SalesDetailsJson"] != DBNull.Value)
+        //    {
+        //        string detailsJson = dict["SalesDetailsJson"].ToString()!;
+        //        dict["SalesDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
+        //    }
+
+        //    //if (dict.ContainsKey("PaymentsJson") && dict["PaymentsJson"] != DBNull.Value)
+        //    //{
+        //    //    string paymentsJson = dict["PaymentsJson"].ToString()!;
+        //    //    dict["PaymentsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(paymentsJson) ?? new List<Dictionary<string, object>>();
+        //    //}
+
+        //    if (dict.ContainsKey("UserJson") && dict["UserJson"] != DBNull.Value)
+        //    {
+        //        string userJson = dict["UserJson"].ToString()!;
+        //        dict["UserData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(userJson) ?? new Dictionary<string, object>();
+        //    }
+        //    return dict;
+        //}
+
+        //public static async Task<Dictionary<string, object>?> GetByIdAsync(int saleId)
+        //{
+        //    var dict = await CRUD.GetByColumnValueAsync("sp_GetSalesById", "SalesID", saleId);
+
+        //    if (dict == null) return null;
+
+        //    // استخراج السلسلة JSON الكاملة من النتيجة
+        //    string jsonResult = dict.Values.FirstOrDefault()?.ToString()!;
+
+        //    if (string.IsNullOrEmpty(jsonResult))
+        //    {
+        //        return null;
+        //    }
+
+        //    try
+        //    {
+
+
+        //        // تحويل النتيجة إلى ديكشنري
+        //        var resultDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonResult);
+
+        //        if (resultDict == null) return null;
+
+        //        //// معالجة SalesJson
+        //        //if (resultDict.ContainsKey("SalesJson") && resultDict["SalesJson"] != null)
+        //        //{
+        //        //    string salesJson = resultDict["SalesJson"].ToString()!;
+        //        //    resultDict["SalesData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(salesJson!)!;
+        //        //}
+
+        //        //// معالجة SalesDetailsJson
+        //        //if (resultDict.ContainsKey("SalesDetailsJson") && resultDict["SalesDetailsJson"] != null)
+        //        //{
+        //        //    string detailsJson = resultDict["SalesDetailsJson"].ToString()!;
+        //        //    resultDict["SalesDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson)!;
+        //        //}
+
+        //        //// معالجة UserJson
+        //        //if (resultDict.ContainsKey("UserJson") && resultDict["UserJson"] != null)
+        //        //{
+        //        //    string userJson = resultDict["UserJson"].ToString()!;
+        //        //    resultDict["UserData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(userJson)!;
+        //        //}
+
+        //        return resultDict;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // يمكنك تسجيل الخطأ هنا للتصحيح
+        //        Console.WriteLine($"Error parsing JSON: {ex.Message}");
+        //        return null;
+        //    }
+        //}
+
+
         public static async Task<Dictionary<string, object>?> GetByIdAsync(int saleId)
         {
             var dict = await CRUD.GetByColumnValueAsync("sp_GetSalesById", "SalesID", saleId);
 
             if (dict == null) return null;
 
-            if (dict.ContainsKey("SalesJson") && dict["SalesJson"] != DBNull.Value)
-            {
-                string salesJson = dict["SalesJson"].ToString()!;
-                dict["SalesData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(salesJson) ?? new Dictionary<string, object>();
-            }
+            string jsonResult = dict.Values.FirstOrDefault()?.ToString()!;
+            if (string.IsNullOrEmpty(jsonResult)) return null;
 
-            if (dict.ContainsKey("SalesDetailsJson") && dict["SalesDetailsJson"] != DBNull.Value)
+            try
             {
-                string detailsJson = dict["SalesDetailsJson"].ToString()!;
-                dict["SalesDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson) ?? new List<Dictionary<string, object>>();
-            }
+                var resultDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonResult);
+                if (resultDict == null) return null;
 
-            if (dict.ContainsKey("PaymentsJson") && dict["PaymentsJson"] != DBNull.Value)
-            {
-                string paymentsJson = dict["PaymentsJson"].ToString()!;
-                dict["PaymentsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(paymentsJson) ?? new List<Dictionary<string, object>>();
-            }
+                Dictionary<string, object> finalResult = new();
 
-            if (dict.ContainsKey("UserJson") && dict["UserJson"] != DBNull.Value)
-            {
-                string userJson = dict["UserJson"].ToString()!;
-                dict["UserData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(userJson) ?? new Dictionary<string, object>();
+                if (resultDict.TryGetValue("SalesJson", out var salesJson) && salesJson != null)
+                {
+                    finalResult["SalesData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(salesJson.ToString()!)!;
+                }
+
+                if (resultDict.TryGetValue("SalesDetailsJson", out var detailsJson) && detailsJson != null)
+                {
+                    finalResult["SalesDetailsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(detailsJson.ToString()!)!;
+                }
+
+                if (resultDict.TryGetValue("PaymentsJson", out var paymentsJson) && paymentsJson != null)
+                {
+                    finalResult["PaymentsData"] = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(paymentsJson.ToString()!)!;
+                }
+
+                if (resultDict.TryGetValue("UserJson", out var userJson) && userJson != null)
+                {
+                    finalResult["UserData"] = JsonConvert.DeserializeObject<Dictionary<string, object>>(userJson.ToString()!)!;
+                }
+
+                return finalResult;
             }
-            return dict;
+            catch (Exception)
+            {
+                return null;
+            }
         }
+
 
         public static async Task<DataTable?> GetAllAsync() => await CRUD.GetAllAsDataTableAsync("SP_GetAllSales");
 

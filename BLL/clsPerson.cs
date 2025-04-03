@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using DAL;
 
 namespace BLL
@@ -18,7 +19,7 @@ namespace BLL
             Address = address;
         }
 
-        private clsPerson(int? personId, string fullName, string? nationalNum = null, string? phoneNumber = null, string? address = null)
+        internal clsPerson(int? personId, string fullName, string? nationalNum = null, string? phoneNumber = null, string? address = null)
         {
             Id = personId;
             FullName = fullName;
@@ -77,15 +78,15 @@ namespace BLL
         public static async Task<bool> DeleteByNationalNumAsync(string nationalNum) => await clsPersonData.DeleteByNationalNumAsync(nationalNum);
 
         public async Task<bool> DeleteAsync() => await DeleteByIdAsync(Id);
-        
+
         internal static clsPerson FetchPersonData(ref Dictionary<string, object> dict)
         {
             return new clsPerson(
-                (int)dict["PersonID"],
-                (string)dict["FullName"],
-                dict.ContainsValue("NationalNum") ? (string)dict["NationalNum"] : null,
-                dict.ContainsValue("PhoneNumber") ? (string)dict["PhoneNumber"] : null,
-                dict.ContainsValue("Address") ? (string)dict["Address"] : null
+                Convert.ToInt32(dict["PersonID"]),
+                (string)dict["UserFullName"],
+                dict.ContainsKey("UserNationalNum") ? dict["UserNationalNum"].ToString() : "Not Set",
+                dict.ContainsKey("UserPhoneNumber") ? dict["UserPhoneNumber"].ToString() : "Not Set",
+                dict.ContainsKey("UserAddress") ? dict["UserAddress"].ToString() : "Not Set"
             );
         }
     }

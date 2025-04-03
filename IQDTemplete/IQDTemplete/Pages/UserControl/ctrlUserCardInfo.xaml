@@ -5,51 +5,101 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Interface.Pages.UserControl"
              mc:Ignorable="d" 
-         d:DesignHeight="600" d:DesignWidth="500"
-             FlowDirection="RightToLeft">
-    
-    <Border Background="#FFF0F0F0" CornerRadius="10" Padding="15" BorderBrush="#FFCCCCCC" BorderThickness="1">
+             d:DesignHeight="600" d:DesignWidth="500"
+             Background="{DynamicResource PrimaryBackgroundColor}"
+             FlowDirection="{DynamicResource AppFlowDirection}"
+             Loaded="UserControl_Loaded"
+             >
+    <UserControl.Resources>
+        <Style x:Key="txtBlock" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10,10,0,10"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+    </UserControl.Resources>
+    <Border  CornerRadius="10" Padding="1" BorderBrush="Black" BorderThickness="1">
         <Grid>
+
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+
+
+
+            <!--Close BTN-->
+            <Button x:Name="btnClose"
+                   Margin="5"
+                   Grid.ColumnSpan="2"
+                   Style="{StaticResource IconButtonsStyle}"
+                   Content="{DynamicResource close}" 
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Click="btnClose_Click"
+                   Tag="IsCloseButton"
+                     />
+
+
+            <!--UserCardInfo-->
+            <Grid x:Name="UserInfoGrid" Grid.Row="1" HorizontalAlignment="Center"   >
+
+                  
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+               
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <!-- العنوان -->
+                <TextBlock Text="{Binding Title}"
+                           Grid.ColumnSpan="2"
+                           Grid.Column="0" 
+                           Grid.Row="0"
+                           VerticalAlignment="Top"
+                           HorizontalAlignment="Center" 
+                           Margin="0,0,0,5"
+                           FontSize="30"
+                           FontWeight="ExtraLight"/>
+
+
+                <!--العناوين-->
+                <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center" >
+
+                    <TextBlock Text="اسم المستخدم" Style="{StaticResource txtBlock}"/>
+
+                    <TextBlock Text="كلمة الــســـر" Margin="10,25,0,25" Style="{StaticResource txtBlock}"/>
+
+                    <TextBlock Text="حالة الحساب" Style="{StaticResource txtBlock}" />
+
+                </StackPanel>
+
+                <!--المتغيرات-->
+                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical"  HorizontalAlignment="Center" >
+
+                    <TextBox x:Name="txtUsername"   Margin="10" Style="{StaticResource ProTextBoxStyle}"  Padding="1"   />
+
+                    <PasswordBox x:Name="txtPassword" FontWeight="Normal" Style="{StaticResource ProPasswordBoxStyle}"  Margin="10" Width="290" Padding="1"/>
+
+                    <CheckBox x:Name="chkIsActive" Background="DarkBlue"   Style="{StaticResource ToggleButtonStyle}"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,25,0,0"  />
+
+                </StackPanel>
+
+                <!-- Save and Edit Button -->
+                <Button x:Name="btnSave" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0"  Content="حفظ" Style="{StaticResource ModernButtonStyle}" Width="170" Height="37" Visibility="{Binding VisibleBtnSave}" Click="btnSave_Click"/>
+                <Button x:Name="btnEdit" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" Content="تعديل" Style="{StaticResource ModernButtonStyle}" Width="170" Height="37" Visibility="{Binding VisibleBtnEdit}" Click="btnEdit_Click"/>
+            </Grid>
 
             <!-- PersonCardInfo -->
-            <local:ctrlPersonCardInfo x:Name="PersonInfoControl" Grid.Row="0" Margin="0,0,0,5"/>
-
-            <!-- العنوان -->
-            <TextBlock Text="معلومات المستخدم" Grid.Row="1" Grid.Column="0" 
-                       VerticalAlignment="Center" HorizontalAlignment="Center" 
-                       Margin="0,0,0,10" FontSize="18" FontWeight="Bold" Foreground="#FF0078D7"/>
-
-            <!-- اسم المستخدم -->
-            <TextBlock Text="اسم المستخدم:" Grid.Row="2"  VerticalAlignment="Center" Margin="5" FontWeight="SemiBold"/>
-            <TextBox x:Name="txtUsername" Grid.Row="2"  Margin="0,5,0,5" Padding="5" Width="200" Background="White" BorderBrush="#FFCCCCCC" BorderThickness="1"/>
-
-            <!-- كلمة السر -->
-            <TextBlock Text="كلمة السر:" Grid.Row="3" VerticalAlignment="Center" Margin="5" FontWeight="SemiBold"/>
-            <PasswordBox x:Name="txtPassword" Grid.Row="3"  Margin="0,5,0,5" Width="200" Padding="5" Background="White" BorderBrush="#FFCCCCCC" BorderThickness="1"/>
-
-            <!-- حالة الحساب -->
-            <StackPanel Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-                <TextBlock Text="حالة الحساب:" Grid.Row="4"  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" FontWeight="SemiBold"/>
-                <CheckBox x:Name="chkIsActive" VerticalAlignment="Center"  Margin="10,0,0,0" />
-            </StackPanel>
-
-            
-            <!-- Save Button -->
-            <StackPanel Grid.Row="6"  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch" >
-                <Button x:Name="btnSave" Grid.Row="6"  Content="حفظ" Style="{StaticResource ModernButtonStyle}" Width="120" Height="35" Visibility="{Binding visibalBtnSave}" Click="btnSave_Click"/>
-                <Button x:Name="btnEdit" Grid.Row="6"  Content="تعديل" Style="{StaticResource ModernButtonStyle}" Width="120" Height="35" Visibility="{Binding visibalBtnEdit}" Click="btnEdit_Click"/>
-            </StackPanel>
+            <Grid x:Name="PersonInfoGrid" Visibility="Collapsed" Grid.Row="0"  Height="350" Width="450">
+                
+                
+            </Grid>
 
         </Grid>
     </Border>
